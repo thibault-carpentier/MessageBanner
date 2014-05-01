@@ -21,6 +21,16 @@
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
+#pragma mark -
+#pragma mark NavBar Buttons
+- (IBAction)toggleNavBar:(id)sender {
+    self.navigationController.navigationBarHidden = !self.navigationController.navigationBarHidden;
+}
+
+
+#pragma mark -
+#pragma mark Popup buttons
+
 - (IBAction)popTop:(id)sender {
     [MessageBanner showNotificationInViewController:self title:@"TITLE" subtitle:@"This is a standart subtitle" image:[UIImage imageNamed:@"toto"] type:MessageBannerNotificationTypeMessage duration:1.0 callback:^{
         return ;

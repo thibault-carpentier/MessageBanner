@@ -33,6 +33,9 @@ static MessageBanner *sharedSingleton;
     return self;
 }
 
+#pragma mark -
+#pragma mark Init methods
+
 + (void)showNotificationInViewController:(UIViewController *)viewController
                                    title:(NSString *)title
                                 subtitle:(NSString *)subtitle
@@ -60,15 +63,82 @@ static MessageBanner *sharedSingleton;
     {
         if (([n.title isEqualToString:title] || (!n.title && !title)) && ([n.subTitle isEqualToString:subtitle] || (!n.subTitle && !subtitle)))
         {
-            return; // avoid showing the same messages twice in a row
+            // Add some check in the config file if it allow multiple pop-ups
+            return;
         }
     }
-    
     [[MessageBanner sharedSingleton].notificationsList addObject:notificationView];
-    [self showNotification];
+    [[MessageBanner sharedSingleton] showNotification];
 }
 
-+ (void)showNotification {
+#pragma mark -
+#pragma mark Show notification methods
+
+// To add later maybe ? 
+- (CGFloat) getStatusBarSize {
+    BOOL isPortrait = UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
+    CGSize statusBarSize = [UIApplication sharedApplication].statusBarFrame.size;
+    CGFloat offset = isPortrait ? statusBarSize.height : statusBarSize.width;
+    
+    return (offset);
+}
+
+-(CGFloat)calculateTopOffset:(MessageBannerView *)message {
+    CGFloat topOffset = 0.0f;
+    
+    // If has a navigationController
+    if ([message.viewController isKindOfClass:[UINavigationController class]] || [message.viewController.parentViewController isKindOfClass:[UINavigationController class]]) {
+        
+        // Getting the current view Controller
+        UINavigationController *currentNavigationController;
+        if ([message.viewController isKindOfClass:[UINavigationController class]]) {
+            currentNavigationController = (UINavigationController *)message.viewController;
+        } else {
+            currentNavigationController = (UINavigationController *)message.viewController.parentViewController;
+        }
+        
+        // If the navigationBar is visible we add his height as an offset
+        if (![currentNavigationController isNavigationBarHidden] &&
+            ![[currentNavigationController navigationBar] isHidden]) {
+            
+            // Adding the view on the navcontroller
+            [currentNavigationController.view insertSubview:message belowSubview:[currentNavigationController navigationBar]];
+            
+            topOffset += [currentNavigationController navigationBar].bounds.size.height;
+        } else {
+            [message.viewController.view addSubview:message];
+        }
+    } else {
+        [message.viewController.view addSubview:message];
+    }
+    topOffset += [self getStatusBarSize];
+
+    
+    
+    return topOffset;
+}
+
+- (CGPoint)calculateCenter:(MessageBannerView *)message {
+    CGPoint result;
+    
+    switch (message.position) {
+        case MessageBannerPositionTop:
+            result = CGPointMake(  message.center.x
+                                 , (message.frame.size.height / 2.0f) + [self calculateTopOffset:message]);
+            break;
+        case MessageBannerPositionBottom:
+#warning TO DO
+            break;
+        case MessageBannerPositionCenter:
+#warning  TO DO
+            break;
+        default:
+            break;
+    }
+    return (result);
+}
+
+- (void)showNotification {
     
     if (![[MessageBanner sharedSingleton].notificationsList count]) {
         NSLog(@"No notification to show");
@@ -76,12 +146,13 @@ static MessageBanner *sharedSingleton;
     }
     
     MessageBannerView *currentNotification = [[MessageBanner sharedSingleton].notificationsList firstObject];
+
     
-    CGPoint target = CGPointMake(currentNotification.viewController.view.center.x, currentNotification.viewController.view.center.y);
     
-//    currentNotification.frame = CGRectMake(0, 0, 150, 150);
-//    currentNotification.backgroundColor = [UIColor redColor];
-    [currentNotification.viewController.view addSubview:currentNotification];
+    CGPoint target = [self calculateCenter:currentNotification];
+    //CGPointMake(currentNotification.viewController.view.center.x, currentNotification.viewController.view.center.y);
+
+//    [currentNotification.viewController.view addSubview:currentNotification];
     
     [UIView animateKeyframesWithDuration:ANIMATION_DURATION delay:0.0f options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction animations:^{
         
@@ -97,5 +168,8 @@ static MessageBanner *sharedSingleton;
     
     [[MessageBanner sharedSingleton].notificationsList removeObjectAtIndex:0];
 }
+
+#pragma mark -
+#pragma mark Hide notification nethods
 
 @end

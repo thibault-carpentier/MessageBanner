@@ -48,6 +48,6 @@ typedef NS_ENUM(NSInteger, MessageBannerDuration) {
                     canBeDismissedByUser:(BOOL)dismissingEnabled;
 
 + (void)prepareNotification:(MessageBannerView *)notificationView;
-+ (void)showNotification;
+- (void)showNotification;
 
 @end
