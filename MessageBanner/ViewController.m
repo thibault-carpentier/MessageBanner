@@ -25,6 +25,7 @@
 #pragma mark NavBar Buttons
 - (IBAction)toggleNavBar:(id)sender {
     self.navigationController.navigationBarHidden = !self.navigationController.navigationBarHidden;
+    self.navigationController.toolbarHidden = !self.navigationController.toolbarHidden;
 }
 
 

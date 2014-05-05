@@ -63,7 +63,7 @@ static MessageBanner *sharedSingleton;
     {
         if (([n.title isEqualToString:title] || (!n.title && !title)) && ([n.subTitle isEqualToString:subtitle] || (!n.subTitle && !subtitle)))
         {
-            // Add some check in the config file if it allow multiple pop-ups
+            // Add some check in the config file later if it allow multiple pop-ups
             return;
         }
     }
@@ -112,13 +112,19 @@ static MessageBanner *sharedSingleton;
         [message.viewController.view addSubview:message];
     }
     topOffset += [self getStatusBarSize];
-
-    
-    
     return topOffset;
 }
 
-- (CGPoint)calculateCenter:(MessageBannerView *)message {
+-(CGFloat)calculateBottomOffset:(MessageBannerView *)message {
+    CGFloat bottomOffset = 0.0f;
+    
+     if (message.viewController.navigationController.isToolbarHidden == NO) {
+         bottomOffset = (message.viewController.navigationController.toolbar.frame.size.height);
+     }
+    return bottomOffset;
+}
+
+- (CGPoint)calculateTargetCenter:(MessageBannerView *)message {
     CGPoint result;
     
     switch (message.position) {
@@ -127,10 +133,18 @@ static MessageBanner *sharedSingleton;
                                  , (message.frame.size.height / 2.0f) + [self calculateTopOffset:message]);
             break;
         case MessageBannerPositionBottom:
-#warning TO DO
+            
+            // Adding the popup to the view
+            [message.viewController.view addSubview:message];
+            result = CGPointMake( message.center.x, message.viewController.view.frame.size.height - ((message.frame.size.height / 2.0f) + [self calculateBottomOffset:message]));
             break;
         case MessageBannerPositionCenter:
-#warning  TO DO
+            
+            // Adding the popup to the view
+            [message.viewController.view addSubview:message];
+            
+            result = CGPointMake(  message.viewController.view.center.x
+                                 , message.center.y);
             break;
         default:
             break;
@@ -149,14 +163,13 @@ static MessageBanner *sharedSingleton;
 
     
     
-    CGPoint target = [self calculateCenter:currentNotification];
+    CGPoint target = [self calculateTargetCenter:currentNotification];
     //CGPointMake(currentNotification.viewController.view.center.x, currentNotification.viewController.view.center.y);
 
 //    [currentNotification.viewController.view addSubview:currentNotification];
     
     [UIView animateKeyframesWithDuration:ANIMATION_DURATION delay:0.0f options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction animations:^{
         
-#warning to correctly set.
         currentNotification.center = target;
         currentNotification.backgroundColor = [UIColor yellowColor];
         

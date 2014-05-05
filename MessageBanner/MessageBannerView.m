@@ -63,6 +63,8 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 //        Setting message frame :
         [self setFrame:[self createViewFrame]];
         
+        
+        
 //        Adding dismiss gesture
         if (dismissingEnabled) {
             [self addDismissMethod];
@@ -162,12 +164,18 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     
     switch (self.position) {
         case MessageBannerPositionTop:
+            
+            
+            self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
             viewFrame = CGRectMake(  0
                                    , 0 - self.messageViewHeight
                                    , self.viewController.view.bounds.size.width
                                    , self.messageViewHeight);
             break;
+            
         case MessageBannerPositionBottom:
+            
+            self.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
             viewFrame = CGRectMake(  0
                                    , self.viewController.view.bounds.size.height + self.messageViewHeight
                                    , self.viewController.view.bounds.size.width
@@ -175,11 +183,14 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
             break;
             
         case MessageBannerPositionCenter:
+            
+            self.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
             viewFrame = CGRectMake(  -(self.viewController.view.bounds.size.width)
                                    , ((self.viewController.view.bounds.size.height / 2.0f) - (self.messageViewHeight / 2.0f))
                                    , self.viewController.view.bounds.size.width
                                    , self.messageViewHeight);
             break;
+            
         default:
             break;
     }
