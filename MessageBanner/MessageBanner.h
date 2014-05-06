@@ -31,9 +31,10 @@ typedef NS_ENUM(NSInteger, MessageBannerDuration) {
 
 @interface MessageBanner : NSObject
 
-+ (instancetype) sharedSingleton;
-
 @property (nonatomic, strong) NSMutableArray *notificationsList;
+@property (nonatomic, assign) BOOL messageOnScreen;
+
++ (instancetype) sharedSingleton;
 
 + (void)showNotificationInViewController:(UIViewController *)viewController
                                    title:(NSString *)title
@@ -48,6 +49,9 @@ typedef NS_ENUM(NSInteger, MessageBannerDuration) {
                     canBeDismissedByUser:(BOOL)dismissingEnabled;
 
 + (void)prepareNotification:(MessageBannerView *)notificationView;
-- (void)showNotification;
+
+- (void) hideNotification:(MessageBannerView *)message
+              withGesture:(UIGestureRecognizer *)gesture;
+
 
 @end

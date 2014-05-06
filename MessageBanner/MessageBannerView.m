@@ -7,6 +7,8 @@
 //
 
 #import "MessageBannerView.h"
+#import "MessageBanner.h"
+
 
 #define ELEMENTS_PADDING 16.0f
 
@@ -76,54 +78,6 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     return self;
 }
 
--(void)dismissViewWithGesture:(UIGestureRecognizer*)gesture {
-    
-    
-    CGPoint fadeOutCenter = CGPointMake(0, 0);
-    
-    switch (self.position) {
-        case MessageBannerPositionTop:
-            fadeOutCenter = CGPointMake(  self.center.x
-                                        , -(self.frame.size.height / 2.0f) );
-            break;
-        case MessageBannerPositionBottom:
-            fadeOutCenter = CGPointMake(  self.center.x
-                                        , self.viewController.view.bounds.size.height + (self.frame.size.height / 2.0f) );
-            break;
-        case MessageBannerPositionCenter:
-            if ([gesture isKindOfClass:[UISwipeGestureRecognizer class]]) {
-                
-                UISwipeGestureRecognizer *swipeGesture = (UISwipeGestureRecognizer*)gesture;
-                switch (swipeGesture.direction) {
-                        
-                    case UISwipeGestureRecognizerDirectionLeft:
-                        fadeOutCenter = CGPointMake(  -(self.center.x)
-                                                    , self.center.y);
-                        break;
-                    case UISwipeGestureRecognizerDirectionRight:
-                        fadeOutCenter = CGPointMake(  self.center.x + self.viewController.view.bounds.size.width
-                                                    , self.center.y);
-                    default:
-                        break;
-                }
-                
-            } else {
-                fadeOutCenter = CGPointMake(  -(self.center.x)
-                                            , self.center.y);
-            }
-            break;
-
-        default:
-            break;
-    }
-    
-#warning hardcoded
-    [UIView animateWithDuration:2.0 animations:^{
-        [self setCenter:fadeOutCenter];
-    } completion:^(BOOL finished) {
-        NSLog(@"add callback for delegate here");
-    }];
-}
 
 #pragma mark -
 #pragma mark Dismiss methods
@@ -288,9 +242,14 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 #pragma mark -
 #pragma mark Swipe Gesture Reconiser handler methods
 
-- (void) UserSwippedViewWith:(UISwipeGestureRecognizer *)swipeRecognizer {
-    [self dismissViewWithGesture:swipeRecognizer];
+-(void)dismissViewWithGesture:(UIGestureRecognizer*)gesture {
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[MessageBanner sharedSingleton] hideNotification:self withGesture:gesture];
+    });
 }
+
+
 
 /*
 // Only override drawRect: if you perform custom drawing.

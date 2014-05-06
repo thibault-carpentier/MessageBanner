@@ -11,7 +11,6 @@
 
 @implementation MessageBanner
 
-@synthesize notificationsList;
 
 #define ANIMATION_DURATION 2.0
 
@@ -26,9 +25,9 @@ static MessageBanner *sharedSingleton;
     return sharedSingleton;
 }
 
--(id)init {
+- (id)init {
     if ((self = [super init])) {
-        notificationsList = [[NSMutableArray alloc] init];
+        _notificationsList = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -56,19 +55,22 @@ static MessageBanner *sharedSingleton;
 
 + (void)prepareNotification:(MessageBannerView *)notificationView {
 
-    NSString *title = notificationView.title;
-    NSString *subtitle = notificationView.subTitle;
-    
-    for (MessageBannerView *n in [MessageBanner sharedSingleton].notificationsList)
-    {
-        if (([n.title isEqualToString:title] || (!n.title && !title)) && ([n.subTitle isEqualToString:subtitle] || (!n.subTitle && !subtitle)))
-        {
-            // Add some check in the config file later if it allow multiple pop-ups
-            return;
-        }
-    }
+//    NSString *title = notificationView.title;
+//    NSString *subtitle = notificationView.subTitle;
+//    for (MessageBannerView *n in [MessageBanner sharedSingleton].notificationsList)
+//    {
+//        if (([n.title isEqualToString:title] || (!n.title && !title)) && ([n.subTitle isEqualToString:subtitle] || (!n.subTitle && !subtitle)))
+//        {
+//            // Add some check in the config file later if it allow multiple pop-ups
+//            return;
+//        }
+//    }
+
     [[MessageBanner sharedSingleton].notificationsList addObject:notificationView];
-    [[MessageBanner sharedSingleton] showNotification];
+    
+    if ([[MessageBanner sharedSingleton] messageOnScreen] == NO) {
+        [[MessageBanner sharedSingleton] showNotificationOnScreen];
+    }
 }
 
 #pragma mark -
@@ -152,7 +154,9 @@ static MessageBanner *sharedSingleton;
     return (result);
 }
 
-- (void)showNotification {
+- (void)showNotificationOnScreen {
+    
+    _messageOnScreen = YES;
     
     if (![[MessageBanner sharedSingleton].notificationsList count]) {
         NSLog(@"No notification to show");
@@ -178,9 +182,67 @@ static MessageBanner *sharedSingleton;
         NSLog(@"DONE");
         
     }];
-    
-    [[MessageBanner sharedSingleton].notificationsList removeObjectAtIndex:0];
 }
+
+#pragma mark -
+#pragma mark Hide notification methods
+
+- (void) hideNotification:(MessageBannerView *)message withGesture:(UIGestureRecognizer *)gesture {
+    
+    CGPoint fadeOutCenter = CGPointMake(0, 0);
+    
+    switch (message.position) {
+        case MessageBannerPositionTop:
+            fadeOutCenter = CGPointMake(  message.center.x
+                                        , -(message.frame.size.height / 2.0f) );
+            break;
+        case MessageBannerPositionBottom:
+            fadeOutCenter = CGPointMake(  message.center.x
+                                        , message.viewController.view.bounds.size.height + (message.frame.size.height / 2.0f) );
+            break;
+        case MessageBannerPositionCenter:
+            if ([gesture isKindOfClass:[UISwipeGestureRecognizer class]]) {
+                
+                UISwipeGestureRecognizer *swipeGesture = (UISwipeGestureRecognizer*)gesture;
+                switch (swipeGesture.direction) {
+                        
+                    case UISwipeGestureRecognizerDirectionLeft:
+                        fadeOutCenter = CGPointMake(  -(message.center.x)
+                                                    , message.center.y);
+                        break;
+                    case UISwipeGestureRecognizerDirectionRight:
+                        fadeOutCenter = CGPointMake(  message.center.x + message.viewController.view.bounds.size.width
+                                                    , message.center.y);
+                    default:
+                        break;
+                }
+                
+            } else {
+                fadeOutCenter = CGPointMake(  -(message.center.x)
+                                            , message.center.y);
+            }
+            break;
+            
+        default:
+            break;
+    }
+    
+    
+#warning hardcoded
+    [UIView animateWithDuration:2.0 animations:^{
+        [message setCenter:fadeOutCenter];
+    } completion:^(BOOL finished) {
+#warning add Callback for  future delegate
+        
+        [message removeFromSuperview];
+        [[[MessageBanner sharedSingleton] notificationsList] removeObjectAtIndex:0];
+        _messageOnScreen = NO;
+        if ([[[MessageBanner sharedSingleton] notificationsList] count]) {
+            [self showNotificationOnScreen];
+        }
+    }];
+}
+
 
 #pragma mark -
 #pragma mark Hide notification nethods
