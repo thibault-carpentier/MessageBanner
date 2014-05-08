@@ -16,6 +16,7 @@
 
 @property (nonatomic, strong) UILabel* titleLabel;
 @property (nonatomic, strong) UILabel* subtitleLabel;
+@property (nonatomic, strong) UIImageView* imageView;
 
 @property (nonatomic, assign) CGFloat  messageViewHeight;
 @end
@@ -53,10 +54,12 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         self.titleLabel = [self createMessageTitle];
         [self addSubview:self.titleLabel];
         
-        
 //        Setting up subtitle
         self.subtitleLabel = [self createSubtitleLabel];
         [self addSubview:self.subtitleLabel];
+        
+//        Setting up image
+        [self addImageOnBanner:image];
         
 //        Setting up frames
         [self setTitleFrame:self.titleLabel];
@@ -65,6 +68,8 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 //        Setting message frame :
         [self setFrame:[self createViewFrame]];
         
+    	[self setupStyleWithType:notificationType];
+        
         
         
 //        Adding dismiss gesture
@@ -72,9 +77,10 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
             [self addDismissMethod];
         }
         
-#warning to remove
-        self.backgroundColor = [UIColor redColor];
+
     }
+    
+    
     return self;
 }
 
@@ -240,16 +246,51 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 }
 
 #pragma mark -
+#pragma mark Image View methods
+
+- (void)addImageOnBanner:(UIImage *)image {
+    
+    self.imageView = [[UIImageView alloc] initWithImage:image];
+    self.imageView.frame = CGRectMake(ELEMENTS_PADDING * 2,
+                                      ELEMENTS_PADDING,
+                                      image.size.width,
+                                      image.size.height);
+
+    [self addSubview:self.imageView];
+}
+
+#pragma mark -
+#pragma mark View Cosmetic
+- (void) setupStyleWithType:(MessageBannerType)notificationType {
+    
+    switch (notificationType) {
+        case MessageBannerNotificationTypeError:
+            self.backgroundColor = [UIColor redColor];
+            break;
+        case MessageBannerNotificationTypeWarning:
+            self.backgroundColor = [UIColor yellowColor];
+            break;
+        case MessageBannerNotificationTypeMessage:
+            self.backgroundColor = [UIColor grayColor];
+            break;
+        case MessageBannerNotificationTypeSuccess:
+            self.backgroundColor = [UIColor greenColor];
+            break;
+        default:
+            self.backgroundColor = [UIColor blueColor];
+            break;
+    }
+}
+
+#pragma mark -
 #pragma mark Swipe Gesture Reconiser handler methods
 
 -(void)dismissViewWithGesture:(UIGestureRecognizer*)gesture {
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[MessageBanner sharedSingleton] hideNotification:self withGesture:gesture];
+        [MessageBanner hideNotification:self withGesture:gesture];
     });
 }
-
-
 
 /*
 // Only override drawRect: if you perform custom drawing.

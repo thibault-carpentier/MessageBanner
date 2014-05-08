@@ -14,11 +14,12 @@
 @property (nonatomic, readonly) NSString*             title;
 @property (nonatomic, readonly) NSString*             subTitle;
 @property (nonatomic, readonly) UIViewController*     viewController;
+
 @property (nonatomic, assign)   CGFloat               duration;
+@property (nonatomic, strong)   NSTimer*              onScreenTimer;
+
 @property (nonatomic, assign)   MessageBannerPosition position;
 @property (nonatomic, copy)     UIImage*              image;
-
-
 
 // View items
 

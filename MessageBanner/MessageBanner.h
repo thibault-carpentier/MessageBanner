@@ -22,9 +22,8 @@ typedef NS_ENUM(NSInteger, MessageBannerPosition) {
 };
 
 typedef NS_ENUM(NSInteger, MessageBannerDuration) {
-    MessageBannerDurationCustom  = 0
-    , MessageBannerDurationDefault = 1
-    , MessageBannerDurationEndless = 2
+      MessageBannerDurationDefault = 0
+    , MessageBannerDurationEndless = -1
 };
 
 @class MessageBannerView;
@@ -50,7 +49,7 @@ typedef NS_ENUM(NSInteger, MessageBannerDuration) {
 
 + (void)prepareNotification:(MessageBannerView *)notificationView;
 
-- (void) hideNotification:(MessageBannerView *)message
++ (void) hideNotification:(MessageBannerView *)message
               withGesture:(UIGestureRecognizer *)gesture;
 
 

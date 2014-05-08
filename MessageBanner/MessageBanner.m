@@ -48,8 +48,7 @@ static MessageBanner *sharedSingleton;
                     canBeDismissedByUser:(BOOL)dismissingEnabled {
     
 
-    MessageBannerView *view = [[MessageBannerView alloc] initWithTitle:title subtitle:subtitle image:image type:MessageBannerNotificationTypeMessage duration:duration inViewController:viewController callback:callback buttonTitle:buttonTitle buttonCallback:buttonCallback atPosition:messagePosition canBeDismissedByUser:dismissingEnabled];
-    
+    MessageBannerView *view = [[MessageBannerView alloc] initWithTitle:title subtitle:subtitle image:image type:type duration:duration inViewController:viewController callback:callback buttonTitle:buttonTitle buttonCallback:buttonCallback atPosition:messagePosition canBeDismissedByUser:dismissingEnabled];
     [self prepareNotification:view];
 }
 
@@ -164,30 +163,28 @@ static MessageBanner *sharedSingleton;
     }
     
     MessageBannerView *currentNotification = [[MessageBanner sharedSingleton].notificationsList firstObject];
-
-    
     
     CGPoint target = [self calculateTargetCenter:currentNotification];
-    //CGPointMake(currentNotification.viewController.view.center.x, currentNotification.viewController.view.center.y);
-
-//    [currentNotification.viewController.view addSubview:currentNotification];
-    
     [UIView animateKeyframesWithDuration:ANIMATION_DURATION delay:0.0f options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction animations:^{
         
         currentNotification.center = target;
-        currentNotification.backgroundColor = [UIColor yellowColor];
         
     } completion:^(BOOL finished) {
-        
         NSLog(@"DONE");
-        
     }];
+    
+    [self initAutoDismissTimerforBanner:currentNotification];
 }
 
 #pragma mark -
 #pragma mark Hide notification methods
 
-- (void) hideNotification:(MessageBannerView *)message withGesture:(UIGestureRecognizer *)gesture {
++ (void) hideNotification:(MessageBannerView *)message withGesture:(UIGestureRecognizer *)gesture {
+    
+//    Removing timer Callback
+    if (message.duration != MessageBannerDurationEndless) {
+        [message.onScreenTimer invalidate];
+    }
     
     CGPoint fadeOutCenter = CGPointMake(0, 0);
     
@@ -216,7 +213,6 @@ static MessageBanner *sharedSingleton;
                     default:
                         break;
                 }
-                
             } else {
                 fadeOutCenter = CGPointMake(  -(message.center.x)
                                             , message.center.y);
@@ -233,18 +229,45 @@ static MessageBanner *sharedSingleton;
         [message setCenter:fadeOutCenter];
     } completion:^(BOOL finished) {
 #warning add Callback for  future delegate
-        
         [message removeFromSuperview];
         [[[MessageBanner sharedSingleton] notificationsList] removeObjectAtIndex:0];
-        _messageOnScreen = NO;
+        [MessageBanner sharedSingleton].messageOnScreen = NO;
         if ([[[MessageBanner sharedSingleton] notificationsList] count]) {
-            [self showNotificationOnScreen];
+            [[MessageBanner sharedSingleton] showNotificationOnScreen];
         }
     }];
 }
 
 
 #pragma mark -
-#pragma mark Hide notification nethods
+#pragma mark Hide notification timer method
+- (void) initAutoDismissTimerforBanner:(MessageBannerView *)message {
+    CGFloat timerSec = 0.0f;
+    
+    if (message.duration != MessageBannerDurationEndless) {
+        
+        if (message.duration != MessageBannerDurationDefault) {
+#warning calculate the correct value
+            timerSec = 2.0f;
+        } else {
+            timerSec = message.duration;
+        }
+        
+#warning change hideNotification Prototype to remove gesture reconizer
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+        NSMethodSignature *meth = [MessageBanner methodSignatureForSelector:@selector(hideNotification:withGesture:)];
+        NSInvocation *hideMethodInvocation = [NSInvocation invocationWithMethodSignature:meth];
+        [hideMethodInvocation setSelector:@selector(hideNotification:withGesture:)];
+        [hideMethodInvocation setTarget:[MessageBanner class]];
+        [hideMethodInvocation setArgument:&message atIndex:2];
+        [hideMethodInvocation setArgument:&tap atIndex:3];
+        [hideMethodInvocation retainArguments];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            message.onScreenTimer = [NSTimer scheduledTimerWithTimeInterval:timerSec invocation:hideMethodInvocation repeats:NO];
+        });
+    }
+}
+
 
 @end

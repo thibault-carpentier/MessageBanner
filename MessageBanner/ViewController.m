@@ -33,7 +33,8 @@
 #pragma mark Popup buttons
 
 - (IBAction)popTop:(id)sender {
-    [MessageBanner showNotificationInViewController:self title:@"TITLE" subtitle:@"This is a standart subtitle" image:[UIImage imageNamed:@"toto"] type:MessageBannerNotificationTypeMessage duration:1.0 callback:^{
+    
+    [MessageBanner showNotificationInViewController:self title:@"TITLE" subtitle:@"This is a standart subtitle" image:[UIImage imageNamed:@"toto"] type:MessageBannerNotificationTypeWarning duration:5.0 callback:^{
         return ;
     } buttonTitle:@"" buttonCallback:^{
         return ;
@@ -42,7 +43,7 @@
 
 - (IBAction)popMeOne:(id)sender {
     
-    [MessageBanner showNotificationInViewController:self title:@"TITLE" subtitle:@"This is a standart subtitle" image:[UIImage imageNamed:@"toto"] type:MessageBannerNotificationTypeMessage duration:1.0 callback:^{
+    [MessageBanner showNotificationInViewController:self title:@"TITLE" subtitle:@"This is a standart subtitle" image:[UIImage imageNamed:@"iconTest"] type:MessageBannerNotificationTypeError duration:5.0 callback:^{
         return ;
     } buttonTitle:@"" buttonCallback:^{
         return ;
@@ -50,7 +51,7 @@
 }
 
 - (IBAction)popBottom:(id)sender {
-    [MessageBanner showNotificationInViewController:self title:@"TITLE" subtitle:@"This is a standart subtitle" image:[UIImage imageNamed:@"toto"] type:MessageBannerNotificationTypeMessage duration:1.0 callback:^{
+    [MessageBanner showNotificationInViewController:self title:@"TITLE" subtitle:@"This is a standart subtitle" image:[UIImage imageNamed:@"iconTest"] type:MessageBannerNotificationTypeSuccess duration:MessageBannerDurationEndless callback:^{
         return ;
     } buttonTitle:@"" buttonCallback:^{
         return ;
@@ -80,7 +81,7 @@
     }
    
 
-    [MessageBanner showNotificationInViewController:self title:@"TITLE" subtitle:subtitle image:[UIImage imageNamed:@"toto"] type:MessageBannerNotificationTypeMessage duration:1.0 callback:^{
+    [MessageBanner showNotificationInViewController:self title:@"TITLE" subtitle:subtitle image:[UIImage imageNamed:@"iconTest"] type:MessageBannerNotificationTypeMessage duration:5.0 callback:^{
         return ;
     } buttonTitle:@"" buttonCallback:^{
         return ;
