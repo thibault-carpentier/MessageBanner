@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UIImageView* imageView;
 
 @property (nonatomic, assign) CGFloat  messageViewHeight;
+
 @end
 
 @implementation MessageBannerView
@@ -38,7 +39,7 @@
          atPosition:(MessageBannerPosition)position
 canBeDismissedByUser:(BOOL)dismissingEnabled {
     if ((self = [self init])) {
-
+        
         _title = title;
         _subTitle = subtitle;
         _viewController = viewController;
@@ -47,37 +48,38 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         _position = position;
         
         self.messageViewHeight = 0.0f;
+        _isDisplayed = NO;
         
-// To be declined according to position;
+        // To be declined according to position;
         
-//        Setting up title
+        //        Setting up title
         self.titleLabel = [self createMessageTitle];
         [self addSubview:self.titleLabel];
         
-//        Setting up subtitle
+        //        Setting up subtitle
         self.subtitleLabel = [self createSubtitleLabel];
         [self addSubview:self.subtitleLabel];
         
-//        Setting up image
+        //        Setting up image
         [self addImageOnBanner:image];
         
-//        Setting up frames
+        //        Setting up frames
         [self setTitleFrame:self.titleLabel];
         [self setSubtitleFrame:self.subtitleLabel];
         
-//        Setting message frame :
+        //        Setting message frame :
         [self setFrame:[self createViewFrame]];
         
     	[self setupStyleWithType:notificationType];
         
         
         
-//        Adding dismiss gesture
+        //        Adding dismiss gesture
         if (dismissingEnabled) {
             [self addDismissMethod];
         }
         
-
+        
     }
     
     
@@ -91,7 +93,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 - (void)addDismissMethod {
     // Adding swipe to dismiss if setted
     UISwipeGestureRecognizer *dismissGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(dismissViewWithGesture:)];
-
+    
     switch (self.position) {
         case MessageBannerPositionTop:
             [dismissGesture setDirection:UISwipeGestureRecognizerDirectionUp];;
@@ -163,17 +165,17 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 - (UILabel *)createMessageTitle {
     UILabel *titleLabel = [[UILabel alloc] init];
     
-//    Adding title
+    //    Adding title
     [titleLabel setText:self.title];
     
-//    Changing text appearance
+    //    Changing text appearance
     [titleLabel setBackgroundColor:[UIColor clearColor]];
     [titleLabel setTextColor:[UIColor blackColor]];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:14]];
     // set new font and size text later
     // set shadow ?
     
-//    title formating
+    //    title formating
     [titleLabel setNumberOfLines:0];
     [titleLabel setLineBreakMode:NSLineBreakByWordWrapping];
     
@@ -184,21 +186,21 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     CGFloat parentViewWidth = self.viewController.view.bounds.size.width;
     CGFloat leftOffset = ELEMENTS_PADDING;
     
-//     If image then offset the text more
+    //     If image then offset the text more
     if (self.image != nil) {
         leftOffset += (self.image.size.width + (2 * ELEMENTS_PADDING));
     }
-
+    
     [titleView setFrame:CGRectMake(  leftOffset
                                    , ELEMENTS_PADDING
                                    , parentViewWidth - ELEMENTS_PADDING
                                    , 0.0f
                                    )];
     
-// updating height
+    // updating height
     [titleView sizeToFit];
     
-//    updating viewHeight
+    //    updating viewHeight
     self.messageViewHeight += (titleView.frame.origin.y + titleView.frame.size.height);
 }
 
@@ -228,20 +230,20 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 - (void)setSubtitleFrame:(UILabel *)subtitleView {
     CGFloat leftOffset = ELEMENTS_PADDING;
     
-//         If image then offset the text more
+    //         If image then offset the text more
     if (self.image != nil) {
         leftOffset += (self.image.size.width + (2 * ELEMENTS_PADDING));
     }
     
     [subtitleView setFrame:CGRectMake(  leftOffset
                                       , (ELEMENTS_PADDING + self.titleLabel.frame.origin.y + self.titleLabel.frame.size.height)
-                                      , self.viewController.view.bounds.size.width - ELEMENTS_PADDING
+                                      , self.viewController.view.bounds.size.width - leftOffset - ELEMENTS_PADDING
                                       , 0.0f
                                       )];
-//   updating height
+    //   updating height
     [subtitleView sizeToFit];
     
-//    updating viewHeight
+    //    updating viewHeight
     self.messageViewHeight += (subtitleView.frame.origin.y + subtitleView.frame.size.height);
 }
 
@@ -255,7 +257,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
                                       ELEMENTS_PADDING,
                                       image.size.width,
                                       image.size.height);
-
+    
     [self addSubview:self.imageView];
 }
 
@@ -287,18 +289,20 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 
 -(void)dismissViewWithGesture:(UIGestureRecognizer*)gesture {
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [MessageBanner hideNotification:self withGesture:gesture];
-    });
+    if (self.isDisplayed == YES) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MessageBanner hideNotification:self withGesture:gesture];
+        });
+    }
 }
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect
+ {
+ // Drawing code
+ }
+ */
 
 @end

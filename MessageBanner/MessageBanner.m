@@ -12,7 +12,9 @@
 @implementation MessageBanner
 
 
-#define ANIMATION_DURATION 2.0
+#define ANIMATION_DURATION 0.5
+#define DISPLAY_TIME_PER_PIXEL 0.02
+#define DISPLAY_DEFAULT_DURATION 2.0
 
 static MessageBanner *sharedSingleton;
 
@@ -47,24 +49,26 @@ static MessageBanner *sharedSingleton;
                               atPosition:(MessageBannerPosition)messagePosition
                     canBeDismissedByUser:(BOOL)dismissingEnabled {
     
-
+    
     MessageBannerView *view = [[MessageBannerView alloc] initWithTitle:title subtitle:subtitle image:image type:type duration:duration inViewController:viewController callback:callback buttonTitle:buttonTitle buttonCallback:buttonCallback atPosition:messagePosition canBeDismissedByUser:dismissingEnabled];
     [self prepareNotification:view];
 }
 
 + (void)prepareNotification:(MessageBannerView *)notificationView {
 
-//    NSString *title = notificationView.title;
-//    NSString *subtitle = notificationView.subTitle;
-//    for (MessageBannerView *n in [MessageBanner sharedSingleton].notificationsList)
-//    {
-//        if (([n.title isEqualToString:title] || (!n.title && !title)) && ([n.subTitle isEqualToString:subtitle] || (!n.subTitle && !subtitle)))
-//        {
-//            // Add some check in the config file later if it allow multiple pop-ups
-//            return;
-//        }
-//    }
-
+#warning remove after testing
+    
+    //    NSString *title = notificationView.title;
+    //    NSString *subtitle = notificationView.subTitle;
+    //    for (MessageBannerView *n in [MessageBanner sharedSingleton].notificationsList)
+    //    {
+    //        if (([n.title isEqualToString:title] || (!n.title && !title)) && ([n.subTitle isEqualToString:subtitle] || (!n.subTitle && !subtitle)))
+    //        {
+    //            // Add some check in the config file later if it allow multiple pop-ups
+    //            return;
+    //        }
+    //    }
+    
     [[MessageBanner sharedSingleton].notificationsList addObject:notificationView];
     
     if ([[MessageBanner sharedSingleton] messageOnScreen] == NO) {
@@ -75,7 +79,7 @@ static MessageBanner *sharedSingleton;
 #pragma mark -
 #pragma mark Show notification methods
 
-// To add later maybe ? 
+// To add later maybe ?
 - (CGFloat) getStatusBarSize {
     BOOL isPortrait = UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
     CGSize statusBarSize = [UIApplication sharedApplication].statusBarFrame.size;
@@ -119,9 +123,9 @@ static MessageBanner *sharedSingleton;
 -(CGFloat)calculateBottomOffset:(MessageBannerView *)message {
     CGFloat bottomOffset = 0.0f;
     
-     if (message.viewController.navigationController.isToolbarHidden == NO) {
-         bottomOffset = (message.viewController.navigationController.toolbar.frame.size.height);
-     }
+    if (message.viewController.navigationController.isToolbarHidden == NO) {
+        bottomOffset = (message.viewController.navigationController.toolbar.frame.size.height);
+    }
     return bottomOffset;
 }
 
@@ -170,7 +174,7 @@ static MessageBanner *sharedSingleton;
         currentNotification.center = target;
         
     } completion:^(BOOL finished) {
-        NSLog(@"DONE");
+        currentNotification.isDisplayed = YES;
     }];
     
     [self initAutoDismissTimerforBanner:currentNotification];
@@ -181,7 +185,8 @@ static MessageBanner *sharedSingleton;
 
 + (void) hideNotification:(MessageBannerView *)message withGesture:(UIGestureRecognizer *)gesture {
     
-//    Removing timer Callback
+    //    Removing timer Callback
+    message.isDisplayed = NO;
     if (message.duration != MessageBannerDurationEndless) {
         [message.onScreenTimer invalidate];
     }
@@ -223,9 +228,7 @@ static MessageBanner *sharedSingleton;
             break;
     }
     
-    
-#warning hardcoded
-    [UIView animateWithDuration:2.0 animations:^{
+    [UIView animateWithDuration:ANIMATION_DURATION animations:^{
         [message setCenter:fadeOutCenter];
     } completion:^(BOOL finished) {
 #warning add Callback for  future delegate
@@ -242,15 +245,14 @@ static MessageBanner *sharedSingleton;
 #pragma mark -
 #pragma mark Hide notification timer method
 - (void) initAutoDismissTimerforBanner:(MessageBannerView *)message {
-    CGFloat timerSec = 0.0f;
+    CGFloat timerSec = ANIMATION_DURATION;
     
     if (message.duration != MessageBannerDurationEndless) {
         
-        if (message.duration != MessageBannerDurationDefault) {
-#warning calculate the correct value
-            timerSec = 2.0f;
+        if (message.duration == MessageBannerDurationDefault) {
+            timerSec += DISPLAY_DEFAULT_DURATION + (message.frame.size.height * DISPLAY_TIME_PER_PIXEL);
         } else {
-            timerSec = message.duration;
+            timerSec += message.duration;
         }
         
 #warning change hideNotification Prototype to remove gesture reconizer

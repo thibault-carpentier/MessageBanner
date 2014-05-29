@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "MessageBanner.h"
 
-@interface MessageBannerView : UIView 
+@interface MessageBannerView : UIView
+
+@property (nonatomic, assign) BOOL                    isDisplayed;
 
 @property (nonatomic, readonly) NSString*             title;
 @property (nonatomic, readonly) NSString*             subTitle;

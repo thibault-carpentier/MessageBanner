@@ -10,13 +10,4 @@
 
 @interface ViewController : UIViewController
 
-typedef NS_ENUM(NSInteger, subtitleTestType) {
-    shortSubtitle  = 0
-    , medSubtitle  = 1
-    , bigSubtitle    = 2
-    , veryBigSubtitle  = 3
-};
-
-
-
 @end

@@ -11,6 +11,14 @@
 
 @interface ViewController ()
 
+@property (nonatomic, assign) MessageBannerPosition messagePosition;
+@property (nonatomic, assign) MessageBannerType messageType;
+@property (nonatomic, copy) NSString *subTitle;
+@property (nonatomic, copy) UIImage *image;
+@property (nonatomic, assign) CGFloat duration;
+
+@property (weak, nonatomic) IBOutlet UILabel *durationLabel;
+
 @end
 
 @implementation ViewController
@@ -18,7 +26,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    self.subTitle = @"Small subtitle.";
+    self.image = nil;
+    self.duration = MessageBannerDurationEndless;
+    self.messageType = MessageBannerNotificationTypeError;
+    self.messagePosition = MessageBannerPositionTop;
 }
 
 #pragma mark -
@@ -32,62 +44,28 @@
 #pragma mark -
 #pragma mark Popup buttons
 
-- (IBAction)popTop:(id)sender {
-    
-    [MessageBanner showNotificationInViewController:self title:@"TITLE" subtitle:@"This is a standart subtitle" image:[UIImage imageNamed:@"toto"] type:MessageBannerNotificationTypeWarning duration:5.0 callback:^{
-        return ;
-    } buttonTitle:@"" buttonCallback:^{
-        return ;
-    } atPosition:MessageBannerPositionTop canBeDismissedByUser:YES];
-}
-
 - (IBAction)popMeOne:(id)sender {
     
-    [MessageBanner showNotificationInViewController:self title:@"TITLE" subtitle:@"This is a standart subtitle" image:[UIImage imageNamed:@"iconTest"] type:MessageBannerNotificationTypeError duration:5.0 callback:^{
-        return ;
-    } buttonTitle:@"" buttonCallback:^{
-        return ;
-    } atPosition:MessageBannerPositionCenter canBeDismissedByUser:YES];
+    [MessageBanner showNotificationInViewController:self
+                                              title:@"TITLE"
+                                           subtitle:self.subTitle
+                                              image:self.image
+                                               type:self.messageType
+                                           duration:self.duration
+                                           callback:^{
+                                               NSLog(@"Banner Top Dismissed");
+                                               
+                                               return ;
+                                           }
+                                        buttonTitle:@""
+                                     buttonCallback:^{
+                                         return ;
+                                     }
+                                         atPosition:self.messagePosition
+                               canBeDismissedByUser:YES];
 }
-
-- (IBAction)popBottom:(id)sender {
-    [MessageBanner showNotificationInViewController:self title:@"TITLE" subtitle:@"This is a standart subtitle" image:[UIImage imageNamed:@"iconTest"] type:MessageBannerNotificationTypeSuccess duration:MessageBannerDurationEndless callback:^{
-        return ;
-    } buttonTitle:@"" buttonCallback:^{
-        return ;
-    } atPosition:MessageBannerPositionBottom canBeDismissedByUser:YES];
-}
-
 
 -(void)viewDidAppear:(BOOL)animated {
-    
-    NSString* subtitle;
-    
-    subtitleTestType test = bigSubtitle;
-    switch (test) {
-        case shortSubtitle:
-            subtitle = @"subtitle";
-            break;
-        case medSubtitle:
-            subtitle = @"Medium size Subtitle for example test";
-            break;
-        case bigSubtitle:
-            subtitle = @"subtitle very very very very very very very very very very very very very very very very very very very very very very very very very very  Long very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very  Long";
-            break;
-        
-        default:
-           subtitle =  @"subtitle very very very very very very very very 1very very very very very very very very very very very very very very very very very very  Long very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very  Long";
-            break;
-    }
-   
-
-    [MessageBanner showNotificationInViewController:self title:@"TITLE" subtitle:subtitle image:[UIImage imageNamed:@"iconTest"] type:MessageBannerNotificationTypeMessage duration:5.0 callback:^{
-        return ;
-    } buttonTitle:@"" buttonCallback:^{
-        return ;
-    } atPosition:MessageBannerPositionTop canBeDismissedByUser:YES];
-    
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -95,5 +73,112 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark -
+#pragma mark Segmented Control Methods
+
+- (IBAction)SubtitleSegmentedControlValueChanged:(UISegmentedControl *)sender {
+    
+    switch (sender.selectedSegmentIndex) {
+        case 0: {
+            self.subTitle = @"Small subtitle.";
+            break;
+        }
+        case 1: {
+            self.subTitle = @"This text is a medium subtitle, with not too much characters.";
+            break;
+        }
+        case 2: {
+            self.subTitle = @"This text is written to be a very long subtitle, it has a lot of text. And everything works fine, isn't it great ?";
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (IBAction)imageSegmentedControlValueChanged:(UISegmentedControl *)sender {
+    switch (sender.selectedSegmentIndex) {
+        case 0: {
+            self.image = nil;
+            break;
+        }
+        case 1: {
+            self.image = [UIImage imageNamed:@"iconTest"];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (IBAction)messageTypeSegmentedControlValueChanged:(UISegmentedControl *)sender {
+    switch (sender.selectedSegmentIndex) {
+        case 0: {
+            self.messageType = MessageBannerNotificationTypeError;
+            break;
+        }
+        case 1: {
+            self.messageType = MessageBannerNotificationTypeWarning;
+            break;
+        }
+        case 2: {
+            self.messageType = MessageBannerNotificationTypeMessage;
+            break;
+        }
+        case 3: {
+            self.messageType = MessageBannerNotificationTypeSuccess;
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (IBAction)messagePositionSegmentedControlValueChanger:(UISegmentedControl *)sender {
+    switch (sender.selectedSegmentIndex) {
+        case 0: {
+            self.messagePosition = MessageBannerPositionTop;
+            break;
+        }
+        case 1: {
+            self.messagePosition = MessageBannerPositionCenter;
+            break;
+        }
+        case 2: {
+            self.messagePosition = MessageBannerPositionBottom;
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+#pragma mark -
+#pragma mark UISlider methods
+
+- (IBAction)durationSliderValueChanged:(UISlider *)sender {
+    int rounded = sender.value;  //Casting to an int will truncate, round down
+    [sender setValue:rounded animated:NO];
+    
+    switch (rounded) {
+        case -1: {
+            self.durationLabel.text = @"Endless";
+            self.duration = MessageBannerDurationEndless;
+            break;
+        }
+        case 0: {
+            self.durationLabel.text = @"Default";
+            self.duration = MessageBannerDurationDefault;
+            break;
+        }
+        default: {
+            self.durationLabel.text = [NSString stringWithFormat:@"%d seconds", rounded];
+            self.duration = rounded;
+            break;
+        }
+    }
+}
+
 
 @end
