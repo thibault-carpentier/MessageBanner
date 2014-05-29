@@ -177,6 +177,7 @@
 		2171F25C1907132F002BC717 /* MessageBanner */ = {
 			isa = PBXGroup;
 			children = (
+				21B0B986193711B000BB1515 /* Views */,
 				2171F25D1907134D002BC717 /* Classes */,
 			);
 			name = MessageBanner;
@@ -187,10 +188,17 @@
 			children = (
 				2171F25E1907139B002BC717 /* MessageBanner.h */,
 				2171F25F1907139B002BC717 /* MessageBanner.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		21B0B986193711B000BB1515 /* Views */ = {
+			isa = PBXGroup;
+			children = (
 				21774C7519071817000CB95C /* MessageBannerView.h */,
 				21774C7619071817000CB95C /* MessageBannerView.m */,
 			);
-			name = Classes;
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

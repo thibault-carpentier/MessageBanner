@@ -29,7 +29,7 @@ static MessageBanner *sharedSingleton;
 
 - (id)init {
     if ((self = [super init])) {
-        _notificationsList = [[NSMutableArray alloc] init];
+        _messagesBannersList = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -37,30 +37,30 @@ static MessageBanner *sharedSingleton;
 #pragma mark -
 #pragma mark Init methods
 
-+ (void)showNotificationInViewController:(UIViewController *)viewController
++ (void)showMessageBannerInViewController:(UIViewController *)viewController
                                    title:(NSString *)title
                                 subtitle:(NSString *)subtitle
                                    image:(UIImage *)image
                                     type:(MessageBannerType)type
                                 duration:(NSTimeInterval)duration
-                                callback:(void (^)())callback
+                                userDissmissedCallback:(void (^)(MessageBannerView *bannerView))userDissmissedCallback
                              buttonTitle:(NSString *)buttonTitle
                           buttonCallback:(void (^)())buttonCallback
                               atPosition:(MessageBannerPosition)messagePosition
                     canBeDismissedByUser:(BOOL)dismissingEnabled {
     
     
-    MessageBannerView *view = [[MessageBannerView alloc] initWithTitle:title subtitle:subtitle image:image type:type duration:duration inViewController:viewController callback:callback buttonTitle:buttonTitle buttonCallback:buttonCallback atPosition:messagePosition canBeDismissedByUser:dismissingEnabled];
-    [self prepareNotification:view];
+    MessageBannerView *view = [[MessageBannerView alloc] initWithTitle:title subtitle:subtitle image:image type:type duration:duration inViewController:viewController userDissmissedCallback:userDissmissedCallback buttonTitle:buttonTitle buttonCallback:buttonCallback atPosition:messagePosition canBeDismissedByUser:dismissingEnabled];
+    [self prepareMessageBanner:view];
 }
 
-+ (void)prepareNotification:(MessageBannerView *)notificationView {
++ (void)prepareMessageBanner:(MessageBannerView *)messageBannerView {
 
 #warning remove after testing
     
-    //    NSString *title = notificationView.title;
-    //    NSString *subtitle = notificationView.subTitle;
-    //    for (MessageBannerView *n in [MessageBanner sharedSingleton].notificationsList)
+    //    NSString *title = messageBannerView.title;
+    //    NSString *subtitle = messageBannerView.subTitle;
+    //    for (MessageBannerView *n in [MessageBanner sharedSingleton].messagesBannersList)
     //    {
     //        if (([n.title isEqualToString:title] || (!n.title && !title)) && ([n.subTitle isEqualToString:subtitle] || (!n.subTitle && !subtitle)))
     //        {
@@ -69,15 +69,15 @@ static MessageBanner *sharedSingleton;
     //        }
     //    }
     
-    [[MessageBanner sharedSingleton].notificationsList addObject:notificationView];
+    [[MessageBanner sharedSingleton].messagesBannersList addObject:messageBannerView];
     
     if ([[MessageBanner sharedSingleton] messageOnScreen] == NO) {
-        [[MessageBanner sharedSingleton] showNotificationOnScreen];
+        [[MessageBanner sharedSingleton] showMessageBannerOnScreen];
     }
 }
 
 #pragma mark -
-#pragma mark Show notification methods
+#pragma mark Show Message Banner methods
 
 // To add later maybe ?
 - (CGFloat) getStatusBarSize {
@@ -157,38 +157,38 @@ static MessageBanner *sharedSingleton;
     return (result);
 }
 
-- (void)showNotificationOnScreen {
+- (void)showMessageBannerOnScreen {
     
     _messageOnScreen = YES;
     
-    if (![[MessageBanner sharedSingleton].notificationsList count]) {
-        NSLog(@"No notification to show");
+    if (![[MessageBanner sharedSingleton].messagesBannersList count]) {
+        NSLog(@"No Message Banner to show");
         return;
     }
     
-    MessageBannerView *currentNotification = [[MessageBanner sharedSingleton].notificationsList firstObject];
+    MessageBannerView *currentMessageBanner = [[MessageBanner sharedSingleton].messagesBannersList firstObject];
     
-    CGPoint target = [self calculateTargetCenter:currentNotification];
+    CGPoint target = [self calculateTargetCenter:currentMessageBanner];
     [UIView animateKeyframesWithDuration:ANIMATION_DURATION delay:0.0f options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction animations:^{
         
-        currentNotification.center = target;
+        currentMessageBanner.center = target;
         
     } completion:^(BOOL finished) {
-        currentNotification.isDisplayed = YES;
+        currentMessageBanner.isBannerDisplayed = YES;
     }];
     
-    [self initAutoDismissTimerforBanner:currentNotification];
+    [self initAutoDismissTimerforBanner:currentMessageBanner];
 }
 
 #pragma mark -
-#pragma mark Hide notification methods
+#pragma mark Hide Message Banner methods
 
-+ (void) hideNotification:(MessageBannerView *)message withGesture:(UIGestureRecognizer *)gesture {
++ (void) hideMessageBanner:(MessageBannerView *)message withGesture:(UIGestureRecognizer *)gesture {
     
     //    Removing timer Callback
-    message.isDisplayed = NO;
+    message.isBannerDisplayed = NO;
     if (message.duration != MessageBannerDurationEndless) {
-        [message.onScreenTimer invalidate];
+        [message.dismissTimer invalidate];
     }
     
     CGPoint fadeOutCenter = CGPointMake(0, 0);
@@ -233,17 +233,17 @@ static MessageBanner *sharedSingleton;
     } completion:^(BOOL finished) {
 #warning add Callback for  future delegate
         [message removeFromSuperview];
-        [[[MessageBanner sharedSingleton] notificationsList] removeObjectAtIndex:0];
+        [[[MessageBanner sharedSingleton] messagesBannersList] removeObjectAtIndex:0];
         [MessageBanner sharedSingleton].messageOnScreen = NO;
-        if ([[[MessageBanner sharedSingleton] notificationsList] count]) {
-            [[MessageBanner sharedSingleton] showNotificationOnScreen];
+        if ([[[MessageBanner sharedSingleton] messagesBannersList] count]) {
+            [[MessageBanner sharedSingleton] showMessageBannerOnScreen];
         }
     }];
 }
 
 
 #pragma mark -
-#pragma mark Hide notification timer method
+#pragma mark Hide Message Banner timer method
 - (void) initAutoDismissTimerforBanner:(MessageBannerView *)message {
     CGFloat timerSec = ANIMATION_DURATION;
     
@@ -255,18 +255,18 @@ static MessageBanner *sharedSingleton;
             timerSec += message.duration;
         }
         
-#warning change hideNotification Prototype to remove gesture reconizer
+#warning change hideMessageBanner Prototype to remove gesture reconizer
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
-        NSMethodSignature *meth = [MessageBanner methodSignatureForSelector:@selector(hideNotification:withGesture:)];
+        NSMethodSignature *meth = [MessageBanner methodSignatureForSelector:@selector(hideMessageBanner:withGesture:)];
         NSInvocation *hideMethodInvocation = [NSInvocation invocationWithMethodSignature:meth];
-        [hideMethodInvocation setSelector:@selector(hideNotification:withGesture:)];
+        [hideMethodInvocation setSelector:@selector(hideMessageBanner:withGesture:)];
         [hideMethodInvocation setTarget:[MessageBanner class]];
         [hideMethodInvocation setArgument:&message atIndex:2];
         [hideMethodInvocation setArgument:&tap atIndex:3];
         [hideMethodInvocation retainArguments];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            message.onScreenTimer = [NSTimer scheduledTimerWithTimeInterval:timerSec invocation:hideMethodInvocation repeats:NO];
+            message.dismissTimer = [NSTimer scheduledTimerWithTimeInterval:timerSec invocation:hideMethodInvocation repeats:NO];
         });
     }
 }

@@ -30,10 +30,10 @@
 - (id)initWithTitle:(NSString *)title
            subtitle:(NSString *)subtitle
               image:(UIImage *)image
-               type:(MessageBannerType)notificationType
+               type:(MessageBannerType)bannerType
            duration:(CGFloat)duration
    inViewController:(UIViewController *)viewController
-           callback:(void (^)())callback
+           userDissmissedCallback:(void (^)(MessageBannerView* banner))userDissmissedCallback
         buttonTitle:(NSString *)buttonTitle
      buttonCallback:(void (^)())buttonCallback
          atPosition:(MessageBannerPosition)position
@@ -42,13 +42,15 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         
         _title = title;
         _subTitle = subtitle;
-        _viewController = viewController;
         _image = image;
+        _bannerType = bannerType;
         _duration = duration;
+        _viewController = viewController;
+        _userDissmissedCallback = userDissmissedCallback;
         _position = position;
-        
+
         self.messageViewHeight = 0.0f;
-        _isDisplayed = NO;
+        _isBannerDisplayed = NO;
         
         // To be declined according to position;
         
@@ -70,7 +72,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         //        Setting message frame :
         [self setFrame:[self createViewFrame]];
         
-    	[self setupStyleWithType:notificationType];
+    	[self setupStyleWithType:bannerType];
         
         
         
@@ -123,6 +125,9 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 #pragma mark View frame methods
 - (CGRect) createViewFrame {
     CGRect viewFrame;
+    
+    // Adding Bottom padding
+    self.messageViewHeight += ELEMENTS_PADDING;
     
     switch (self.position) {
         case MessageBannerPositionTop:
@@ -183,7 +188,6 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 }
 
 - (void)setTitleFrame:(UILabel *)titleView {
-    CGFloat parentViewWidth = self.viewController.view.bounds.size.width;
     CGFloat leftOffset = ELEMENTS_PADDING;
     
     //     If image then offset the text more
@@ -193,7 +197,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     
     [titleView setFrame:CGRectMake(  leftOffset
                                    , ELEMENTS_PADDING
-                                   , parentViewWidth - ELEMENTS_PADDING
+                                   , self.viewController.view.bounds.size.width - leftOffset - ELEMENTS_PADDING
                                    , 0.0f
                                    )];
     
@@ -244,7 +248,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     [subtitleView sizeToFit];
     
     //    updating viewHeight
-    self.messageViewHeight += (subtitleView.frame.origin.y + subtitleView.frame.size.height);
+    self.messageViewHeight += (subtitleView.frame.origin.y - self.messageViewHeight) + subtitleView.frame.size.height;
 }
 
 #pragma mark -
@@ -263,19 +267,19 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 
 #pragma mark -
 #pragma mark View Cosmetic
-- (void) setupStyleWithType:(MessageBannerType)notificationType {
+- (void) setupStyleWithType:(MessageBannerType)bannerType {
     
-    switch (notificationType) {
-        case MessageBannerNotificationTypeError:
+    switch (bannerType) {
+        case MessageBannerTypeError:
             self.backgroundColor = [UIColor redColor];
             break;
-        case MessageBannerNotificationTypeWarning:
+        case MessageBannerTypeWarning:
             self.backgroundColor = [UIColor yellowColor];
             break;
-        case MessageBannerNotificationTypeMessage:
+        case MessageBannerTypeMessage:
             self.backgroundColor = [UIColor grayColor];
             break;
-        case MessageBannerNotificationTypeSuccess:
+        case MessageBannerTypeSuccess:
             self.backgroundColor = [UIColor greenColor];
             break;
         default:
@@ -289,9 +293,9 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 
 -(void)dismissViewWithGesture:(UIGestureRecognizer*)gesture {
     
-    if (self.isDisplayed == YES) {
+    if (self.isBannerDisplayed == YES) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [MessageBanner hideNotification:self withGesture:gesture];
+            [MessageBanner hideMessageBanner:self withGesture:gesture];
         });
     }
 }

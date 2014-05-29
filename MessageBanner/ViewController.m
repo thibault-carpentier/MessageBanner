@@ -13,10 +13,14 @@
 
 @property (nonatomic, assign) MessageBannerPosition messagePosition;
 @property (nonatomic, assign) MessageBannerType messageType;
+@property (nonatomic, assign) NSString *bannerTitle;
 @property (nonatomic, copy) NSString *subTitle;
 @property (nonatomic, copy) UIImage *image;
 @property (nonatomic, assign) CGFloat duration;
+@property (nonatomic, assign) BOOL userDismissEnabled;
 
+@property (weak, nonatomic) IBOutlet UISegmentedControl *userDismissSegmentedControl;
+@property (weak, nonatomic) IBOutlet UISlider *durationSlider;
 @property (weak, nonatomic) IBOutlet UILabel *durationLabel;
 
 @end
@@ -26,11 +30,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.bannerTitle = @"Small title.";
     self.subTitle = @"Small subtitle.";
     self.image = nil;
-    self.duration = MessageBannerDurationEndless;
-    self.messageType = MessageBannerNotificationTypeError;
+    self.duration = MessageBannerDurationDefault;
+    self.messageType = MessageBannerTypeError;
     self.messagePosition = MessageBannerPositionTop;
+    self.userDismissEnabled = YES;
 }
 
 #pragma mark -
@@ -46,14 +52,30 @@
 
 - (IBAction)popMeOne:(id)sender {
     
-    [MessageBanner showNotificationInViewController:self
-                                              title:@"TITLE"
+    [MessageBanner showMessageBannerInViewController:self
+                                              title:self.bannerTitle
                                            subtitle:self.subTitle
                                               image:self.image
                                                type:self.messageType
                                            duration:self.duration
-                                           callback:^{
-                                               NSLog(@"Banner Top Dismissed");
+                                           userDissmissedCallback:^(MessageBannerView* message) {
+                                               NSLog(@"Banner with :\n{\n"
+                                                     "Title: [%@]\n "
+                                                     "Subtitle: [%@]\n"
+                                                     "Image: [%@]\n"
+                                                     "Type: [%@]\n"
+                                                     "Duration: [%f]\n"
+                                                     "Position: [%@]\n"
+                                                     "User interaction allowed: [%@]\n"
+                                                     "}\n has been dismissed."
+                                                     , self.title
+                                                     , self.subTitle
+                                                     , (self.image ? @"Icon setted." : @"No icon setted.")
+                                                     , @"TYPE"
+                                                     , self.duration
+                                                     , @"POSITION"
+                                                     , (self.userDismissEnabled ? @"YES" : @"NO")
+                                                     );
                                                
                                                return ;
                                            }
@@ -62,7 +84,24 @@
                                          return ;
                                      }
                                          atPosition:self.messagePosition
-                               canBeDismissedByUser:YES];
+                               canBeDismissedByUser:self.userDismissEnabled];
+    NSLog(@"Banner with :\n{\n"
+          "Title: [%@]\n "
+          "Subtitle: [%@]\n"
+          "Image: [%@]\n"
+          "Type: [%@]\n"
+          "Duration: [%f]\n"
+          "Position: [%@]\n"
+          "User interaction allowed: [%@]\n"
+          "}\n is [SHOWED]."
+          , self.title
+          , self.subTitle
+          , (self.image ? @"Icon setted." : @"No icon setted.")
+          , @"TYPE"
+          , self.duration
+          , @"POSITION"
+          , (self.userDismissEnabled ? @"YES" : @"NO")
+          );
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -77,18 +116,21 @@
 #pragma mark -
 #pragma mark Segmented Control Methods
 
-- (IBAction)SubtitleSegmentedControlValueChanged:(UISegmentedControl *)sender {
+- (IBAction)subtitleSegmentedControlValueChanged:(UISegmentedControl *)sender {
     
     switch (sender.selectedSegmentIndex) {
         case 0: {
+            self.bannerTitle = @"Small Title.";
             self.subTitle = @"Small subtitle.";
             break;
         }
         case 1: {
+            self.bannerTitle = @"This title is a medium title, with not too much characters.";
             self.subTitle = @"This text is a medium subtitle, with not too much characters.";
             break;
         }
         case 2: {
+            self.bannerTitle = @"This text is written to be a very long title, it has a lot of text. And everything works fine, isn't it great ?";
             self.subTitle = @"This text is written to be a very long subtitle, it has a lot of text. And everything works fine, isn't it great ?";
             break;
         }
@@ -115,19 +157,19 @@
 - (IBAction)messageTypeSegmentedControlValueChanged:(UISegmentedControl *)sender {
     switch (sender.selectedSegmentIndex) {
         case 0: {
-            self.messageType = MessageBannerNotificationTypeError;
+            self.messageType = MessageBannerTypeError;
             break;
         }
         case 1: {
-            self.messageType = MessageBannerNotificationTypeWarning;
+            self.messageType = MessageBannerTypeWarning;
             break;
         }
         case 2: {
-            self.messageType = MessageBannerNotificationTypeMessage;
+            self.messageType = MessageBannerTypeMessage;
             break;
         }
         case 3: {
-            self.messageType = MessageBannerNotificationTypeSuccess;
+            self.messageType = MessageBannerTypeSuccess;
             break;
         }
         default:
@@ -135,7 +177,7 @@
     }
 }
 
-- (IBAction)messagePositionSegmentedControlValueChanger:(UISegmentedControl *)sender {
+- (IBAction)messagePositionSegmentedControlValueChanged:(UISegmentedControl *)sender {
     switch (sender.selectedSegmentIndex) {
         case 0: {
             self.messagePosition = MessageBannerPositionTop;
@@ -154,10 +196,23 @@
     }
 }
 
+- (IBAction)userDismissEnabledSegmentedControlChanged:(UISegmentedControl *)sender {
+    if (sender.selectedSegmentIndex == NO && self.durationSlider.value == -1.0f) {
+        [self.durationSlider setValue:0 animated:YES];
+        [self durationSliderValueChanged:self.durationSlider];
+    }
+    self.userDismissEnabled = sender.selectedSegmentIndex;
+    
+}
 #pragma mark -
 #pragma mark UISlider methods
 
 - (IBAction)durationSliderValueChanged:(UISlider *)sender {
+    if (self.userDismissSegmentedControl.selectedSegmentIndex == NO && sender.value == -1.0f) {
+        [self.userDismissSegmentedControl setSelectedSegmentIndex:YES];
+        [self userDismissEnabledSegmentedControlChanged:self.userDismissSegmentedControl];
+    }
+    
     int rounded = sender.value;  //Casting to an int will truncate, round down
     [sender setValue:rounded animated:NO];
     
@@ -168,7 +223,7 @@
             break;
         }
         case 0: {
-            self.durationLabel.text = @"Default";
+            self.durationLabel.text = @"Automatic";
             self.duration = MessageBannerDurationDefault;
             break;
         }
@@ -179,6 +234,5 @@
         }
     }
 }
-
 
 @end

@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger, MessageBannerType) {
-    MessageBannerNotificationTypeMessage  = 0
-    , MessageBannerNotificationTypeWarning  = 1
-    , MessageBannerNotificationTypeError    = 2
-    , MessageBannerNotificationTypeSuccess  = 3
+    MessageBannerTypeMessage  = 0
+    , MessageBannerTypeWarning  = 1
+    , MessageBannerTypeError    = 2
+    , MessageBannerTypeSuccess  = 3
 };
 
 typedef NS_ENUM(NSInteger, MessageBannerPosition) {
@@ -30,26 +30,26 @@ typedef NS_ENUM(NSInteger, MessageBannerDuration) {
 
 @interface MessageBanner : NSObject
 
-@property (nonatomic, strong) NSMutableArray *notificationsList;
-@property (nonatomic, assign) BOOL messageOnScreen;
+@property (nonatomic, readonly, strong) NSMutableArray *messagesBannersList;
+@property (nonatomic, assign)           BOOL            messageOnScreen;
 
 + (instancetype) sharedSingleton;
 
-+ (void)showNotificationInViewController:(UIViewController *)viewController
++ (void)showMessageBannerInViewController:(UIViewController *)viewController
                                    title:(NSString *)title
                                 subtitle:(NSString *)subtitle
                                    image:(UIImage *)image
                                     type:(MessageBannerType)type
                                 duration:(NSTimeInterval)duration
-                                callback:(void (^)())callback
+                                userDissmissedCallback:(void (^)(MessageBannerView* bannerView))userDissmissedCallback
                              buttonTitle:(NSString *)buttonTitle
                           buttonCallback:(void (^)())buttonCallback
                               atPosition:(MessageBannerPosition)messagePosition
                     canBeDismissedByUser:(BOOL)dismissingEnabled;
 
-+ (void)prepareNotification:(MessageBannerView *)notificationView;
++ (void)prepareMessageBanner:(MessageBannerView *)messageBanner;
 
-+ (void) hideNotification:(MessageBannerView *)message
++ (void) hideMessageBanner:(MessageBannerView *)messageBanner
               withGesture:(UIGestureRecognizer *)gesture;
 
 
