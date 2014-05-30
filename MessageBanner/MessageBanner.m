@@ -45,12 +45,12 @@ static MessageBanner *sharedSingleton;
                                 duration:(NSTimeInterval)duration
                                 userDissmissedCallback:(void (^)(MessageBannerView *bannerView))userDissmissedCallback
                              buttonTitle:(NSString *)buttonTitle
-                          buttonCallback:(void (^)())buttonCallback
+                          userPressedButtonCallback:(void (^)(MessageBannerView* banner))userPressedButtonCallback
                               atPosition:(MessageBannerPosition)messagePosition
                     canBeDismissedByUser:(BOOL)dismissingEnabled {
     
     
-    MessageBannerView *view = [[MessageBannerView alloc] initWithTitle:title subtitle:subtitle image:image type:type duration:duration inViewController:viewController userDissmissedCallback:userDissmissedCallback buttonTitle:buttonTitle buttonCallback:buttonCallback atPosition:messagePosition canBeDismissedByUser:dismissingEnabled];
+    MessageBannerView *view = [[MessageBannerView alloc] initWithTitle:title subtitle:subtitle image:image type:type duration:duration inViewController:viewController userDissmissedCallback:userDissmissedCallback buttonTitle:buttonTitle userPressedButtonCallback:userPressedButtonCallback atPosition:messagePosition canBeDismissedByUser:dismissingEnabled];
     [self prepareMessageBanner:view];
 }
 

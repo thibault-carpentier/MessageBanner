@@ -12,16 +12,16 @@
 @interface ViewController ()
 
 @property (nonatomic, assign) MessageBannerPosition messagePosition;
-@property (nonatomic, assign) MessageBannerType messageType;
-@property (nonatomic, assign) NSString *bannerTitle;
-@property (nonatomic, copy) NSString *subTitle;
-@property (nonatomic, copy) UIImage *image;
-@property (nonatomic, assign) CGFloat duration;
-@property (nonatomic, assign) BOOL userDismissEnabled;
+@property (nonatomic, assign) MessageBannerType     messageType;
+@property (nonatomic, assign) NSString*             bannerTitle;
+@property (nonatomic, copy)   NSString*             subTitle;
+@property (nonatomic, copy)   UIImage*              image;
+@property (nonatomic, assign) CGFloat               duration;
+@property (nonatomic, assign) BOOL                  userDismissEnabled;
 
-@property (weak, nonatomic) IBOutlet UISegmentedControl *userDismissSegmentedControl;
-@property (weak, nonatomic) IBOutlet UISlider *durationSlider;
-@property (weak, nonatomic) IBOutlet UILabel *durationLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl* userDismissSegmentedControl;
+@property (weak, nonatomic) IBOutlet UISlider*      durationSlider;
+@property (weak, nonatomic) IBOutlet UILabel*       durationLabel;
 
 @end
 
@@ -37,6 +37,61 @@
     self.messageType = MessageBannerTypeError;
     self.messagePosition = MessageBannerPositionTop;
     self.userDismissEnabled = YES;
+}
+
+#pragma mark -
+#pragma mark ConvertionMethods
+
+- (NSString *)getTypeDescription:(MessageBannerType)bannerType {
+    NSString* result;
+    
+    switch (bannerType) {
+        case MessageBannerTypeError: {
+            result = @"Message Banner Error";
+            break;
+        }
+        case MessageBannerTypeWarning: {
+            result = @"Message Banner Warning";
+            break;
+        }
+        case MessageBannerTypeMessage: {
+            result = @"Message Banner Message";
+            break;
+        }
+        case MessageBannerTypeSuccess: {
+            result = @"Message Banner Success";
+            break;
+        }
+            
+        default:
+            result = @"Unknow Message Banner type";
+            break;
+    }
+    return result;
+}
+
+- (NSString *)getPositionDescription:(MessageBannerPosition)bannerPosition {
+    NSString* result;
+    switch (bannerPosition) {
+        case MessageBannerPositionBottom: {
+            result = @"Message Banner Bottom";
+            break;
+        }
+        case MessageBannerPositionCenter: {
+            result = @"Message Banner Middle";
+            break;
+        }
+        case MessageBannerPositionTop: {
+            result = @"Message Banner Top";
+            break;
+        }
+            
+        default: {
+            result = @"Unknow Message Banner position";
+            break;
+        }
+    }
+    return result;
 }
 
 #pragma mark -
@@ -60,27 +115,27 @@
                                            duration:self.duration
                                            userDissmissedCallback:^(MessageBannerView* message) {
                                                NSLog(@"Banner with :\n{\n"
-                                                     "Title: [%@]\n "
+                                                     "Title: [%@]\n"
                                                      "Subtitle: [%@]\n"
                                                      "Image: [%@]\n"
                                                      "Type: [%@]\n"
                                                      "Duration: [%f]\n"
                                                      "Position: [%@]\n"
                                                      "User interaction allowed: [%@]\n"
-                                                     "}\n has been dismissed."
-                                                     , self.title
-                                                     , self.subTitle
-                                                     , (self.image ? @"Icon setted." : @"No icon setted.")
-                                                     , @"TYPE"
-                                                     , self.duration
-                                                     , @"POSITION"
-                                                     , (self.userDismissEnabled ? @"YES" : @"NO")
+                                                     "}\n has been [DISMISSED]."
+                                                     , message.titleBanner
+                                                     , message.subTitle
+                                                     , (message.image ? @"Icon setted" : @"No icon setted")
+                                                     , [self getTypeDescription:message.bannerType]
+                                                     , message.duration
+                                                     , [self getPositionDescription:message.position]
+                                                     , (message.userDismissEnabled ? @"YES" : @"NO")
                                                      );
                                                
                                                return ;
                                            }
-                                        buttonTitle:@""
-                                     buttonCallback:^{
+                                        buttonTitle:@"Bonjour !"
+                                     userPressedButtonCallback:^ (MessageBannerView*banner) {
                                          return ;
                                      }
                                          atPosition:self.messagePosition
@@ -94,12 +149,12 @@
           "Position: [%@]\n"
           "User interaction allowed: [%@]\n"
           "}\n is [SHOWED]."
-          , self.title
+          , self.bannerTitle
           , self.subTitle
           , (self.image ? @"Icon setted." : @"No icon setted.")
-          , @"TYPE"
+          , [self getTypeDescription:self.messageType]
           , self.duration
-          , @"POSITION"
+          , [self getPositionDescription:self.messagePosition]
           , (self.userDismissEnabled ? @"YES" : @"NO")
           );
 }

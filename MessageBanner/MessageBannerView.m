@@ -14,9 +14,10 @@
 
 @interface MessageBannerView ()
 
-@property (nonatomic, strong) UILabel* titleLabel;
-@property (nonatomic, strong) UILabel* subtitleLabel;
-@property (nonatomic, strong) UIImageView* imageView;
+@property (nonatomic, strong) UILabel*      titleLabel;
+@property (nonatomic, strong) UILabel*      subtitleLabel;
+@property (nonatomic, strong) UIImageView*  imageView;
+@property (nonatomic, strong) UIButton*     button;
 
 @property (nonatomic, assign) CGFloat  messageViewHeight;
 
@@ -35,25 +36,30 @@
    inViewController:(UIViewController *)viewController
            userDissmissedCallback:(void (^)(MessageBannerView* banner))userDissmissedCallback
         buttonTitle:(NSString *)buttonTitle
-     buttonCallback:(void (^)())buttonCallback
+     userPressedButtonCallback:(void (^)(MessageBannerView* banner))userPressedButtonCallback
          atPosition:(MessageBannerPosition)position
 canBeDismissedByUser:(BOOL)dismissingEnabled {
     if ((self = [self init])) {
         
-        _title = title;
+        _titleBanner = title;
         _subTitle = subtitle;
         _image = image;
         _bannerType = bannerType;
         _duration = duration;
         _viewController = viewController;
         _userDissmissedCallback = userDissmissedCallback;
+        _buttonTitle = buttonTitle;
+        _userPressedButtonCallback = userDissmissedCallback;
+        
         _position = position;
-
+        _userDismissEnabled = dismissingEnabled;
+        
         self.messageViewHeight = 0.0f;
         _isBannerDisplayed = NO;
         
         // To be declined according to position;
         
+        [self addButtonOnBannerAndSetupFrame:buttonTitle];
         //        Setting up title
         self.titleLabel = [self createMessageTitle];
         [self addSubview:self.titleLabel];
@@ -61,13 +67,14 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         //        Setting up subtitle
         self.subtitleLabel = [self createSubtitleLabel];
         [self addSubview:self.subtitleLabel];
-        
-        //        Setting up image
-        [self addImageOnBanner:image];
+
         
         //        Setting up frames
         [self setTitleFrame:self.titleLabel];
         [self setSubtitleFrame:self.subtitleLabel];
+        [self addImageOnBannerAndSetupFrame:image];
+        [self centerButton];
+        //        [self setImageFrame:image]
         
         //        Setting message frame :
         [self setFrame:[self createViewFrame]];
@@ -171,7 +178,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     UILabel *titleLabel = [[UILabel alloc] init];
     
     //    Adding title
-    [titleLabel setText:self.title];
+    [titleLabel setText:self.titleBanner];
     
     //    Changing text appearance
     [titleLabel setBackgroundColor:[UIColor clearColor]];
@@ -189,15 +196,21 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 
 - (void)setTitleFrame:(UILabel *)titleView {
     CGFloat leftOffset = ELEMENTS_PADDING;
+    CGFloat rightOffset = ELEMENTS_PADDING;
     
     //     If image then offset the text more
     if (self.image != nil) {
         leftOffset += (self.image.size.width + (2 * ELEMENTS_PADDING));
     }
     
+    if (self.buttonTitle) {
+        rightOffset += self.button.frame.size.width + ELEMENTS_PADDING;
+    }
+    
+    
     [titleView setFrame:CGRectMake(  leftOffset
                                    , ELEMENTS_PADDING
-                                   , self.viewController.view.bounds.size.width - leftOffset - ELEMENTS_PADDING
+                                   , self.viewController.view.bounds.size.width - leftOffset - rightOffset
                                    , 0.0f
                                    )];
     
@@ -233,15 +246,20 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 
 - (void)setSubtitleFrame:(UILabel *)subtitleView {
     CGFloat leftOffset = ELEMENTS_PADDING;
+    CGFloat rightOffset = ELEMENTS_PADDING;
     
     //         If image then offset the text more
     if (self.image != nil) {
         leftOffset += (self.image.size.width + (2 * ELEMENTS_PADDING));
     }
     
+    if (self.buttonTitle) {
+        rightOffset += self.button.frame.size.width + ELEMENTS_PADDING;
+    }
+    
     [subtitleView setFrame:CGRectMake(  leftOffset
                                       , (ELEMENTS_PADDING + self.titleLabel.frame.origin.y + self.titleLabel.frame.size.height)
-                                      , self.viewController.view.bounds.size.width - leftOffset - ELEMENTS_PADDING
+                                      , self.viewController.view.bounds.size.width - leftOffset - rightOffset
                                       , 0.0f
                                       )];
     //   updating height
@@ -254,15 +272,49 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 #pragma mark -
 #pragma mark Image View methods
 
-- (void)addImageOnBanner:(UIImage *)image {
+- (void)addImageOnBannerAndSetupFrame:(UIImage *)image {
     
     self.imageView = [[UIImageView alloc] initWithImage:image];
     self.imageView.frame = CGRectMake(ELEMENTS_PADDING * 2,
-                                      ELEMENTS_PADDING,
+                                      ((ELEMENTS_PADDING +  self.messageViewHeight - image.size.height) /2),
                                       image.size.width,
                                       image.size.height);
     
     [self addSubview:self.imageView];
+}
+
+#pragma mark -
+#pragma mark Button methods Button View methods
+
+- (void)addButtonOnBannerAndSetupFrame:(NSString *)buttonTitle {
+    
+    if (buttonTitle) {
+        self.button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.button setTitle:buttonTitle forState:UIControlStateNormal];
+        [self.button.titleLabel setFont:[UIFont systemFontOfSize:14.0f]];
+        self.button.contentEdgeInsets = UIEdgeInsetsMake(  0.0f
+                                                         , 5.0f
+                                                         , 0.0f
+                                                         , 5.0f);
+        [self.button sizeToFit];
+        self.button.frame = CGRectMake((self.viewController.view.frame.size.width - ELEMENTS_PADDING - self.button.frame.size.width)
+                                       , 0.0
+                                       , self.button.frame.size.width
+                                       , 32.0);
+        if (self.userPressedButtonCallback) {
+            [self.button addTarget:self action:@selector(userDidPressedButton:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        
+#warning to Remove
+        self.button.backgroundColor = [UIColor lightGrayColor];
+        
+        [self addSubview:self.button];
+    }
+}
+
+- (void)centerButton {
+    self.button.center = CGPointMake(  self.button.center.x
+                                     , ((self.messageViewHeight + ELEMENTS_PADDING) / 2.0f));
 }
 
 #pragma mark -
@@ -289,15 +341,27 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 }
 
 #pragma mark -
-#pragma mark Swipe Gesture Reconiser handler methods
+#pragma mark Swipe Gesture Reconizer handler methods
 
 -(void)dismissViewWithGesture:(UIGestureRecognizer*)gesture {
     
     if (self.isBannerDisplayed == YES) {
+        
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.userDissmissedCallback) {
+                self.userDissmissedCallback(self);
+            }
             [MessageBanner hideMessageBanner:self withGesture:gesture];
         });
+        
     }
+}
+
+#pragma mark - Button Pressed Gesture Recognizer methods
+
+- (void)userDidPressedButton:(UIButton *)sender {
+    (void)sender;
+    self.userPressedButtonCallback(self);
 }
 
 /*

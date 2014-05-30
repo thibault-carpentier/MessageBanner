@@ -43,7 +43,7 @@ typedef NS_ENUM(NSInteger, MessageBannerDuration) {
                                 duration:(NSTimeInterval)duration
                                 userDissmissedCallback:(void (^)(MessageBannerView* bannerView))userDissmissedCallback
                              buttonTitle:(NSString *)buttonTitle
-                          buttonCallback:(void (^)())buttonCallback
+                          userPressedButtonCallback:(void (^)(MessageBannerView* banner))userPressedButtonCallback
                               atPosition:(MessageBannerPosition)messagePosition
                     canBeDismissedByUser:(BOOL)dismissingEnabled;
 
