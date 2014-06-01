@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@class MessageBannerView;
 
 typedef NS_ENUM(NSInteger, MessageBannerType) {
     MessageBannerTypeMessage  = 0
@@ -26,14 +27,72 @@ typedef NS_ENUM(NSInteger, MessageBannerDuration) {
     , MessageBannerDurationEndless = -1
 };
 
-@class MessageBannerView;
+@protocol MessageBannerDelegate <NSObject>
+
+@optional
+
+- (void)messageBannerViewWillAppear:(MessageBannerView *)messageBanner;
+- (void)messageBannerViewDidAppear:(MessageBannerView *)messageBanner;
+- (void)messageBannerViewWillDisappear:(MessageBannerView *)messageBanner;
+- (void)messageBannerViewDidDisappear:(MessageBannerView *)messageBanner;
+
+@end
+
+
+
 
 @interface MessageBanner : NSObject
 
-@property (nonatomic, readonly, strong) NSMutableArray *messagesBannersList;
-@property (nonatomic, assign)           BOOL            messageOnScreen;
-
 + (instancetype) sharedSingleton;
+
+#pragma mark - Set Default vars
+
++ (void)setMessageBannerDelegate:(id<MessageBannerDelegate>)aDelegate;
+
+#pragma mark - Show Methods
+
++ (void)showMessageBannerInViewController:(UIViewController *)viewController
+                                    title:(NSString *)title
+                                 subtitle:(NSString *)subtitle;
+
++ (void)showMessageBannerInViewController:(UIViewController *)viewController
+                                    title:(NSString *)title
+                                 subtitle:(NSString *)subtitle
+                               atPosition:(MessageBannerPosition)messagePosition;
+
++ (void)showMessageBannerInViewController:(UIViewController *)viewController
+                                    title:(NSString *)title
+                                 subtitle:(NSString *)subtitle
+                                     type:(MessageBannerType)type
+                               atPosition:(MessageBannerPosition)messagePosition;
+
++ (void)showMessageBannerInViewController:(UIViewController *)viewController
+                                    title:(NSString *)title
+                                 subtitle:(NSString *)subtitle
+                                     type:(MessageBannerType)type
+                                 duration:(NSTimeInterval)duration
+                               atPosition:(MessageBannerPosition)messagePosition;
+
+
++ (void)showMessageBannerInViewController:(UIViewController *)viewController
+                                    title:(NSString *)title
+                                 subtitle:(NSString *)subtitle
+                                     type:(MessageBannerType)type
+                                 duration:(NSTimeInterval)duration
+                   userDissmissedCallback:(void (^)(MessageBannerView* bannerView))userDissmissedCallback
+                               atPosition:(MessageBannerPosition)messagePosition
+                     canBeDismissedByUser:(BOOL)dismissingEnabled;
+
+
++ (void)showMessageBannerInViewController:(UIViewController *)viewController
+                                    title:(NSString *)title
+                                 subtitle:(NSString *)subtitle
+                                    image:(UIImage *)image
+                                     type:(MessageBannerType)type
+                                 duration:(NSTimeInterval)duration
+                   userDissmissedCallback:(void (^)(MessageBannerView* bannerView))userDissmissedCallback
+                               atPosition:(MessageBannerPosition)messagePosition
+                     canBeDismissedByUser:(BOOL)dismissingEnabled;
 
 + (void)showMessageBannerInViewController:(UIViewController *)viewController
                                    title:(NSString *)title
@@ -45,12 +104,12 @@ typedef NS_ENUM(NSInteger, MessageBannerDuration) {
                              buttonTitle:(NSString *)buttonTitle
                           userPressedButtonCallback:(void (^)(MessageBannerView* banner))userPressedButtonCallback
                               atPosition:(MessageBannerPosition)messagePosition
-                    canBeDismissedByUser:(BOOL)dismissingEnabled;
+                    canBeDismissedByUser:(BOOL)dismissingEnabled
+                                 delegate:(id <MessageBannerDelegate>)aDelegate;
 
-+ (void)prepareMessageBanner:(MessageBannerView *)messageBanner;
+#pragma mark - Hide Methods
 
-+ (void) hideMessageBanner:(MessageBannerView *)messageBanner
-              withGesture:(UIGestureRecognizer *)gesture;
-
++ (BOOL) hideMessageBanner;
++ (BOOL) hideMessageBannerWithCompletion:(void (^)())completion;
 
 @end

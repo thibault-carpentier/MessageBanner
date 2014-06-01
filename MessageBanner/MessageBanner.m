@@ -9,14 +9,37 @@
 #import "MessageBanner.h"
 #import "MessageBannerView.h"
 
-@implementation MessageBanner
+@interface MessageBanner ()
 
+@property (nonatomic, assign) BOOL            messageOnScreen;
+@property (nonatomic, strong) NSMutableArray *messagesBannersList;
+
+@end
+
+@implementation MessageBanner
 
 #define ANIMATION_DURATION 0.5
 #define DISPLAY_TIME_PER_PIXEL 0.02
 #define DISPLAY_DEFAULT_DURATION 2.0
 
+#define TYPE_DEFAULT            MessageBannerTypeMessage
+#define DURATION_DEFAULT        MessageBannerDurationDefault
+#define POSITION_DEFAULT        MessageBannerPositionTop
+#define USER_DISMISS_DEFAULT    YES
+
 static MessageBanner *sharedSingleton;
+
+static id <MessageBannerDelegate> _delegate;
+static struct delegateMethodsCaching {
+    
+    unsigned int messageBannerViewWillAppear:1;
+    unsigned int MessageBannerViewDidAppear:1;
+    unsigned int MessageBannerViewWillDisappear:1;
+    unsigned int MessageBannerViewDidDisappear:1;
+    
+} _delegateRespondTo;
+
+
 
 + (MessageBanner *)sharedSingleton
 {
@@ -30,33 +53,157 @@ static MessageBanner *sharedSingleton;
 - (id)init {
     if ((self = [super init])) {
         _messagesBannersList = [[NSMutableArray alloc] init];
+        _messageOnScreen = NO;
     }
     return self;
 }
 
 #pragma mark -
-#pragma mark Init methods
+#pragma mark Show methods
 
 + (void)showMessageBannerInViewController:(UIViewController *)viewController
-                                   title:(NSString *)title
-                                subtitle:(NSString *)subtitle
-                                   image:(UIImage *)image
-                                    type:(MessageBannerType)type
-                                duration:(NSTimeInterval)duration
-                                userDissmissedCallback:(void (^)(MessageBannerView *bannerView))userDissmissedCallback
-                             buttonTitle:(NSString *)buttonTitle
-                          userPressedButtonCallback:(void (^)(MessageBannerView* banner))userPressedButtonCallback
-                              atPosition:(MessageBannerPosition)messagePosition
-                    canBeDismissedByUser:(BOOL)dismissingEnabled {
-    
-    
-    MessageBannerView *view = [[MessageBannerView alloc] initWithTitle:title subtitle:subtitle image:image type:type duration:duration inViewController:viewController userDissmissedCallback:userDissmissedCallback buttonTitle:buttonTitle userPressedButtonCallback:userPressedButtonCallback atPosition:messagePosition canBeDismissedByUser:dismissingEnabled];
-    [self prepareMessageBanner:view];
+                                    title:(NSString *)title
+                                 subtitle:(NSString *)subtitle {
+    [self showMessageBannerInViewController:viewController
+                                      title:title
+                                   subtitle:subtitle
+                                      image:nil
+                                       type:TYPE_DEFAULT
+                                   duration:DURATION_DEFAULT
+                     userDissmissedCallback:nil
+                                buttonTitle:nil
+                  userPressedButtonCallback:nil
+                                 atPosition:POSITION_DEFAULT
+                       canBeDismissedByUser:USER_DISMISS_DEFAULT
+                                   delegate:nil];
 }
 
-+ (void)prepareMessageBanner:(MessageBannerView *)messageBannerView {
++ (void)showMessageBannerInViewController:(UIViewController *)viewController
+                                    title:(NSString *)title
+                                 subtitle:(NSString *)subtitle
+                               atPosition:(MessageBannerPosition)messagePosition {
+    
+    [self showMessageBannerInViewController:viewController
+                                      title:title
+                                   subtitle:subtitle
+                                      image:nil
+                                       type:TYPE_DEFAULT
+                                   duration:DURATION_DEFAULT
+                     userDissmissedCallback:nil
+                                buttonTitle:nil
+                  userPressedButtonCallback:nil
+                                 atPosition:messagePosition
+                       canBeDismissedByUser:nil
+                                   delegate:nil];
+}
 
-#warning remove after testing
++ (void)showMessageBannerInViewController:(UIViewController *)viewController
+                                    title:(NSString *)title
+                                 subtitle:(NSString *)subtitle
+                                     type:(MessageBannerType)type
+                               atPosition:(MessageBannerPosition)messagePosition {
+    
+    [self showMessageBannerInViewController:viewController
+                                      title:title
+                                   subtitle:subtitle
+                                      image:nil
+                                       type:type
+                                   duration:DURATION_DEFAULT
+                     userDissmissedCallback:nil
+                                buttonTitle:nil
+                  userPressedButtonCallback:nil
+                                 atPosition:messagePosition
+                       canBeDismissedByUser:nil
+                                   delegate:nil];
+}
+
++ (void)showMessageBannerInViewController:(UIViewController *)viewController
+                                    title:(NSString *)title
+                                 subtitle:(NSString *)subtitle
+                                     type:(MessageBannerType)type
+                                 duration:(NSTimeInterval)duration
+                               atPosition:(MessageBannerPosition)messagePosition {
+    
+    [self showMessageBannerInViewController:viewController
+                                      title:title
+                                   subtitle:subtitle
+                                      image:nil
+                                       type:type
+                                   duration:duration
+                     userDissmissedCallback:nil
+                                buttonTitle:nil
+                  userPressedButtonCallback:nil
+                                 atPosition:messagePosition
+                       canBeDismissedByUser:nil
+                                   delegate:nil];
+}
+
++ (void)showMessageBannerInViewController:(UIViewController *)viewController
+                                    title:(NSString *)title
+                                 subtitle:(NSString *)subtitle
+                                     type:(MessageBannerType)type
+                                 duration:(NSTimeInterval)duration
+                   userDissmissedCallback:(void (^)(MessageBannerView *))userDissmissedCallback
+                               atPosition:(MessageBannerPosition)messagePosition
+                     canBeDismissedByUser:(BOOL)dismissingEnabled {
+    
+    [self showMessageBannerInViewController:viewController
+                                      title:title
+                                   subtitle:subtitle
+                                      image:nil
+                                       type:type
+                                   duration:duration
+                     userDissmissedCallback:userDissmissedCallback
+                                buttonTitle:nil
+                  userPressedButtonCallback:nil
+                                 atPosition:messagePosition
+                       canBeDismissedByUser:dismissingEnabled
+                                   delegate:nil];
+}
+
++ (void)showMessageBannerInViewController:(UIViewController *)viewController
+                                    title:(NSString *)title
+                                 subtitle:(NSString *)subtitle
+                                    image:(UIImage *)image
+                                     type:(MessageBannerType)type
+                                 duration:(NSTimeInterval)duration
+                   userDissmissedCallback:(void (^)(MessageBannerView *))userDissmissedCallback
+                               atPosition:(MessageBannerPosition)messagePosition
+                     canBeDismissedByUser:(BOOL)dismissingEnabled {
+    [self showMessageBannerInViewController:viewController
+                                      title:title
+                                   subtitle:subtitle
+                                      image:image
+                                       type:type
+                                   duration:duration
+                     userDissmissedCallback:userDissmissedCallback
+                                buttonTitle:nil
+                  userPressedButtonCallback:nil
+                                 atPosition:messagePosition
+                       canBeDismissedByUser:dismissingEnabled
+                                   delegate:nil];
+}
+
++ (void)showMessageBannerInViewController:(UIViewController *)viewController
+                                    title:(NSString *)title
+                                 subtitle:(NSString *)subtitle
+                                    image:(UIImage *)image
+                                     type:(MessageBannerType)type
+                                 duration:(NSTimeInterval)duration
+                   userDissmissedCallback:(void (^)(MessageBannerView *bannerView))userDissmissedCallback
+                              buttonTitle:(NSString *)buttonTitle
+                userPressedButtonCallback:(void (^)(MessageBannerView* banner))userPressedButtonCallback
+                               atPosition:(MessageBannerPosition)messagePosition
+                     canBeDismissedByUser:(BOOL)dismissingEnabled
+                    delegate:(id<MessageBannerDelegate>)aDelegate {
+    
+    
+    
+    MessageBannerView *messageBannerView = [[MessageBannerView alloc] initWithTitle:title subtitle:subtitle image:image type:type duration:duration inViewController:viewController userDissmissedCallback:userDissmissedCallback buttonTitle:buttonTitle userPressedButtonCallback:userPressedButtonCallback atPosition:messagePosition canBeDismissedByUser:dismissingEnabled];
+    
+    
+    // Preparing and showing notification
+#warning uncomment after testing
     
     //    NSString *title = messageBannerView.title;
     //    NSString *subtitle = messageBannerView.subTitle;
@@ -69,6 +216,10 @@ static MessageBanner *sharedSingleton;
     //        }
     //    }
     
+    
+    if (_delegate == nil) {
+        [MessageBanner setMessageBannerDelegate:aDelegate];
+    }
     [[MessageBanner sharedSingleton].messagesBannersList addObject:messageBannerView];
     
     if ([[MessageBanner sharedSingleton] messageOnScreen] == NO) {
@@ -77,9 +228,33 @@ static MessageBanner *sharedSingleton;
 }
 
 #pragma mark -
-#pragma mark Show Message Banner methods
+#pragma mark Delegate Methods
 
-// To add later maybe ?
+
+
++ (void)setMessageBannerDefaultDelegate:(id<MessageBannerDelegate>)aDelegate {
+    if (_delegate != aDelegate) {
+        
+        _delegate = aDelegate;
+        
+        struct delegateMethodsCaching newMethodCaching;
+        
+        newMethodCaching.messageBannerViewWillAppear = [_delegate respondsToSelector:@selector(messageBannerViewWillAppear:)];
+        
+        newMethodCaching.MessageBannerViewDidAppear = [_delegate respondsToSelector:@selector(messageBannerViewDidAppear:)];
+        
+        newMethodCaching.MessageBannerViewWillDisappear = [_delegate respondsToSelector:@selector(messageBannerViewWillDisappear:)];
+        
+        newMethodCaching.MessageBannerViewDidDisappear = [_delegate respondsToSelector:@selector(messageBannerViewDidDisappear:)];
+        
+        _delegateRespondTo = newMethodCaching;
+    }
+}
+
+
+#pragma mark -
+#pragma mark Fade-in Message Banner methods
+
 - (CGFloat) getStatusBarSize {
     BOOL isPortrait = UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
     CGSize statusBarSize = [UIApplication sharedApplication].statusBarFrame.size;
@@ -158,7 +333,7 @@ static MessageBanner *sharedSingleton;
 }
 
 - (void)showMessageBannerOnScreen {
-    
+
     _messageOnScreen = YES;
     
     if (![[MessageBanner sharedSingleton].messagesBannersList count]) {
@@ -168,6 +343,10 @@ static MessageBanner *sharedSingleton;
     
     MessageBannerView *currentMessageBanner = [[MessageBanner sharedSingleton].messagesBannersList firstObject];
     
+    if (_delegate && _delegateRespondTo.messageBannerViewWillAppear == YES) {
+        [_delegate messageBannerViewWillAppear:currentMessageBanner];
+    }
+    
     CGPoint target = [self calculateTargetCenter:currentMessageBanner];
     [UIView animateKeyframesWithDuration:ANIMATION_DURATION delay:0.0f options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction animations:^{
         
@@ -175,20 +354,53 @@ static MessageBanner *sharedSingleton;
         
     } completion:^(BOOL finished) {
         currentMessageBanner.isBannerDisplayed = YES;
+        if (_delegate && _delegateRespondTo.MessageBannerViewDidAppear == YES) {
+            [_delegate messageBannerViewDidAppear:currentMessageBanner];
+        }
     }];
     
     [self initAutoDismissTimerforBanner:currentMessageBanner];
 }
 
 #pragma mark -
-#pragma mark Hide Message Banner methods
+#pragma mark Fade-out Message Banner methods
 
-+ (void) hideMessageBanner:(MessageBannerView *)message withGesture:(UIGestureRecognizer *)gesture {
++ (BOOL)hideMessageBanner {
+    return [self hideMessageBannerWithCompletion:nil];
+}
+
++ (BOOL) hideMessageBannerWithCompletion:(void (^)())completion {
+    BOOL success = NO;
+    
+    if ([[[MessageBanner sharedSingleton] messagesBannersList] count]) {
+        success = YES;
+        dispatch_async(dispatch_get_main_queue(), ^
+                       {
+                           if ([[[MessageBanner sharedSingleton] messagesBannersList] count]) {
+                               
+                               MessageBannerView *currentView = [[[MessageBanner sharedSingleton] messagesBannersList] objectAtIndex:0];
+                               if (currentView.isBannerDisplayed)
+                               {
+                                   [[MessageBanner sharedSingleton] hideMessageBanner:currentView withGesture:nil andCompletion:completion];
+                               }
+                           }
+                       });
+    
+    }
+    return success;
+}
+
+- (void) hideMessageBanner:(MessageBannerView *)message withGesture:(UIGestureRecognizer *)gesture andCompletion:(void (^)())completion {
     
     //    Removing timer Callback
     message.isBannerDisplayed = NO;
+    
     if (message.duration != MessageBannerDurationEndless) {
         [message.dismissTimer invalidate];
+    }
+    
+    if (_delegate && _delegateRespondTo.MessageBannerViewWillDisappear == YES) {
+        [_delegate messageBannerViewWillDisappear:message];
     }
     
     CGPoint fadeOutCenter = CGPointMake(0, 0);
@@ -231,19 +443,25 @@ static MessageBanner *sharedSingleton;
     [UIView animateWithDuration:ANIMATION_DURATION animations:^{
         [message setCenter:fadeOutCenter];
     } completion:^(BOOL finished) {
-#warning add Callback for  future delegate
         [message removeFromSuperview];
         [[[MessageBanner sharedSingleton] messagesBannersList] removeObjectAtIndex:0];
         [MessageBanner sharedSingleton].messageOnScreen = NO;
         if ([[[MessageBanner sharedSingleton] messagesBannersList] count]) {
             [[MessageBanner sharedSingleton] showMessageBannerOnScreen];
         }
+        if (completion) {
+            completion();
+        }
+        if (_delegate && _delegateRespondTo.MessageBannerViewDidDisappear == YES) {
+            [_delegate messageBannerViewDidDisappear:message];
+        }
     }];
 }
 
 
 #pragma mark -
-#pragma mark Hide Message Banner timer method
+#pragma mark Message Banner Timer method
+
 - (void) initAutoDismissTimerforBanner:(MessageBannerView *)message {
     CGFloat timerSec = ANIMATION_DURATION;
     
@@ -255,14 +473,15 @@ static MessageBanner *sharedSingleton;
             timerSec += message.duration;
         }
         
-#warning change hideMessageBanner Prototype to remove gesture reconizer
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
-        NSMethodSignature *meth = [MessageBanner methodSignatureForSelector:@selector(hideMessageBanner:withGesture:)];
+        UITapGestureRecognizer *tap = nil;
+        void (^completion)() = nil;
+        NSMethodSignature *meth = [[MessageBanner sharedSingleton]methodSignatureForSelector:@selector(hideMessageBanner:withGesture:andCompletion:)];
         NSInvocation *hideMethodInvocation = [NSInvocation invocationWithMethodSignature:meth];
-        [hideMethodInvocation setSelector:@selector(hideMessageBanner:withGesture:)];
-        [hideMethodInvocation setTarget:[MessageBanner class]];
+        [hideMethodInvocation setSelector:@selector(hideMessageBanner:withGesture:andCompletion:)];
+        [hideMethodInvocation setTarget:[MessageBanner sharedSingleton]];
         [hideMethodInvocation setArgument:&message atIndex:2];
         [hideMethodInvocation setArgument:&tap atIndex:3];
+        [hideMethodInvocation setArgument:&completion atIndex:4];
         [hideMethodInvocation retainArguments];
         
         dispatch_async(dispatch_get_main_queue(), ^{

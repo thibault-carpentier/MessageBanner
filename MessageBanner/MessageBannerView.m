@@ -12,6 +12,12 @@
 
 #define ELEMENTS_PADDING 16.0f
 
+@interface MessageBanner (MessageBannerView)
+    - (void) hideMessageBanner:(MessageBannerView *)messageBanner
+                   withGesture:(UIGestureRecognizer *)gesture
+                 andCompletion:(void (^)())completion; // use private call of MessageBanner
+@end
+
 @interface MessageBannerView ()
 
 @property (nonatomic, strong) UILabel*      titleLabel;
@@ -39,6 +45,7 @@
      userPressedButtonCallback:(void (^)(MessageBannerView* banner))userPressedButtonCallback
          atPosition:(MessageBannerPosition)position
 canBeDismissedByUser:(BOOL)dismissingEnabled {
+   
     if ((self = [self init])) {
         
         _titleBanner = title;
@@ -203,7 +210,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         leftOffset += (self.image.size.width + (2 * ELEMENTS_PADDING));
     }
     
-    if (self.buttonTitle) {
+    if (self.buttonTitle && [self.buttonTitle length]) {
         rightOffset += self.button.frame.size.width + ELEMENTS_PADDING;
     }
     
@@ -253,7 +260,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         leftOffset += (self.image.size.width + (2 * ELEMENTS_PADDING));
     }
     
-    if (self.buttonTitle) {
+    if (self.buttonTitle && [self.buttonTitle length]) {
         rightOffset += self.button.frame.size.width + ELEMENTS_PADDING;
     }
     
@@ -288,7 +295,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 
 - (void)addButtonOnBannerAndSetupFrame:(NSString *)buttonTitle {
     
-    if (buttonTitle) {
+    if (buttonTitle && [buttonTitle length]) {
         self.button = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.button setTitle:buttonTitle forState:UIControlStateNormal];
         [self.button.titleLabel setFont:[UIFont systemFontOfSize:14.0f]];
@@ -351,7 +358,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
             if (self.userDissmissedCallback) {
                 self.userDissmissedCallback(self);
             }
-            [MessageBanner hideMessageBanner:self withGesture:gesture];
+            [[MessageBanner sharedSingleton] hideMessageBanner:self withGesture:gesture andCompletion:nil];
         });
         
     }
@@ -361,7 +368,9 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 
 - (void)userDidPressedButton:(UIButton *)sender {
     (void)sender;
-    self.userPressedButtonCallback(self);
+    if (self.userDissmissedCallback) {
+        self.userPressedButtonCallback(self);
+    }
 }
 
 /*

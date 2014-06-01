@@ -13,11 +13,12 @@
 
 @property (nonatomic, assign) MessageBannerPosition messagePosition;
 @property (nonatomic, assign) MessageBannerType     messageType;
-@property (nonatomic, assign) NSString*             bannerTitle;
+@property (nonatomic, copy)   NSString*             bannerTitle;
 @property (nonatomic, copy)   NSString*             subTitle;
 @property (nonatomic, copy)   UIImage*              image;
 @property (nonatomic, assign) CGFloat               duration;
 @property (nonatomic, assign) BOOL                  userDismissEnabled;
+@property (nonatomic, copy)   NSString*             buttonTitle;
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl* userDismissSegmentedControl;
 @property (weak, nonatomic) IBOutlet UISlider*      durationSlider;
@@ -37,6 +38,26 @@
     self.messageType = MessageBannerTypeError;
     self.messagePosition = MessageBannerPositionTop;
     self.userDismissEnabled = YES;
+    self.buttonTitle = nil;
+}
+
+#pragma mark -
+#pragma mark MessageBanner delegate methods
+
+- (void)messageBannerViewWillAppear:(MessageBannerView *)messageBanner {
+    NSLog(@"MessageBanner [WILL APPEAR]");
+}
+
+- (void)messageBannerViewDidAppear:(MessageBannerView *)messageBanner {
+    NSLog(@"MessageBanner [DID APPEAR]");
+}
+
+- (void)messageBannerViewWillDisappear:(MessageBannerView *)messageBanner {
+    NSLog(@"MessageBanner [WILL DISAPPEAR]");
+}
+
+-(void)messageBannerViewDidDisappear:(MessageBannerView *)messageBanner {
+    NSLog(@"MessageBanner [DID DISAPPEAR]");
 }
 
 #pragma mark -
@@ -96,16 +117,19 @@
 
 #pragma mark -
 #pragma mark NavBar Buttons
+
 - (IBAction)toggleNavBar:(id)sender {
     self.navigationController.navigationBarHidden = !self.navigationController.navigationBarHidden;
     self.navigationController.toolbarHidden = !self.navigationController.toolbarHidden;
 }
 
-
 #pragma mark -
 #pragma mark Popup buttons
 
 - (IBAction)popMeOne:(id)sender {
+    
+    
+//    [MessageBanner setMessageBannerDelegate:self];
     
     [MessageBanner showMessageBannerInViewController:self
                                               title:self.bannerTitle
@@ -134,12 +158,20 @@
                                                
                                                return ;
                                            }
-                                        buttonTitle:@"Bonjour !"
+                                         buttonTitle:self.buttonTitle
                                      userPressedButtonCallback:^ (MessageBannerView*banner) {
+                                         
+                                         [MessageBanner hideMessageBannerWithCompletion:^{
+                                             NSLog(@"Dismissed");
+                                         }];
                                          return ;
                                      }
                                          atPosition:self.messagePosition
-                               canBeDismissedByUser:self.userDismissEnabled];
+                               canBeDismissedByUser:self.userDismissEnabled
+                                           delegate:self];
+
+    
+    
     NSLog(@"Banner with :\n{\n"
           "Title: [%@]\n "
           "Subtitle: [%@]\n"
@@ -259,6 +291,17 @@
     self.userDismissEnabled = sender.selectedSegmentIndex;
     
 }
+
+- (IBAction)buttonEnabledSegmentedControlChanged:(UISegmentedControl *)sender {
+    if (sender.selectedSegmentIndex == 0) {
+        self.buttonTitle = nil;
+    } else {
+        self.buttonTitle = @"Dismiss";
+    }
+        
+}
+
+
 #pragma mark -
 #pragma mark UISlider methods
 
