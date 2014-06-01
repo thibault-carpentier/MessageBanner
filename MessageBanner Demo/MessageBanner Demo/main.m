@@ -1,8 +1,8 @@
 //
 //  main.m
-//  MessageBanner
+//  MessageBanner Demo
 //
-//  Created by Thibault Carpentier on 4/22/14.
+//  Created by Thibault Carpentier on 6/1/14.
 //  Copyright (c) 2014 Thibault Carpentier. All rights reserved.
 //
 
