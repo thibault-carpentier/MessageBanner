@@ -93,7 +93,7 @@ static struct delegateMethodsCaching {
                                 buttonTitle:nil
                   userPressedButtonCallback:nil
                                  atPosition:messagePosition
-                       canBeDismissedByUser:nil
+                       canBeDismissedByUser:USER_DISMISS_DEFAULT
                                    delegate:nil];
 }
 
@@ -113,7 +113,7 @@ static struct delegateMethodsCaching {
                                 buttonTitle:nil
                   userPressedButtonCallback:nil
                                  atPosition:messagePosition
-                       canBeDismissedByUser:nil
+                       canBeDismissedByUser:USER_DISMISS_DEFAULT
                                    delegate:nil];
 }
 
@@ -134,7 +134,7 @@ static struct delegateMethodsCaching {
                                 buttonTitle:nil
                   userPressedButtonCallback:nil
                                  atPosition:messagePosition
-                       canBeDismissedByUser:nil
+                       canBeDismissedByUser:USER_DISMISS_DEFAULT
                                    delegate:nil];
 }
 
