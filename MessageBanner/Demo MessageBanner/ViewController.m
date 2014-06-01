@@ -159,7 +159,7 @@
                                                return ;
                                            }
                                          buttonTitle:self.buttonTitle
-                                     userPressedButtonCallback:^ (MessageBannerView*banner) {
+                                     userPressedButtonCallback:^ (MessageBannerView* banner) {
                                          
                                          [MessageBanner hideMessageBannerWithCompletion:^{
                                              NSLog(@"Dismissed");

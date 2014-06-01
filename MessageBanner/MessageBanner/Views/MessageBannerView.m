@@ -56,7 +56,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         _viewController = viewController;
         _userDissmissedCallback = userDissmissedCallback;
         _buttonTitle = buttonTitle;
-        _userPressedButtonCallback = userDissmissedCallback;
+        _userPressedButtonCallback = userPressedButtonCallback;
         
         _position = position;
         _userDismissEnabled = dismissingEnabled;
@@ -94,11 +94,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         if (dismissingEnabled) {
             [self addDismissMethod];
         }
-        
-        
     }
-    
-    
     return self;
 }
 
@@ -368,7 +364,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 
 - (void)userDidPressedButton:(UIButton *)sender {
     (void)sender;
-    if (self.userDissmissedCallback) {
+    if (self.userPressedButtonCallback) {
         self.userPressedButtonCallback(self);
     }
 }

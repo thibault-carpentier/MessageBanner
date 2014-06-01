@@ -7,24 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		211C1D48191B241A00E078E8 /* iconTest.png in Resources */ = {isa = PBXBuildFile; fileRef = 211C1D46191B241A00E078E8 /* iconTest.png */; };
-		211C1D49191B241A00E078E8 /* iconTest@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 211C1D47191B241A00E078E8 /* iconTest@2x.png */; };
 		2171F2281907122B002BC717 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2171F2271907122B002BC717 /* Foundation.framework */; };
 		2171F22A1907122B002BC717 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2171F2291907122B002BC717 /* CoreGraphics.framework */; };
 		2171F22C1907122B002BC717 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2171F22B1907122B002BC717 /* UIKit.framework */; };
 		2171F2321907122B002BC717 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2171F2301907122B002BC717 /* InfoPlist.strings */; };
 		2171F2341907122B002BC717 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2171F2331907122B002BC717 /* main.m */; };
-		2171F2381907122B002BC717 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2171F2371907122B002BC717 /* AppDelegate.m */; };
 		2171F23B1907122B002BC717 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2171F2391907122B002BC717 /* Main.storyboard */; };
-		2171F23E1907122B002BC717 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2171F23D1907122B002BC717 /* ViewController.m */; };
 		2171F2401907122B002BC717 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2171F23F1907122B002BC717 /* Images.xcassets */; };
 		2171F2471907122B002BC717 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2171F2461907122B002BC717 /* XCTest.framework */; };
 		2171F2481907122B002BC717 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2171F2271907122B002BC717 /* Foundation.framework */; };
 		2171F2491907122B002BC717 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2171F22B1907122B002BC717 /* UIKit.framework */; };
-		2171F2511907122B002BC717 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2171F24F1907122B002BC717 /* InfoPlist.strings */; };
-		2171F2531907122B002BC717 /* MessageBannerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2171F2521907122B002BC717 /* MessageBannerTests.m */; };
-		2171F2601907139B002BC717 /* MessageBanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 2171F25F1907139B002BC717 /* MessageBanner.m */; };
-		21774C7719071817000CB95C /* MessageBannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21774C7619071817000CB95C /* MessageBannerView.m */; };
+		21D0CF8C193BE81B00C160EC /* MessageBannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D0CF8B193BE81B00C160EC /* MessageBannerView.m */; };
+		21D0CF8F193BE83800C160EC /* MessageBanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D0CF8E193BE83800C160EC /* MessageBanner.m */; };
+		21D0CF92193BE8BA00C160EC /* iconTest.png in Resources */ = {isa = PBXBuildFile; fileRef = 21D0CF90193BE8BA00C160EC /* iconTest.png */; };
+		21D0CF93193BE8BA00C160EC /* iconTest@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 21D0CF91193BE8BA00C160EC /* iconTest@2x.png */; };
+		21D0CF98193BE91E00C160EC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D0CF95193BE91E00C160EC /* AppDelegate.m */; };
+		21D0CF99193BE91E00C160EC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D0CF97193BE91E00C160EC /* ViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,8 +36,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		211C1D46191B241A00E078E8 /* iconTest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconTest.png; sourceTree = "<group>"; };
-		211C1D47191B241A00E078E8 /* iconTest@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconTest@2x.png"; sourceTree = "<group>"; };
 		2171F2241907122B002BC717 /* MessageBanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MessageBanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2171F2271907122B002BC717 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2171F2291907122B002BC717 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -48,21 +44,20 @@
 		2171F2311907122B002BC717 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		2171F2331907122B002BC717 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2171F2351907122B002BC717 /* MessageBanner-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MessageBanner-Prefix.pch"; sourceTree = "<group>"; };
-		2171F2361907122B002BC717 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		2171F2371907122B002BC717 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		2171F23A1907122B002BC717 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		2171F23C1907122B002BC717 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		2171F23D1907122B002BC717 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		2171F23F1907122B002BC717 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2171F2451907122B002BC717 /* MessageBannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MessageBannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2171F2461907122B002BC717 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		2171F24E1907122B002BC717 /* MessageBannerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MessageBannerTests-Info.plist"; sourceTree = "<group>"; };
-		2171F2501907122B002BC717 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		2171F2521907122B002BC717 /* MessageBannerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageBannerTests.m; sourceTree = "<group>"; };
-		2171F25E1907139B002BC717 /* MessageBanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBanner.h; sourceTree = "<group>"; };
-		2171F25F1907139B002BC717 /* MessageBanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageBanner.m; sourceTree = "<group>"; };
-		21774C7519071817000CB95C /* MessageBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBannerView.h; sourceTree = "<group>"; };
-		21774C7619071817000CB95C /* MessageBannerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageBannerView.m; sourceTree = "<group>"; };
+		21D0CF8A193BE81B00C160EC /* MessageBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessageBannerView.h; path = MessageBanner/Views/MessageBannerView.h; sourceTree = "<group>"; };
+		21D0CF8B193BE81B00C160EC /* MessageBannerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessageBannerView.m; path = MessageBanner/Views/MessageBannerView.m; sourceTree = "<group>"; };
+		21D0CF8D193BE83800C160EC /* MessageBanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessageBanner.h; path = MessageBanner/Classes/MessageBanner.h; sourceTree = "<group>"; };
+		21D0CF8E193BE83800C160EC /* MessageBanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessageBanner.m; path = MessageBanner/Classes/MessageBanner.m; sourceTree = "<group>"; };
+		21D0CF90193BE8BA00C160EC /* iconTest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iconTest.png; path = "Demo MessageBanner/Ressources/images/iconTest.png"; sourceTree = "<group>"; };
+		21D0CF91193BE8BA00C160EC /* iconTest@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iconTest@2x.png"; path = "Demo MessageBanner/Ressources/images/iconTest@2x.png"; sourceTree = "<group>"; };
+		21D0CF94193BE91E00C160EC /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = "Demo MessageBanner/AppDelegate.h"; sourceTree = "<group>"; };
+		21D0CF95193BE91E00C160EC /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = "Demo MessageBanner/AppDelegate.m"; sourceTree = "<group>"; };
+		21D0CF96193BE91E00C160EC /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = "Demo MessageBanner/ViewController.h"; sourceTree = "<group>"; };
+		21D0CF97193BE91E00C160EC /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = "Demo MessageBanner/ViewController.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,8 +87,8 @@
 		211C1D4A191B26D600E078E8 /* Ressources */ = {
 			isa = PBXGroup;
 			children = (
-				211C1D47191B241A00E078E8 /* iconTest@2x.png */,
-				211C1D46191B241A00E078E8 /* iconTest.png */,
+				21D0CF90193BE8BA00C160EC /* iconTest.png */,
+				21D0CF91193BE8BA00C160EC /* iconTest@2x.png */,
 			);
 			name = Ressources;
 			sourceTree = "<group>";
@@ -102,7 +97,6 @@
 			isa = PBXGroup;
 			children = (
 				2171F22D1907122B002BC717 /* MessageBannerExample */,
-				2171F24C1907122B002BC717 /* MessageBannerTests */,
 				2171F2261907122B002BC717 /* Frameworks */,
 				2171F2251907122B002BC717 /* Products */,
 			);
@@ -131,13 +125,8 @@
 		2171F22D1907122B002BC717 /* MessageBannerExample */ = {
 			isa = PBXGroup;
 			children = (
+				21D0CF89193BE76500C160EC /* Demo MessageBanner */,
 				2171F25C1907132F002BC717 /* MessageBanner */,
-				2171F2361907122B002BC717 /* AppDelegate.h */,
-				2171F2371907122B002BC717 /* AppDelegate.m */,
-				2171F2391907122B002BC717 /* Main.storyboard */,
-				2171F23C1907122B002BC717 /* ViewController.h */,
-				2171F23D1907122B002BC717 /* ViewController.m */,
-				211C1D4A191B26D600E078E8 /* Ressources */,
 				2171F23F1907122B002BC717 /* Images.xcassets */,
 				2171F22E1907122B002BC717 /* Supporting Files */,
 			);
@@ -156,24 +145,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		2171F24C1907122B002BC717 /* MessageBannerTests */ = {
-			isa = PBXGroup;
-			children = (
-				2171F2521907122B002BC717 /* MessageBannerTests.m */,
-				2171F24D1907122B002BC717 /* Supporting Files */,
-			);
-			path = MessageBannerTests;
-			sourceTree = "<group>";
-		};
-		2171F24D1907122B002BC717 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				2171F24E1907122B002BC717 /* MessageBannerTests-Info.plist */,
-				2171F24F1907122B002BC717 /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		2171F25C1907132F002BC717 /* MessageBanner */ = {
 			isa = PBXGroup;
 			children = (
@@ -186,8 +157,8 @@
 		2171F25D1907134D002BC717 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				2171F25E1907139B002BC717 /* MessageBanner.h */,
-				2171F25F1907139B002BC717 /* MessageBanner.m */,
+				21D0CF8D193BE83800C160EC /* MessageBanner.h */,
+				21D0CF8E193BE83800C160EC /* MessageBanner.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -195,10 +166,23 @@
 		21B0B986193711B000BB1515 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				21774C7519071817000CB95C /* MessageBannerView.h */,
-				21774C7619071817000CB95C /* MessageBannerView.m */,
+				21D0CF8A193BE81B00C160EC /* MessageBannerView.h */,
+				21D0CF8B193BE81B00C160EC /* MessageBannerView.m */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		21D0CF89193BE76500C160EC /* Demo MessageBanner */ = {
+			isa = PBXGroup;
+			children = (
+				211C1D4A191B26D600E078E8 /* Ressources */,
+				21D0CF94193BE91E00C160EC /* AppDelegate.h */,
+				21D0CF95193BE91E00C160EC /* AppDelegate.m */,
+				21D0CF96193BE91E00C160EC /* ViewController.h */,
+				21D0CF97193BE91E00C160EC /* ViewController.m */,
+				2171F2391907122B002BC717 /* Main.storyboard */,
+			);
+			name = "Demo MessageBanner";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -277,11 +261,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21D0CF93193BE8BA00C160EC /* iconTest@2x.png in Resources */,
 				2171F2401907122B002BC717 /* Images.xcassets in Resources */,
-				211C1D48191B241A00E078E8 /* iconTest.png in Resources */,
 				2171F2321907122B002BC717 /* InfoPlist.strings in Resources */,
 				2171F23B1907122B002BC717 /* Main.storyboard in Resources */,
-				211C1D49191B241A00E078E8 /* iconTest@2x.png in Resources */,
+				21D0CF92193BE8BA00C160EC /* iconTest.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,7 +273,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2171F2511907122B002BC717 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,11 +283,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2171F23E1907122B002BC717 /* ViewController.m in Sources */,
-				2171F2601907139B002BC717 /* MessageBanner.m in Sources */,
-				2171F2381907122B002BC717 /* AppDelegate.m in Sources */,
+				21D0CF99193BE91E00C160EC /* ViewController.m in Sources */,
+				21D0CF98193BE91E00C160EC /* AppDelegate.m in Sources */,
 				2171F2341907122B002BC717 /* main.m in Sources */,
-				21774C7719071817000CB95C /* MessageBannerView.m in Sources */,
+				21D0CF8F193BE83800C160EC /* MessageBanner.m in Sources */,
+				21D0CF8C193BE81B00C160EC /* MessageBannerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,7 +295,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2171F2531907122B002BC717 /* MessageBannerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,14 +323,6 @@
 				2171F23A1907122B002BC717 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		2171F24F1907122B002BC717 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2171F2501907122B002BC717 /* en */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

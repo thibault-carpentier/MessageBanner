@@ -446,16 +446,22 @@ static struct delegateMethodsCaching {
         [message removeFromSuperview];
         [[[MessageBanner sharedSingleton] messagesBannersList] removeObjectAtIndex:0];
         [MessageBanner sharedSingleton].messageOnScreen = NO;
-        if ([[[MessageBanner sharedSingleton] messagesBannersList] count]) {
-            [[MessageBanner sharedSingleton] showMessageBannerOnScreen];
-        }
+        
         if (completion) {
             completion();
         }
+        
+        
         if (_delegate && _delegateRespondTo.MessageBannerViewDidDisappear == YES) {
             [_delegate messageBannerViewDidDisappear:message];
         }
-    }];
+
+        
+        if ([[[MessageBanner sharedSingleton] messagesBannersList] count]) {
+            [[MessageBanner sharedSingleton] showMessageBannerOnScreen];
+        }
+        
+         }];
 }
 
 #pragma mark -

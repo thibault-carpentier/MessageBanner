@@ -10,14 +10,14 @@
 @class MessageBannerView;
 
 typedef NS_ENUM(NSInteger, MessageBannerType) {
-    MessageBannerTypeMessage  = 0
+      MessageBannerTypeMessage  = 0
     , MessageBannerTypeWarning  = 1
     , MessageBannerTypeError    = 2
     , MessageBannerTypeSuccess  = 3
 };
 
 typedef NS_ENUM(NSInteger, MessageBannerPosition) {
-    MessageBannerPositionTop    = 0
+      MessageBannerPositionTop    = 0
     , MessageBannerPositionCenter = 1
     , MessageBannerPositionBottom = 2
 };
@@ -37,8 +37,6 @@ typedef NS_ENUM(NSInteger, MessageBannerDuration) {
 - (void)messageBannerViewDidDisappear:(MessageBannerView *)messageBanner;
 
 @end
-
-
 
 
 @interface MessageBanner : NSObject
