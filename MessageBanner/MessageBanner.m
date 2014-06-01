@@ -232,7 +232,7 @@ static struct delegateMethodsCaching {
 
 
 
-+ (void)setMessageBannerDefaultDelegate:(id<MessageBannerDelegate>)aDelegate {
++ (void)setMessageBannerDelegate:(id<MessageBannerDelegate>)aDelegate {
     if (_delegate != aDelegate) {
         
         _delegate = aDelegate;
@@ -457,7 +457,6 @@ static struct delegateMethodsCaching {
         }
     }];
 }
-
 
 #pragma mark -
 #pragma mark Message Banner Timer method
