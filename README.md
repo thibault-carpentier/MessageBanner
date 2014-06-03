@@ -1,4 +1,5 @@
-Message-Alert
+Message Banner
 =============
 
-Message Alert Classes
+Message Banner Classes
+
