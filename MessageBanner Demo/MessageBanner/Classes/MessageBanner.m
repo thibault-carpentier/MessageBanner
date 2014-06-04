@@ -28,9 +28,7 @@
 #define USER_DISMISS_DEFAULT    YES
 
 static MessageBanner *sharedSingleton;
-
 static id <MessageBannerDelegate> _delegate;
-
 static struct delegateMethodsCaching {
     
     unsigned int messageBannerViewWillAppear:1;

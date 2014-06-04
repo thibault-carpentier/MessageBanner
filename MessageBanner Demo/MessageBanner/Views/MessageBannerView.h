@@ -27,6 +27,7 @@
 
 @property (nonatomic, strong)           NSTimer*                dismissTimer;
 @property (nonatomic, assign)           BOOL                    isBannerDisplayed;
+@property (nonatomic, copy)             NSDictionary            *currentDesign;
 
 - (id)initWithTitle:(NSString *)title
            subtitle:(NSString *)subtitle

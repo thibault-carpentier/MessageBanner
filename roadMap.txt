@@ -1,14 +1,16 @@
 - Finalize JSON View Style Config file
-
 	- Add Blur opt in view
-	- Default image
-
 
 - Create JSON View Behavior Config File
 	- Create Config for dismiss methods
+
 	- Create config for animation times
+
+
 	- Create config for stay in screen automatic mode calculation
+
 	- Add default image enabled or not
+
 
 
 - Create Manager JSON config File
@@ -18,9 +20,10 @@
 	- Create Auto depop when screen change var
 
 
-- Implement default View Controller methods
 
+- Implement default View Controller methods
 - Add/Send signals On same moments as delegates
+
 
 - Correct bad position when phone rotate if on top with navBar
 

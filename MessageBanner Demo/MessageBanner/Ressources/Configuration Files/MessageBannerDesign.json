@@ -1,10 +1,12 @@
 {
     "Error": {
-        "backgroundColor"                   : "#EC736B"
-        ,"backgroundImageName"              : "ErrorBackgroundDefaultImage.pngNOT_ACTIVE"
+         "defaultImageForType"              : "ErrorDefaultLeftImage.png"
+        
+        ,"backgroundColor"                  : "#EC736B"
+        ,"backgroundImageName"              : "ErrorBackgroundDefaultImage.pngNO"
         ,"backgroundAlpha"                  : 0.98
  
-        ,"titleTextColor"                   : "#C40011"
+        ,"titleTextColor"                   : "#97000D"
         ,"titleTextSize"                    : 14
         ,"titleTextShadowColor"             : "#FFFFFF"
         ,"titleTextShadowAlpha"             : 0.25
@@ -18,7 +20,7 @@
         ,"subtitleTextShadowOffsetX"        : 0
         ,"subtitleTextShadowOffsetY"        : 1
         
-        ,"buttonBackgroundColor"            : "#C40011"
+        ,"buttonBackgroundColor"            : "#97000D"
         ,"buttonBackgroundImage"            : "CustomBackgroundImage.pngNOT_ACTIVE"
         ,"buttonBackgroundPatternImage"     : "CustomBackgroundPattern.pngNOT_ACTIVE"
         ,"buttonBackgroundAlpha"            : 0.98
@@ -34,13 +36,15 @@
     },
     
     "Warning": {
-        "backgroundColor"                   : "#EBD651"
-        ,"backgroundImageName"              : "WarningBackgroundDefaultImage.pngNOT_ACTIVE"
+        "defaultImageForType"               : "WarningDefaultLeftImage.png"
+        
+        ,"backgroundColor"                  : "#F19B2C"
+        ,"backgroundImageName"              : "WarningBackgroundDefaultImage.pngNOT"
         ,"backgroundAlpha"                  : 0.98
         
-        ,"titleTextColor"                   : "#8A6D3B"
+        ,"titleTextColor"                   : "#FDE4C6"
         ,"titleTextSize"                    : 14
-        ,"titleTextShadowColor"             : "#FFFFFF"
+        ,"titleTextShadowColor"             : "#000000"
         ,"titleTextShadowAlpha"             : 0.25
         ,"titleTextShadowOffsetX"           : 0
         ,"titleTextShadowOffsetY"           : 1
@@ -52,7 +56,7 @@
         ,"subtitleTextShadowOffsetX"        : 0
         ,"subtitleTextShadowOffsetY"        : 1
         
-        ,"buttonBackgroundColor"            : "#8A6D3B"
+        ,"buttonBackgroundColor"            : "#FDE4C6"
         ,"buttonBackgroundImage"            : "CustomBackgroundImage.pngNOT_ACTIVE"
         ,"buttonBackgroundPatternImage"     : "CustomBackgroundPattern.pngNOT_ACTIVE"
         ,"buttonBackgroundAlpha"            : 0.98
@@ -60,15 +64,17 @@
         ,"buttonBorderColor"                : "#FFFFFF"
         ,"buttonBorderAlpha"                : 0.75
         ,"buttonBorderSize"                 : 0.0
-        ,"buttonTextColor"                  : "#FFFFFF"
-        ,"buttonTextShadowColor"            : "#000000"
+        ,"buttonTextColor"                  : "#000000"
+        ,"buttonTextShadowColor"            : "#FFFFFF"
         ,"buttonTextShadowAlpha"            : 0.1
         ,"buttonTextShadowOffsetX"          : 0
         ,"buttonTextShadowOffsetY"          : 1
     },
     
     "Message": {
-        "backgroundColor"                   : "#87D3F2"
+         "defaultImageForType"              : "MessageDefaultLeftImage.png"
+        
+        ,"backgroundColor"                  : "#87D3F2"
         ,"backgroundImageName"              : "MessageBackgroundDefaultImage.pngNOT_ACTIVE"
         ,"backgroundAlpha"                  : 0.98
         
@@ -102,8 +108,10 @@
     },
     
     "Success": {
-        "backgroundColor"                   : "#78EE8A"
-        ,"backgroundImageName"              : "SuccessBackgroundDefaultImage.pngNOT_ACTIVE"
+         "defaultImageForType"              : "SuccessDefaultLeftImage.png"
+ 
+        ,"backgroundColor"                  : "#78EE8A"
+        ,"backgroundImageName"              : "SuccessBackgroundDefaultImage.pngNO"
         ,"backgroundAlpha"                  : 0.98
         
         ,"titleTextColor"                   : "#3BAF4A"
@@ -115,7 +123,7 @@
         
         ,"subtitleTextColor"                : "#FFFFFF"
         ,"subtitleTextSize"                 : 12
-        ,"subtitleTextShadowColor"          : "#000000"
+        ,"subtitleTextShadowColor"          : "#3BAF4A"
         ,"subtitleTextShadowAlpha"          : 0.25
         ,"subtitleTextShadowOffsetX"        : 0
         ,"subtitleTextShadowOffsetY"        : 1

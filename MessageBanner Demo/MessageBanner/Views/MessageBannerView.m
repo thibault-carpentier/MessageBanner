@@ -22,6 +22,8 @@
 #define BACKGROUND_ALPHA_KEY                @"backgroundAlpha"
 #define BACKGROUND_IMAGE_KEY                @"backgroundImageName"
 
+#define DEFAULT_TYPE_IMAGE_KEY              @"defaultImageForType"
+
 #define TITLE_TEXT_SIZE_KEY                 @"titleTextSize"
 #define TITLE_TEXT_COLOR_KEY                @"titleTextColor"
 #define TITLE_TEXT_SHADOW_COLOR_KEY         @"titleTextShadowColor"
@@ -142,6 +144,14 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         
         self.messageViewHeight = 0.0f;
         _isBannerDisplayed = NO;
+
+        _currentDesign = [[MessageBannerView messageBannerDesign] objectForKey:[self getStyleTypeLabel:self.bannerType]];
+        // Adding Default Image from config
+        if (_image == nil) {
+            _image = [UIImage imageNamed:[_currentDesign objectForKey:DEFAULT_TYPE_IMAGE_KEY]];
+        }
+        
+        
         
         // To be declined according to position;
         
@@ -155,12 +165,12 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         [self addSubview:self.subtitleLabel];
 
         // Setting up style
-        [self setupStyleWithType:bannerType];
+        [self setupStyleWithType:self.bannerType];
         
         //        Setting up frames
         [self setTitleFrame:self.titleLabel];
         [self setSubtitleFrame:self.subtitleLabel];
-        [self addImageOnBannerAndSetupFrame:image];
+        [self addImageOnBannerAndSetupFrame:self.image];
         [self centerButton];
         //        [self setImageFrame:image]
         
@@ -172,7 +182,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         
         
         //        Adding dismiss gesture
-        if (dismissingEnabled) {
+        if (self.userDismissEnabled) {
             [self addDismissMethod];
         }
     }
@@ -280,7 +290,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     
     //     If image then offset the text more
     if (self.image != nil) {
-        leftOffset += (self.image.size.width + (2 * ELEMENTS_PADDING));
+        leftOffset += (self.image.size.width + (ELEMENTS_PADDING));
     }
     
     if (self.buttonTitle && [self.buttonTitle length]) {
@@ -325,7 +335,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     
     //         If image then offset the text more
     if (self.image != nil) {
-        leftOffset += (self.image.size.width + (2 * ELEMENTS_PADDING));
+        leftOffset += (self.image.size.width + (ELEMENTS_PADDING));
     }
     
     if (self.buttonTitle && [self.buttonTitle length]) {
@@ -350,7 +360,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 - (void)addImageOnBannerAndSetupFrame:(UIImage *)image {
     
     self.imageView = [[UIImageView alloc] initWithImage:image];
-    self.imageView.frame = CGRectMake(ELEMENTS_PADDING * 2,
+    self.imageView.frame = CGRectMake(ELEMENTS_PADDING,
                                       ((ELEMENTS_PADDING +  self.messageViewHeight - image.size.height) /2),
                                       image.size.width,
                                       image.size.height);
@@ -391,9 +401,9 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 
 #pragma mark -
 #pragma mark View Cosmetic
-- (void) setupStyleWithType:(MessageBannerType)bannerType {
+-(NSString *)getStyleTypeLabel:(MessageBannerType)bannerType {
     NSString* styleLabel;
-
+    
     switch (bannerType) {
         case MessageBannerTypeError:
             styleLabel = ERROR_JSON_LABEL;
@@ -411,7 +421,11 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
             styleLabel = MESSAGE_JSON_LABEL;
             break;
     }
-    [self applyMessageStyleFromDictionnary:[[MessageBannerView messageBannerDesign] objectForKey:styleLabel]];
+    return styleLabel;
+}
+
+- (void) setupStyleWithType:(MessageBannerType)bannerType {
+     [self applyMessageStyleFromDictionnary:[[MessageBannerView messageBannerDesign] objectForKey:[self getStyleTypeLabel:bannerType]]];
 }
 
 - (void)applyMessageStyleFromDictionnary:(NSDictionary *)messageStyle {
@@ -451,7 +465,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         [self.button setBackgroundImage:[UIImage imageNamed:[messageStyle objectForKey:BUTTON_BACKGROUND_IMAGE_KEY]] forState:UIControlStateNormal];
         [self.button setAlpha:[[messageStyle objectForKey:BUTTON_BACKGROUND_ALPHA_KEY] floatValue]];
     }
-    if ([messageStyle objectForKey:BUTTON_BACKGROUND_PATTERN_IMAGE_KEY] != nil&&
+    if ([messageStyle objectForKey:BUTTON_BACKGROUND_PATTERN_IMAGE_KEY] != nil &&
         [UIImage imageNamed:[messageStyle objectForKey:BUTTON_BACKGROUND_PATTERN_IMAGE_KEY]] != nil) {
         [self.button setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[messageStyle objectForKey:BUTTON_BACKGROUND_PATTERN_IMAGE_KEY]]]];
         [self.button setAlpha:[[messageStyle objectForKey:BUTTON_BACKGROUND_ALPHA_KEY] floatValue]];
