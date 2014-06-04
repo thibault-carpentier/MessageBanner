@@ -7,6 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+
+#define MESSAGE_BANNER_VIEW_WILL_APPEAR_NOTIFICATION @"messageBannerViewWillAppearNotification"
+#define MESSAGE_BANNER_VIEW_DID_APPEAR_NOTIFICATION @"messageBannerViewDidAppearNotification"
+#define MESSAGE_BANNER_VIEW_WILL_DISAPPEAR_NOTIFICATION @"messageBannerViewWillDisappearNotification"
+#define MESSAGE_BANNER_VIEW_DID_DISAPPEAR_NOTIFICATION @"messageBannerViewDidDisappearNotification"
+
 @class MessageBannerView;
 
 typedef NS_ENUM(NSInteger, MessageBannerType) {

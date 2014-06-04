@@ -39,6 +39,11 @@
     self.messagePosition = MessageBannerPositionTop;
     self.userDismissEnabled = YES;
     self.buttonTitle = nil;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBannerViewWillAppearNotification:) name:MESSAGE_BANNER_VIEW_WILL_APPEAR_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBannerViewDidAppearNotification:) name:MESSAGE_BANNER_VIEW_DID_APPEAR_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBannerViewWillDisappearNotification:) name:MESSAGE_BANNER_VIEW_WILL_DISAPPEAR_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBannerViewDidDisappearNotification:) name:MESSAGE_BANNER_VIEW_DID_DISAPPEAR_NOTIFICATION object:nil];
 }
 
 #pragma mark -
@@ -56,9 +61,29 @@
     NSLog(@"MessageBanner [WILL DISAPPEAR]");
 }
 
--(void)messageBannerViewDidDisappear:(MessageBannerView *)messageBanner {
+- (void)messageBannerViewDidDisappear:(MessageBannerView *)messageBanner {
     NSLog(@"MessageBanner [DID DISAPPEAR]");
 }
+
+#pragma mark -
+#pragma mark MessageBanner notification methods
+
+- (void)messageBannerViewWillAppearNotification:(MessageBannerView *)messageBanner {
+    NSLog(@"NOTIFICATION => MessageBanner [WILL APPEAR]");
+}
+
+- (void)messageBannerViewDidAppearNotification:(MessageBannerView *)messageBanner {
+    NSLog(@"NOTIFICATION => MessageBanner [DID APPEAR]");
+}
+
+- (void)messageBannerViewWillDisappearNotification:(MessageBannerView *)messageBanner {
+    NSLog(@"NOTIFICATION => MessageBanner [WILL DISAPPEAR]");
+}
+
+- (void)messageBannerViewDidDisappearNotification:(MessageBannerView *)messageBanner {
+    NSLog(@"NOTIFICATION => MessageBanner [DID DISAPPEAR]");
+}
+
 
 #pragma mark -
 #pragma mark ConvertionMethods
