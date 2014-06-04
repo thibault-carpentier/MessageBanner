@@ -30,6 +30,7 @@
 static MessageBanner *sharedSingleton;
 
 static id <MessageBannerDelegate> _delegate;
+
 static struct delegateMethodsCaching {
     
     unsigned int messageBannerViewWillAppear:1;
@@ -38,8 +39,6 @@ static struct delegateMethodsCaching {
     unsigned int MessageBannerViewDidDisappear:1;
     
 } _delegateRespondTo;
-
-
 
 + (MessageBanner *)sharedSingleton
 {

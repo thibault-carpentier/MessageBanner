@@ -8,15 +8,61 @@
 
 #import "MessageBannerView.h"
 #import "MessageBanner.h"
+#import "HexColor.h"
 
 
-#define ELEMENTS_PADDING 16.0f
+#define DEFAULT_DESIGN_FILE                 @"MessageBannerDesign.json"
+
+#define ERROR_JSON_LABEL                    @"Error"
+#define WARNING_JSON_LABEL                  @"Warning"
+#define MESSAGE_JSON_LABEL                  @"Message"
+#define SUCCESS_JSON_LABEL                  @"Success"
+
+#define BACKGROUND_COLOR_KEY                @"backgroundColor"
+#define BACKGROUND_ALPHA_KEY                @"backgroundAlpha"
+#define BACKGROUND_IMAGE_KEY                @"backgroundImageName"
+
+#define TITLE_TEXT_SIZE_KEY                 @"titleTextSize"
+#define TITLE_TEXT_COLOR_KEY                @"titleTextColor"
+#define TITLE_TEXT_SHADOW_COLOR_KEY         @"titleTextShadowColor"
+#define TITLE_TEXT_SHADOW_OFFSET_X_KEY      @"titleTextShadowOffsetX"
+#define TITLE_TEXT_SHADOW_OFFSET_Y_KEY      @"titleTextShadowOffsetY"
+#define TITLE_TEXT_SHADOW_ALPHA_KEY         @"titleTextShadowAlpha"
+
+#define SUBTITLE_TEXT_SIZE_KEY              @"subtitleTextSize"
+#define SUBTITLE_TEXT_COLOR_KEY             @"subtitleTextColor"
+#define SUBTITLE_TEXT_SHADOW_COLOR_KEY      @"subtitleTextShadowColor"
+#define SUBTITLE_TEXT_SHADOW_OFFSET_X_KEY   @"subtitleTextShadowOffsetX"
+#define SUBTITLE_TEXT_SHADOW_OFFSET_Y_KEY   @"subtitleTextShadowOffsetY"
+#define SUBTITLE_TEXT_SHADOW_ALPHA_KEY      @"subtitleTextShadowAlpha"
+
+#define BUTTON_BACKGROUND_COLOR_KEY         @"buttonBackgroundColor"
+#define BUTTON_BACKGROUND_IMAGE_KEY         @"buttonBackgroundImage"
+#define BUTTON_BACKGROUND_PATTERN_IMAGE_KEY @"buttonBackgroundPatternImage"
+#define BUTTON_BACKGROUND_ALPHA_KEY         @"buttonBackgroundAlpha"
+
+#define BUTTON_CORNER_RADIUS_KEY            @"buttonCornerRadius"
+#define BUTTON_BORDER_COLOR_KEY             @"buttonBorderColor"
+#define BUTTON_BORDER_ALPHA_KEY             @"buttonBorderAlpha"
+#define BUTTON_BORDER_SIZE_KEY              @"buttonBorderSize"
+
+#define BUTTON_TEXT_COLOR_KEY               @"buttonTextColor"
+#define BUTTON_TEXT_SHADOW_COLOR_KEY        @"buttonTextShadowColor"
+#define BUTTON_TEXT_SHADOW_OFFSET_X_KEY     @"buttonTextShadowOffsetX"
+#define BUTTON_TEXT_SHADOW_OFFSET_Y_KEY     @"buttonTextShadowOffsetY"
+#define BUTTON_TEXT_SHADOW_ALPHA_KEY        @"buttonTextShadowAlpha"
+
+
+#define ELEMENTS_PADDING                    16.0f
+
 
 @interface MessageBanner (MessageBannerView)
     - (void) hideMessageBanner:(MessageBannerView *)messageBanner
                    withGesture:(UIGestureRecognizer *)gesture
                  andCompletion:(void (^)())completion; // use private call of MessageBanner
 @end
+
+static NSMutableDictionary* _messageBannerDesign;
 
 @interface MessageBannerView ()
 
@@ -30,6 +76,39 @@
 @end
 
 @implementation MessageBannerView
+
+#pragma mark -
+#pragma mark Message Banner Design File Methods
+
++ (BOOL)addMessageBannerDesignFromFileNamed:(NSString *)file {
+    BOOL success = YES;
+    NSError* error;
+    
+    NSString *filePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:file];
+    NSDictionary* newDesign = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath]
+                                                              options:kNilOptions
+                                                                error:&error];
+    if (error) {
+        success = NO;
+        @throw ([NSException exceptionWithName:@"Error loading design" reason:[NSString stringWithFormat:@"Can not load %@.\nError:%@", file, error] userInfo:nil]);
+    } else {
+        [[MessageBannerView messageBannerDesign] addEntriesFromDictionary:newDesign];
+    }
+    return success;
+}
+
++ (NSMutableDictionary *)messageBannerDesign {
+    if (!_messageBannerDesign) {
+        NSError* error;
+        NSString *filePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:DEFAULT_DESIGN_FILE];
+        _messageBannerDesign = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath] options:kNilOptions error:&error];
+        
+        if (error) {
+            @throw ([NSException exceptionWithName:@"Error loading default design" reason:[NSString stringWithFormat:@"Can not load %@.\nError:%@", DEFAULT_DESIGN_FILE, error] userInfo:nil]);
+        }
+    }
+    return _messageBannerDesign;
+}
 
 #pragma mark -
 #pragma mark Init and dismiss methods
@@ -75,6 +154,8 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         self.subtitleLabel = [self createSubtitleLabel];
         [self addSubview:self.subtitleLabel];
 
+        // Setting up style
+        [self setupStyleWithType:bannerType];
         
         //        Setting up frames
         [self setTitleFrame:self.titleLabel];
@@ -86,7 +167,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         //        Setting message frame :
         [self setFrame:[self createViewFrame]];
         
-    	[self setupStyleWithType:bannerType];
+
         
         
         
@@ -185,10 +266,6 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     
     //    Changing text appearance
     [titleLabel setBackgroundColor:[UIColor clearColor]];
-    [titleLabel setTextColor:[UIColor blackColor]];
-    [titleLabel setFont:[UIFont boldSystemFontOfSize:14]];
-    // set new font and size text later
-    // set shadow ?
     
     //    title formating
     [titleLabel setNumberOfLines:0];
@@ -235,11 +312,6 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     
     //    Changing text appearance
     [subtitleLabel setBackgroundColor:[UIColor clearColor]];
-    
-    [subtitleLabel setTextColor:[UIColor grayColor]];
-    [subtitleLabel setFont:[UIFont boldSystemFontOfSize:12]];
-    // set new font and size text later
-    // set shadow ?
     
     //    subtitle formating
     [subtitleLabel setNumberOfLines:0];
@@ -308,9 +380,6 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
             [self.button addTarget:self action:@selector(userDidPressedButton:) forControlEvents:UIControlEventTouchUpInside];
         }
         
-#warning to Remove
-        self.button.backgroundColor = [UIColor lightGrayColor];
-        
         [self addSubview:self.button];
     }
 }
@@ -323,24 +392,77 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 #pragma mark -
 #pragma mark View Cosmetic
 - (void) setupStyleWithType:(MessageBannerType)bannerType {
-    
+    NSString* styleLabel;
+
     switch (bannerType) {
         case MessageBannerTypeError:
-            self.backgroundColor = [UIColor redColor];
+            styleLabel = ERROR_JSON_LABEL;
             break;
         case MessageBannerTypeWarning:
-            self.backgroundColor = [UIColor yellowColor];
+            styleLabel = WARNING_JSON_LABEL;
             break;
         case MessageBannerTypeMessage:
-            self.backgroundColor = [UIColor grayColor];
+            styleLabel = MESSAGE_JSON_LABEL;
             break;
         case MessageBannerTypeSuccess:
-            self.backgroundColor = [UIColor greenColor];
+            styleLabel = SUCCESS_JSON_LABEL;
             break;
         default:
-            self.backgroundColor = [UIColor blueColor];
+            styleLabel = MESSAGE_JSON_LABEL;
             break;
     }
+    [self applyMessageStyleFromDictionnary:[[MessageBannerView messageBannerDesign] objectForKey:styleLabel]];
+}
+
+- (void)applyMessageStyleFromDictionnary:(NSDictionary *)messageStyle {
+
+    [self setBackgroundColor:[UIColor colorWithHexString:[messageStyle objectForKey:BACKGROUND_COLOR_KEY] alpha:[[messageStyle objectForKey:BACKGROUND_ALPHA_KEY] floatValue]]];
+    if ([messageStyle objectForKey:BACKGROUND_IMAGE_KEY] && [UIImage imageNamed:[messageStyle objectForKey:BACKGROUND_IMAGE_KEY]]) {
+        [self setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[messageStyle objectForKey:BACKGROUND_IMAGE_KEY]]]];
+        [self setAlpha:[[messageStyle objectForKey:BACKGROUND_ALPHA_KEY] floatValue]];
+    }
+    
+    
+    [self.titleLabel setFont:[UIFont boldSystemFontOfSize:[[messageStyle valueForKey:TITLE_TEXT_SIZE_KEY] floatValue]]];
+    [self.titleLabel setTextColor:[UIColor colorWithHexString:[messageStyle objectForKey:TITLE_TEXT_COLOR_KEY]]];
+    [self.titleLabel setShadowColor:[UIColor colorWithHexString:[messageStyle objectForKey:TITLE_TEXT_SHADOW_COLOR_KEY] alpha:[[messageStyle objectForKey:TITLE_TEXT_SHADOW_ALPHA_KEY] floatValue]]];
+    [self.titleLabel setShadowOffset:CGSizeMake([[messageStyle objectForKey:TITLE_TEXT_SHADOW_OFFSET_X_KEY] floatValue],
+                                                 [[messageStyle objectForKey: TITLE_TEXT_SHADOW_OFFSET_Y_KEY] floatValue])];
+
+    
+    [self.subtitleLabel setFont:[UIFont systemFontOfSize:[[messageStyle valueForKey:SUBTITLE_TEXT_SIZE_KEY] floatValue]]];
+    [self.subtitleLabel setTextColor:[UIColor colorWithHexString:[messageStyle objectForKey:SUBTITLE_TEXT_COLOR_KEY]]];
+    [self.subtitleLabel setShadowColor:[UIColor colorWithHexString:[messageStyle objectForKey:SUBTITLE_TEXT_SHADOW_COLOR_KEY] alpha:[[messageStyle objectForKey:SUBTITLE_TEXT_SHADOW_ALPHA_KEY] floatValue]]];
+    [self.subtitleLabel setShadowOffset:CGSizeMake([[messageStyle objectForKey:SUBTITLE_TEXT_SHADOW_OFFSET_X_KEY] floatValue],
+                                                [[messageStyle objectForKey:SUBTITLE_TEXT_SHADOW_OFFSET_Y_KEY] floatValue])];
+    
+    
+
+    [self.button setTitleColor:[UIColor colorWithHexString:[messageStyle objectForKey:BUTTON_TEXT_COLOR_KEY]] forState:UIControlStateNormal];
+    [self.button setTitleShadowColor:[UIColor colorWithHexString:[messageStyle objectForKey:BUTTON_TEXT_SHADOW_COLOR_KEY] alpha:[[messageStyle objectForKey:BUTTON_TEXT_SHADOW_ALPHA_KEY] floatValue]] forState:UIControlStateNormal];
+    [self.button.titleLabel setShadowOffset:CGSizeMake([[messageStyle objectForKey:BUTTON_TEXT_SHADOW_OFFSET_X_KEY] floatValue],
+                                                      [[messageStyle objectForKey:BUTTON_TEXT_SHADOW_OFFSET_Y_KEY] floatValue])];
+    
+    
+    [self.button setBackgroundColor:[UIColor colorWithHexString:[messageStyle objectForKey:BUTTON_BACKGROUND_COLOR_KEY] alpha:[[messageStyle objectForKey:BUTTON_BACKGROUND_ALPHA_KEY] floatValue]]];
+    
+    if ([messageStyle objectForKey:BUTTON_BACKGROUND_IMAGE_KEY] != nil &&
+        [UIImage imageNamed:[messageStyle objectForKey:BUTTON_BACKGROUND_IMAGE_KEY]] != nil) {
+        [self.button setBackgroundImage:[UIImage imageNamed:[messageStyle objectForKey:BUTTON_BACKGROUND_IMAGE_KEY]] forState:UIControlStateNormal];
+        [self.button setAlpha:[[messageStyle objectForKey:BUTTON_BACKGROUND_ALPHA_KEY] floatValue]];
+    }
+    if ([messageStyle objectForKey:BUTTON_BACKGROUND_PATTERN_IMAGE_KEY] != nil&&
+        [UIImage imageNamed:[messageStyle objectForKey:BUTTON_BACKGROUND_PATTERN_IMAGE_KEY]] != nil) {
+        [self.button setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[messageStyle objectForKey:BUTTON_BACKGROUND_PATTERN_IMAGE_KEY]]]];
+        [self.button setAlpha:[[messageStyle objectForKey:BUTTON_BACKGROUND_ALPHA_KEY] floatValue]];
+    }
+    [self.button.layer setCornerRadius:[[messageStyle objectForKey:BUTTON_CORNER_RADIUS_KEY] floatValue]];
+    [self.button.layer setMasksToBounds:YES];
+    
+    [self.button.layer setBorderColor:[[UIColor colorWithHexString:[messageStyle objectForKey:BUTTON_BORDER_COLOR_KEY] alpha:[[messageStyle objectForKey:BUTTON_BORDER_ALPHA_KEY] floatValue]] CGColor]];
+    [self.button.layer setBorderWidth:[[messageStyle objectForKey:BUTTON_BORDER_SIZE_KEY] floatValue]];
+    
+    
 }
 
 #pragma mark -

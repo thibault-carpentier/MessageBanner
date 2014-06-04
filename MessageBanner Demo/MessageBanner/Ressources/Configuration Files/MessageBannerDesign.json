@@ -1,0 +1,137 @@
+{
+    "Error": {
+        "backgroundColor"                   : "#EC736B"
+        ,"backgroundImageName"              : "ErrorBackgroundDefaultImage.pngNOT_ACTIVE"
+        ,"backgroundAlpha"                  : 0.98
+ 
+        ,"titleTextColor"                   : "#C40011"
+        ,"titleTextSize"                    : 14
+        ,"titleTextShadowColor"             : "#FFFFFF"
+        ,"titleTextShadowAlpha"             : 0.25
+        ,"titleTextShadowOffsetX"           : 0
+        ,"titleTextShadowOffsetY"           : 1
+
+        ,"subtitleTextColor"                : "#F0F0F0"
+        ,"subtitleTextSize"                 : 12
+        ,"subtitleTextShadowColor"          : "#000000"
+        ,"subtitleTextShadowAlpha"          : 0.25
+        ,"subtitleTextShadowOffsetX"        : 0
+        ,"subtitleTextShadowOffsetY"        : 1
+        
+        ,"buttonBackgroundColor"            : "#C40011"
+        ,"buttonBackgroundImage"            : "CustomBackgroundImage.pngNOT_ACTIVE"
+        ,"buttonBackgroundPatternImage"     : "CustomBackgroundPattern.pngNOT_ACTIVE"
+        ,"buttonBackgroundAlpha"            : 0.98
+        ,"buttonCornerRadius"               : 5.0
+        ,"buttonBorderColor"                : "#FFFFFF"
+        ,"buttonBorderAlpha"                : 0.75
+        ,"buttonBorderSize"                 : 0.0
+        ,"buttonTextColor"                  : "#F0F0F0"
+        ,"buttonTextShadowColor"            : "#000000"
+        ,"buttonTextShadowAlpha"            : 0.1
+        ,"buttonTextShadowOffsetX"          : 0
+        ,"buttonTextShadowOffsetY"          : 1
+    },
+    
+    "Warning": {
+        "backgroundColor"                   : "#EBD651"
+        ,"backgroundImageName"              : "WarningBackgroundDefaultImage.pngNOT_ACTIVE"
+        ,"backgroundAlpha"                  : 0.98
+        
+        ,"titleTextColor"                   : "#8A6D3B"
+        ,"titleTextSize"                    : 14
+        ,"titleTextShadowColor"             : "#FFFFFF"
+        ,"titleTextShadowAlpha"             : 0.25
+        ,"titleTextShadowOffsetX"           : 0
+        ,"titleTextShadowOffsetY"           : 1
+        
+        ,"subtitleTextColor"                : "#000000"
+        ,"subtitleTextSize"                 : 12
+        ,"subtitleTextShadowColor"          : "#FFFFFF"
+        ,"subtitleTextShadowAlpha"          : 0.25
+        ,"subtitleTextShadowOffsetX"        : 0
+        ,"subtitleTextShadowOffsetY"        : 1
+        
+        ,"buttonBackgroundColor"            : "#8A6D3B"
+        ,"buttonBackgroundImage"            : "CustomBackgroundImage.pngNOT_ACTIVE"
+        ,"buttonBackgroundPatternImage"     : "CustomBackgroundPattern.pngNOT_ACTIVE"
+        ,"buttonBackgroundAlpha"            : 0.98
+        ,"buttonCornerRadius"               : 5.0
+        ,"buttonBorderColor"                : "#FFFFFF"
+        ,"buttonBorderAlpha"                : 0.75
+        ,"buttonBorderSize"                 : 0.0
+        ,"buttonTextColor"                  : "#FFFFFF"
+        ,"buttonTextShadowColor"            : "#000000"
+        ,"buttonTextShadowAlpha"            : 0.1
+        ,"buttonTextShadowOffsetX"          : 0
+        ,"buttonTextShadowOffsetY"          : 1
+    },
+    
+    "Message": {
+        "backgroundColor"                   : "#87D3F2"
+        ,"backgroundImageName"              : "MessageBackgroundDefaultImage.pngNOT_ACTIVE"
+        ,"backgroundAlpha"                  : 0.98
+        
+        ,"titleTextColor"                   : "#2A7AB7"
+        ,"titleTextSize"                    : 14
+        ,"titleTextShadowColor"             : "#FFFFFF"
+        ,"titleTextShadowAlpha"             : 0.25
+        ,"titleTextShadowOffsetX"           : 0
+        ,"titleTextShadowOffsetY"           : 1
+        
+        ,"subtitleTextColor"                : "#FFFFFF"
+        ,"subtitleTextSize"                 : 12
+        ,"subtitleTextShadowColor"          : "#000000"
+        ,"subtitleTextShadowAlpha"          : 0.25
+        ,"subtitleTextShadowOffsetX"        : 0
+        ,"subtitleTextShadowOffsetY"        : 1
+        
+        ,"buttonBackgroundColor"            : "#2A7AB7"
+        ,"buttonBackgroundImage"            : "CustomBackgroundImage.pngNOT_ACTIVE"
+        ,"buttonBackgroundPatternImage"     : "CustomBackgroundPattern.pngNOT_ACTIVE"
+        ,"buttonBackgroundAlpha"            : 0.98
+        ,"buttonCornerRadius"               : 5.0
+        ,"buttonBorderColor"                : "#FFFFFF"
+        ,"buttonBorderAlpha"                : 0.75
+        ,"buttonBorderSize"                 : 0.0
+        ,"buttonTextColor"                  : "#FFFFFF"
+        ,"buttonTextShadowColor"            : "#000000"
+        ,"buttonTextShadowAlpha"            : 0.1
+        ,"buttonTextShadowOffsetX"          : 0
+        ,"buttonTextShadowOffsetY"          : 1
+    },
+    
+    "Success": {
+        "backgroundColor"                   : "#78EE8A"
+        ,"backgroundImageName"              : "SuccessBackgroundDefaultImage.pngNOT_ACTIVE"
+        ,"backgroundAlpha"                  : 0.98
+        
+        ,"titleTextColor"                   : "#3BAF4A"
+        ,"titleTextSize"                    : 14
+        ,"titleTextShadowColor"             : "#FFFFFF"
+        ,"titleTextShadowAlpha"             : 0.25
+        ,"titleTextShadowOffsetX"           : 0
+        ,"titleTextShadowOffsetY"           : 1
+        
+        ,"subtitleTextColor"                : "#FFFFFF"
+        ,"subtitleTextSize"                 : 12
+        ,"subtitleTextShadowColor"          : "#000000"
+        ,"subtitleTextShadowAlpha"          : 0.25
+        ,"subtitleTextShadowOffsetX"        : 0
+        ,"subtitleTextShadowOffsetY"        : 1
+        
+        ,"buttonBackgroundColor"            : "#3BAF4A"
+        ,"buttonBackgroundImage"            : "CustomBackgroundImage.pngNOT_ACTIVE"
+        ,"buttonBackgroundPatternImage"     : "CustomBackgroundPattern.pngNOT_ACTIVE"
+        ,"buttonBackgroundAlpha"            : 0.98
+        ,"buttonCornerRadius"               : 5.0
+        ,"buttonBorderColor"                : "#FFFFFF"
+        ,"buttonBorderAlpha"                : 0.75
+        ,"buttonBorderSize"                 : 0.0
+        ,"buttonTextColor"                  : "#FFFFFF"
+        ,"buttonTextShadowColor"            : "#000000"
+        ,"buttonTextShadowAlpha"            : 0.1
+        ,"buttonTextShadowOffsetX"          : 0
+        ,"buttonTextShadowOffsetY"          : 1
+    }
+}
