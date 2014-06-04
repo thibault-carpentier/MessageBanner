@@ -1,7 +1,8 @@
 - Finalize JSON View Style Config file
-	- Add Blur opt in view
 
+	- Add Blur opt in view
 	- Default image
+
 
 - Create JSON View Behavior Config File
 	- Create Config for dismiss methods
