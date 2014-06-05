@@ -95,7 +95,16 @@ typedef NS_ENUM(NSInteger, MessageBannerDuration) {
  @returns manager shared instance
  */
 + (instancetype) sharedSingleton;
-
+/**
+ Return the defaultViewController
+ @return The default view controller
+ */
++ (UIViewController *)defaultViewController;
+/**
+ Set the default view controller
+ @param aViewController the new default view controller
+ */
++ (void)setDefaultViewController:(UIViewController *)aViewController;
 #pragma mark - Set Delegate
 
 /**

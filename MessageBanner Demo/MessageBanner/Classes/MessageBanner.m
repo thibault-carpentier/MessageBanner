@@ -73,7 +73,11 @@
  */
 static MessageBanner *sharedSingleton;
 /**
- class delegate instance
+ Default view controller used if viewcontroller is nil or not passed as a parameter
+ */
+static UIViewController* _defaultViewController;
+/**
+ Class delegate instance
  */
 static id <MessageBannerDelegate> _delegate;
 /**
@@ -103,12 +107,27 @@ static struct delegateMethodsCaching {
     return sharedSingleton;
 }
 
++ (UIViewController*)defaultViewController {
+    __strong UIViewController* defaultViewController = _defaultViewController;
+    if (!defaultViewController) {
+        defaultViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    }
+    return defaultViewController;
+}
+
 - (id)init {
     if ((self = [super init])) {
         _messagesBannersList = [[NSMutableArray alloc] init];
         _messageOnScreen = NO;
     }
     return self;
+}
+
+#pragma mark -
+#pragma mark Default view controller methods
+
++ (void)setDefaultViewController:(UIViewController *)aViewController {
+    _defaultViewController = aViewController;
 }
 
 #pragma mark -
@@ -273,6 +292,10 @@ static struct delegateMethodsCaching {
                     delegate:(id<MessageBannerDelegate>)aDelegate {
     
     
+    // if not correctlyset, we use the default view controller
+    if (!viewController) {
+        viewController = [MessageBanner defaultViewController];
+    }
     
     MessageBannerView *messageBannerView = [[MessageBannerView alloc] initWithTitle:title subtitle:subtitle image:image type:type duration:duration inViewController:viewController userDissmissedCallback:userDissmissedCallback buttonTitle:buttonTitle userPressedButtonCallback:userPressedButtonCallback atPosition:messagePosition canBeDismissedByUser:dismissingEnabled];
     
