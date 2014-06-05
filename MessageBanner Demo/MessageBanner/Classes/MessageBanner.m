@@ -310,6 +310,7 @@ static struct delegateMethodsCaching {
     if (_delegate && _delegateRespondTo.messageBannerViewWillAppear == YES) {
         [_delegate messageBannerViewWillAppear:currentMessageBanner];
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:MESSAGE_BANNER_VIEW_WILL_APPEAR_NOTIFICATION object:currentMessageBanner];
     
     CGPoint target = [self calculateTargetCenter:currentMessageBanner];
     [UIView animateKeyframesWithDuration:ANIMATION_DURATION delay:0.0f options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction animations:^{
@@ -321,6 +322,7 @@ static struct delegateMethodsCaching {
         if (_delegate && _delegateRespondTo.MessageBannerViewDidAppear == YES) {
             [_delegate messageBannerViewDidAppear:currentMessageBanner];
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:MESSAGE_BANNER_VIEW_DID_APPEAR_NOTIFICATION object:currentMessageBanner];
     }];
     
     [self initAutoDismissTimerforBanner:currentMessageBanner];
@@ -369,6 +371,7 @@ static struct delegateMethodsCaching {
     if (_delegate && _delegateRespondTo.MessageBannerViewWillDisappear == YES) {
         [_delegate messageBannerViewWillDisappear:message];
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:MESSAGE_BANNER_VIEW_WILL_DISAPPEAR_NOTIFICATION object:message];
     
     CGPoint fadeOutCenter = CGPointMake(0, 0);
     
@@ -422,6 +425,7 @@ static struct delegateMethodsCaching {
         if (_delegate && _delegateRespondTo.MessageBannerViewDidDisappear == YES) {
             [_delegate messageBannerViewDidDisappear:message];
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:MESSAGE_BANNER_VIEW_DID_DISAPPEAR_NOTIFICATION object:message];
 
         
         if ([[[MessageBanner sharedSingleton] messagesBannersList] count]) {

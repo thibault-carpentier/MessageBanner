@@ -2,6 +2,8 @@
     "Error": {
          "defaultImageForType"              : "ErrorDefaultLeftImage.png"
         
+        ,"blurOption"                       : false
+        
         ,"backgroundColor"                  : "#EC736B"
         ,"backgroundImageName"              : "ErrorBackgroundDefaultImage.pngNO"
         ,"backgroundAlpha"                  : 0.98
@@ -37,6 +39,8 @@
     
     "Warning": {
         "defaultImageForType"               : "WarningDefaultLeftImage.png"
+        
+        ,"blurOption"                       : true
         
         ,"backgroundColor"                  : "#F19B2C"
         ,"backgroundImageName"              : "WarningBackgroundDefaultImage.pngNOT"
@@ -74,6 +78,8 @@
     "Message": {
          "defaultImageForType"              : "MessageDefaultLeftImage.png"
         
+        ,"blurOption"                       : false
+        
         ,"backgroundColor"                  : "#87D3F2"
         ,"backgroundImageName"              : "MessageBackgroundDefaultImage.pngNOT_ACTIVE"
         ,"backgroundAlpha"                  : 0.98
@@ -109,6 +115,8 @@
     
     "Success": {
          "defaultImageForType"              : "SuccessDefaultLeftImage.png"
+        
+        ,"blurOption"                       : false
  
         ,"backgroundColor"                  : "#78EE8A"
         ,"backgroundImageName"              : "SuccessBackgroundDefaultImage.pngNO"

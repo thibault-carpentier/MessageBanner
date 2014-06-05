@@ -9,6 +9,7 @@
 #import "MessageBannerView.h"
 #import "MessageBanner.h"
 #import "HexColor.h"
+#import "FXBlurView.h"
 
 
 #define DEFAULT_DESIGN_FILE                 @"MessageBannerDesign.json"
@@ -17,6 +18,8 @@
 #define WARNING_JSON_LABEL                  @"Warning"
 #define MESSAGE_JSON_LABEL                  @"Message"
 #define SUCCESS_JSON_LABEL                  @"Success"
+
+#define BLUR_OPTION_KEY                     @"blurOption"
 
 #define BACKGROUND_COLOR_KEY                @"backgroundColor"
 #define BACKGROUND_ALPHA_KEY                @"backgroundAlpha"
@@ -56,7 +59,7 @@
 
 
 #define ELEMENTS_PADDING                    16.0f
-
+#define ANIMATION_DURATION                  0.5
 
 @interface MessageBanner (MessageBannerView)
     - (void) hideMessageBanner:(MessageBannerView *)messageBanner
@@ -72,6 +75,9 @@ static NSMutableDictionary* _messageBannerDesign;
 @property (nonatomic, strong) UILabel*      subtitleLabel;
 @property (nonatomic, strong) UIImageView*  imageView;
 @property (nonatomic, strong) UIButton*     button;
+
+@property (nonatomic, strong) FXBlurView*   blurView;
+@property (nonatomic, assign) BOOL          isBlurEnabled;
 
 @property (nonatomic, assign) CGFloat  messageViewHeight;
 
@@ -151,8 +157,6 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
             _image = [UIImage imageNamed:[_currentDesign objectForKey:DEFAULT_TYPE_IMAGE_KEY]];
         }
         
-        
-        
         // To be declined according to position;
         
         [self addButtonOnBannerAndSetupFrame:buttonTitle];
@@ -179,16 +183,16 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         
 
         
-        
-        
         //        Adding dismiss gesture
         if (self.userDismissEnabled) {
             [self addDismissMethod];
         }
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillAppear:) name:MESSAGE_BANNER_VIEW_WILL_APPEAR_NOTIFICATION object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillDisappear:) name:MESSAGE_BANNER_VIEW_WILL_DISAPPEAR_NOTIFICATION object:nil];
     }
     return self;
 }
-
 
 #pragma mark -
 #pragma mark Dismiss methods
@@ -220,6 +224,46 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     UITapGestureRecognizer *dismissGesture3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissViewWithGesture:)];
     [dismissGesture3 setNumberOfTapsRequired:1];
     [self addGestureRecognizer:dismissGesture3];
+}
+
+#pragma mark -
+#pragma mark View Management
+
+- (void)viewWillAppear:(MessageBannerView *)messageBanner {
+    if (self.isBlurEnabled == YES) {
+        self.blurView = [[FXBlurView alloc] initWithFrame:self.viewController.view.bounds];
+        self.blurView.underlyingView = self.viewController.view;
+        self.blurView.tintColor = [UIColor clearColor];
+        self.blurView.blurRadius = 30.f;
+        self.blurView.alpha = 0.f;
+        
+        [self.viewController.view addSubview:self.blurView];
+        
+        
+        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+            self.blurView.alpha = 1.f;
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+                self.viewController.view.alpha = 1.0f;
+            }];
+        }];
+    }
+}
+
+- (void)viewWillDisappear:(MessageBannerView *)messageBanner {
+    if (self.isBlurEnabled == YES) {
+        [UIView animateWithDuration:ANIMATION_DURATION
+                         animations:^{
+                         } completion:^(BOOL finished) {
+                             [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+                                 self.blurView.alpha = 0.f;
+                             } completion:^(BOOL finished) {
+                                 [self.blurView removeFromSuperview];
+                             }];
+                         }];
+    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MESSAGE_BANNER_VIEW_WILL_APPEAR_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MESSAGE_BANNER_VIEW_WILL_DISAPPEAR_NOTIFICATION object:nil];
 }
 
 #pragma mark -
@@ -429,7 +473,9 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 }
 
 - (void)applyMessageStyleFromDictionnary:(NSDictionary *)messageStyle {
-
+ 
+    self.isBlurEnabled = ((NSNumber *)[messageStyle valueForKey:BLUR_OPTION_KEY]).boolValue;
+    
     [self setBackgroundColor:[UIColor colorWithHexString:[messageStyle objectForKey:BACKGROUND_COLOR_KEY] alpha:[[messageStyle objectForKey:BACKGROUND_ALPHA_KEY] floatValue]]];
     if ([messageStyle objectForKey:BACKGROUND_IMAGE_KEY] && [UIImage imageNamed:[messageStyle objectForKey:BACKGROUND_IMAGE_KEY]]) {
         [self setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[messageStyle objectForKey:BACKGROUND_IMAGE_KEY]]]];
