@@ -1,34 +1,75 @@
-//
-//  MessageBanner.m
-//  MessageBanner
-//
-//  Created by Thibault Carpentier on 4/22/14.
-//  Copyright (c) 2014 Thibault Carpentier. All rights reserved.
-//
+/**
+ * @file   MessageBanner.m
+ * @Author Thibault Carpentier
+ * @date   2014
+ * @brief  MessageBannerView manager.
+ *
+ * MessageBanner allow to easilly manage popups.
+ */
 
 #import "MessageBanner.h"
 #import "MessageBannerView.h"
 
+#pragma mark - MessageBanner interface
 @interface MessageBanner ()
-
+/**
+ Determine if a message is on the screen or not
+ */
 @property (nonatomic, assign) BOOL            messageOnScreen;
+/**
+ The list of message to be shown
+ */
 @property (nonatomic, strong) NSMutableArray *messagesBannersList;
-
 @end
 
 @implementation MessageBanner
 
+
+#pragma mark - Default Calculation duration values
+/**
+ Default class animation duration
+ */
 #define ANIMATION_DURATION 0.5
-#define DISPLAY_TIME_PER_PIXEL 0.02
+/**
+ Default class display time per pixel user in automatic duration calculs
+ */
+#define DISPLAY_TIME_PER_PIXEL 0.04
+/**
+ Default display duration used in automatic duration calculs
+ */
 #define DISPLAY_DEFAULT_DURATION 2.0
 
+
+#pragma mark - Default Message Banner configuration
+/**
+ Default banner type
+ */
 #define TYPE_DEFAULT            MessageBannerTypeMessage
+/**
+ Default message banner duration mode
+ */
 #define DURATION_DEFAULT        MessageBannerDurationDefault
+/**
+ Default message banner position mode
+ */
 #define POSITION_DEFAULT        MessageBannerPositionTop
+/**
+ Default user dismiss message banner mode
+ */
 #define USER_DISMISS_DEFAULT    YES
 
+#pragma mark - static instances
+/**
+ Singleton instance
+ */
 static MessageBanner *sharedSingleton;
+/**
+ class delegate instance
+ */
 static id <MessageBannerDelegate> _delegate;
+/**
+ Caching delegate methods implementation stucture
+ */
 static struct delegateMethodsCaching {
     
     unsigned int messageBannerViewWillAppear:1;
@@ -38,6 +79,12 @@ static struct delegateMethodsCaching {
     
 } _delegateRespondTo;
 
+
+#pragma mark - Init and singleton methods
+/**
+ Returns the shared instance of the manager
+ @returns manager shared instance
+ */
 + (MessageBanner *)sharedSingleton
 {
     if (!sharedSingleton)
@@ -53,6 +100,28 @@ static struct delegateMethodsCaching {
         _messageOnScreen = NO;
     }
     return self;
+}
+
+#pragma mark -
+#pragma mark Delegate Methods
+
++ (void)setMessageBannerDelegate:(id<MessageBannerDelegate>)aDelegate {
+    if (_delegate != aDelegate) {
+        
+        _delegate = aDelegate;
+        
+        struct delegateMethodsCaching newMethodCaching;
+        
+        newMethodCaching.messageBannerViewWillAppear = [_delegate respondsToSelector:@selector(messageBannerViewWillAppear:)];
+        
+        newMethodCaching.MessageBannerViewDidAppear = [_delegate respondsToSelector:@selector(messageBannerViewDidAppear:)];
+        
+        newMethodCaching.MessageBannerViewWillDisappear = [_delegate respondsToSelector:@selector(messageBannerViewWillDisappear:)];
+        
+        newMethodCaching.MessageBannerViewDidDisappear = [_delegate respondsToSelector:@selector(messageBannerViewDidDisappear:)];
+        
+        _delegateRespondTo = newMethodCaching;
+    }
 }
 
 #pragma mark -
@@ -225,112 +294,10 @@ static struct delegateMethodsCaching {
 }
 
 #pragma mark -
-#pragma mark Delegate Methods
-
-
-
-+ (void)setMessageBannerDelegate:(id<MessageBannerDelegate>)aDelegate {
-    if (_delegate != aDelegate) {
-        
-        _delegate = aDelegate;
-        
-        struct delegateMethodsCaching newMethodCaching;
-        
-        newMethodCaching.messageBannerViewWillAppear = [_delegate respondsToSelector:@selector(messageBannerViewWillAppear:)];
-        
-        newMethodCaching.MessageBannerViewDidAppear = [_delegate respondsToSelector:@selector(messageBannerViewDidAppear:)];
-        
-        newMethodCaching.MessageBannerViewWillDisappear = [_delegate respondsToSelector:@selector(messageBannerViewWillDisappear:)];
-        
-        newMethodCaching.MessageBannerViewDidDisappear = [_delegate respondsToSelector:@selector(messageBannerViewDidDisappear:)];
-        
-        _delegateRespondTo = newMethodCaching;
-    }
-}
-
-
-#pragma mark -
 #pragma mark Fade-in Message Banner methods
 
-- (CGFloat) getStatusBarSize {
-    BOOL isPortrait = UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
-    CGSize statusBarSize = [UIApplication sharedApplication].statusBarFrame.size;
-    CGFloat offset = isPortrait ? statusBarSize.height : statusBarSize.width;
-    
-    return (offset);
-}
-
--(CGFloat)calculateTopOffset:(MessageBannerView *)message {
-    CGFloat topOffset = 0.0f;
-    
-    // If has a navigationController
-    if ([message.viewController isKindOfClass:[UINavigationController class]] || [message.viewController.parentViewController isKindOfClass:[UINavigationController class]]) {
-        
-        // Getting the current view Controller
-        UINavigationController *currentNavigationController;
-        if ([message.viewController isKindOfClass:[UINavigationController class]]) {
-            currentNavigationController = (UINavigationController *)message.viewController;
-        } else {
-            currentNavigationController = (UINavigationController *)message.viewController.parentViewController;
-        }
-        
-        // If the navigationBar is visible we add his height as an offset
-        if (![currentNavigationController isNavigationBarHidden] &&
-            ![[currentNavigationController navigationBar] isHidden]) {
-            
-            // Adding the view on the navcontroller
-            [currentNavigationController.view insertSubview:message belowSubview:[currentNavigationController navigationBar]];
-            
-            topOffset += [currentNavigationController navigationBar].bounds.size.height;
-        } else {
-            [message.viewController.view addSubview:message];
-        }
-    } else {
-        [message.viewController.view addSubview:message];
-    }
-    topOffset += [self getStatusBarSize];
-    return topOffset;
-}
-
--(CGFloat)calculateBottomOffset:(MessageBannerView *)message {
-    CGFloat bottomOffset = 0.0f;
-    
-    if (message.viewController.navigationController.isToolbarHidden == NO) {
-        bottomOffset = (message.viewController.navigationController.toolbar.frame.size.height);
-    }
-    return bottomOffset;
-}
-
-- (CGPoint)calculateTargetCenter:(MessageBannerView *)message {
-    CGPoint result;
-    
-    switch (message.position) {
-        case MessageBannerPositionTop:
-            result = CGPointMake(  message.center.x
-                                 , (message.frame.size.height / 2.0f) + [self calculateTopOffset:message]);
-            break;
-        case MessageBannerPositionBottom:
-            
-            // Adding the popup to the view
-            [message.viewController.view addSubview:message];
-            result = CGPointMake( message.center.x, message.viewController.view.frame.size.height - ((message.frame.size.height / 2.0f) + [self calculateBottomOffset:message]));
-            break;
-        case MessageBannerPositionCenter:
-            
-            // Adding the popup to the view
-            [message.viewController.view addSubview:message];
-            
-            result = CGPointMake(  message.viewController.view.center.x
-                                 , message.center.y);
-            break;
-        default:
-            break;
-    }
-    return (result);
-}
-
 - (void)showMessageBannerOnScreen {
-
+    
     _messageOnScreen = YES;
     
     if (![[MessageBanner sharedSingleton].messagesBannersList count]) {
@@ -360,7 +327,7 @@ static struct delegateMethodsCaching {
 }
 
 #pragma mark -
-#pragma mark Fade-out Message Banner methods
+#pragma mark Hide Message Banner methods
 
 + (BOOL)hideMessageBanner {
     return [self hideMessageBannerWithCompletion:nil];
@@ -386,6 +353,9 @@ static struct delegateMethodsCaching {
     }
     return success;
 }
+
+#pragma mark -
+#pragma mark Fade-out Message Banner methods
 
 - (void) hideMessageBanner:(MessageBannerView *)message withGesture:(UIGestureRecognizer *)gesture andCompletion:(void (^)())completion {
     
@@ -492,5 +462,83 @@ static struct delegateMethodsCaching {
     }
 }
 
+#pragma mark -
+#pragma mark Calculate new center methods
+- (CGFloat) getStatusBarSize {
+    BOOL isPortrait = UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
+    CGSize statusBarSize = [UIApplication sharedApplication].statusBarFrame.size;
+    CGFloat offset = isPortrait ? statusBarSize.height : statusBarSize.width;
+    
+    return (offset);
+}
+
+-(CGFloat)calculateTopOffset:(MessageBannerView *)message {
+    CGFloat topOffset = 0.0f;
+    
+    // If has a navigationController
+    if ([message.viewController isKindOfClass:[UINavigationController class]] || [message.viewController.parentViewController isKindOfClass:[UINavigationController class]]) {
+        
+        // Getting the current view Controller
+        UINavigationController *currentNavigationController;
+        if ([message.viewController isKindOfClass:[UINavigationController class]]) {
+            currentNavigationController = (UINavigationController *)message.viewController;
+        } else {
+            currentNavigationController = (UINavigationController *)message.viewController.parentViewController;
+        }
+        
+        // If the navigationBar is visible we add his height as an offset
+        if (![currentNavigationController isNavigationBarHidden] &&
+            ![[currentNavigationController navigationBar] isHidden]) {
+            
+            // Adding the view on the navcontroller
+            [currentNavigationController.view insertSubview:message belowSubview:[currentNavigationController navigationBar]];
+            
+            topOffset += [currentNavigationController navigationBar].bounds.size.height;
+        } else {
+            [message.viewController.view addSubview:message];
+        }
+    } else {
+        [message.viewController.view addSubview:message];
+    }
+    topOffset += [self getStatusBarSize];
+    return topOffset;
+}
+
+-(CGFloat)calculateBottomOffset:(MessageBannerView *)message {
+    CGFloat bottomOffset = 0.0f;
+    
+    if (message.viewController.navigationController.isToolbarHidden == NO) {
+        bottomOffset = (message.viewController.navigationController.toolbar.frame.size.height);
+    }
+    return bottomOffset;
+}
+
+- (CGPoint)calculateTargetCenter:(MessageBannerView *)message {
+    CGPoint result;
+    
+    switch (message.position) {
+        case MessageBannerPositionTop:
+            result = CGPointMake(  message.center.x
+                                 , (message.frame.size.height / 2.0f) + [self calculateTopOffset:message]);
+            break;
+        case MessageBannerPositionBottom:
+            
+            // Adding the popup to the view
+            [message.viewController.view addSubview:message];
+            result = CGPointMake( message.center.x, message.viewController.view.frame.size.height - ((message.frame.size.height / 2.0f) + [self calculateBottomOffset:message]));
+            break;
+        case MessageBannerPositionCenter:
+            
+            // Adding the popup to the view
+            [message.viewController.view addSubview:message];
+            
+            result = CGPointMake(  message.viewController.view.center.x
+                                 , message.center.y);
+            break;
+        default:
+            break;
+    }
+    return (result);
+}
 
 @end

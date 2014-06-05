@@ -425,7 +425,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 }
 
 - (void) setupStyleWithType:(MessageBannerType)bannerType {
-     [self applyMessageStyleFromDictionnary:[[MessageBannerView messageBannerDesign] objectForKey:[self getStyleTypeLabel:bannerType]]];
+     [self applyMessageStyleFromDictionnary:_currentDesign];
 }
 
 - (void)applyMessageStyleFromDictionnary:(NSDictionary *)messageStyle {
