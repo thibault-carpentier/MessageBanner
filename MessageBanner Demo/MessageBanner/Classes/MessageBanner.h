@@ -10,10 +10,23 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ Message banner notification sended when the messagebanner will appear
+ */
 #define MESSAGE_BANNER_VIEW_WILL_APPEAR_NOTIFICATION @"messageBannerViewWillAppearNotification"
+/**
+ Message banner notification sended when the messagebanner did appear
+ */
 #define MESSAGE_BANNER_VIEW_DID_APPEAR_NOTIFICATION @"messageBannerViewDidAppearNotification"
+/**
+ Message banner notification sended when the messagebanner will disappear
+ */
 #define MESSAGE_BANNER_VIEW_WILL_DISAPPEAR_NOTIFICATION @"messageBannerViewWillDisappearNotification"
+/**
+ Message banner notification sended when the messagebanner did disappear
+ */
 #define MESSAGE_BANNER_VIEW_DID_DISAPPEAR_NOTIFICATION @"messageBannerViewDidDisappearNotification"
+
 
 // Forward declaration to avoid double includes problems
 @class MessageBannerView;

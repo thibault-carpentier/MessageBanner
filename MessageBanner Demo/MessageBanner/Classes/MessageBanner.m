@@ -22,11 +22,13 @@
 @property (nonatomic, strong) NSMutableArray *messagesBannersList;
 @end
 
+#pragma mark - MessageBannerView usefull methods
+/**
+ Undocumented private methods calls for internal use
+ */
 @interface MessageBannerView ()
-
     - (void)setBlur;
     - (void)unsetBlur;
-
 @end
 
 @implementation MessageBanner

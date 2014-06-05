@@ -40,7 +40,7 @@
     "Warning": {
         "defaultImageForType"               : "WarningDefaultLeftImage.png"
         
-        ,"blurRadius"                       : 10.0
+        ,"blurRadius"                       : 30.0
         
         ,"backgroundColor"                  : "#F19B2C"
         ,"backgroundImageName"              : "WarningBackgroundDefaultImage.pngNOT"

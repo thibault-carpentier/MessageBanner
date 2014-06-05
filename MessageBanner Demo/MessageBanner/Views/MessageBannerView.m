@@ -1,85 +1,216 @@
-//
-//  MessageBannerView.m
-//  MessageBanner
-//
-//  Created by Thibault Carpentier on 4/22/14.
-//  Copyright (c) 2014 Thibault Carpentier. All rights reserved.
-//
+/**
+ * @file   MessageBanneviewr.m
+ * @Author Thibault Carpentier
+ * @date   2014
+ * @brief  MessageBannerView popup flat styled view.
+ *
+ * MessageBannerView a customisable popupview
+ */
 
 #import "MessageBannerView.h"
 #import "MessageBanner.h"
 #import "HexColor.h"
 #import "FXBlurView.h"
-
-
+/**
+ The default design file
+ */
 #define DEFAULT_DESIGN_FILE                 @"MessageBannerDesign.json"
 
+/**
+ The label of the error type message banner configuration
+ */
 #define ERROR_JSON_LABEL                    @"Error"
+/**
+ The label of the warning type message banner configuration
+ */
 #define WARNING_JSON_LABEL                  @"Warning"
+/**
+ The label of the message type message banner configuration
+ */
 #define MESSAGE_JSON_LABEL                  @"Message"
+/**
+ The label of the success type message banner configuration
+ */
 #define SUCCESS_JSON_LABEL                  @"Success"
 
+/**
+ The blur radius key in the design configuration file
+ */
 #define BLUR_RADIUS_KEY                     @"blurRadius"
 
+/**
+ The background color key in the design configuration file
+ */
 #define BACKGROUND_COLOR_KEY                @"backgroundColor"
+/**
+ The backgorund alpha key in the design configuration file
+ */
 #define BACKGROUND_ALPHA_KEY                @"backgroundAlpha"
+/**
+ The  background image key in the design configuration file
+ */
 #define BACKGROUND_IMAGE_KEY                @"backgroundImageName"
 
+/**
+ The  default left image for the type in the design configuration file
+ */
 #define DEFAULT_TYPE_IMAGE_KEY              @"defaultImageForType"
 
+/**
+ The title text size key in the design configuration file
+ */
 #define TITLE_TEXT_SIZE_KEY                 @"titleTextSize"
+/**
+ The title text color key in the design configuration file
+ */
 #define TITLE_TEXT_COLOR_KEY                @"titleTextColor"
+/**
+ The title text shadow color key in the design configuration file
+ */
 #define TITLE_TEXT_SHADOW_COLOR_KEY         @"titleTextShadowColor"
+/**
+ The title text shadow X offset key in the design configuration file
+ */
 #define TITLE_TEXT_SHADOW_OFFSET_X_KEY      @"titleTextShadowOffsetX"
+/**
+ The title text shadow Y offset key in the design configuration file
+ */
 #define TITLE_TEXT_SHADOW_OFFSET_Y_KEY      @"titleTextShadowOffsetY"
+/**
+ The the title text shadow alpha key in the design configuration file
+ */
 #define TITLE_TEXT_SHADOW_ALPHA_KEY         @"titleTextShadowAlpha"
 
+/**
+ The subtitle text size key in the design configuration file
+ */
 #define SUBTITLE_TEXT_SIZE_KEY              @"subtitleTextSize"
+/**
+ The subtitle text color key in the design configuration file
+ */
 #define SUBTITLE_TEXT_COLOR_KEY             @"subtitleTextColor"
+/**
+ The subtitle text shadow color key in the design configuration file
+ */
 #define SUBTITLE_TEXT_SHADOW_COLOR_KEY      @"subtitleTextShadowColor"
+/**
+ The subtitle text shadow X offset key in the design configuration file
+ */
 #define SUBTITLE_TEXT_SHADOW_OFFSET_X_KEY   @"subtitleTextShadowOffsetX"
+/**
+ The subtitle text shadow Y offset key in the design configuration file
+ */
 #define SUBTITLE_TEXT_SHADOW_OFFSET_Y_KEY   @"subtitleTextShadowOffsetY"
+/**
+ The subtitle text shadow alpha key in the design configuration file
+ */
 #define SUBTITLE_TEXT_SHADOW_ALPHA_KEY      @"subtitleTextShadowAlpha"
 
+/**
+ The button background color key in the design configuration file
+ */
 #define BUTTON_BACKGROUND_COLOR_KEY         @"buttonBackgroundColor"
+/**
+ The button background image key in the design configuration file
+ */
 #define BUTTON_BACKGROUND_IMAGE_KEY         @"buttonBackgroundImage"
+/**
+ The button image pattern background key in the design configuration file
+ */
 #define BUTTON_BACKGROUND_PATTERN_IMAGE_KEY @"buttonBackgroundPatternImage"
+/**
+ The button background alpha key in the design configuration file
+ */
 #define BUTTON_BACKGROUND_ALPHA_KEY         @"buttonBackgroundAlpha"
 
+/**
+ The button corener radius key in the design configuration file
+ */
 #define BUTTON_CORNER_RADIUS_KEY            @"buttonCornerRadius"
+/**
+ The button border color key in the design configuration file
+ */
 #define BUTTON_BORDER_COLOR_KEY             @"buttonBorderColor"
+/**
+ The button border alpha key in the design configuration file
+ */
 #define BUTTON_BORDER_ALPHA_KEY             @"buttonBorderAlpha"
+/**
+ The button border size key in the design configuration file
+ */
 #define BUTTON_BORDER_SIZE_KEY              @"buttonBorderSize"
 
+/**
+ The button text color key in the design configuration file
+ */
 #define BUTTON_TEXT_COLOR_KEY               @"buttonTextColor"
+/**
+ The button text shadow color key in the design configuration file
+ */
 #define BUTTON_TEXT_SHADOW_COLOR_KEY        @"buttonTextShadowColor"
+/**
+ The button text shadow X offset key in the design configuration file
+ */
 #define BUTTON_TEXT_SHADOW_OFFSET_X_KEY     @"buttonTextShadowOffsetX"
+/**
+ The button text shadow Y offset key in the design configuration file
+ */
 #define BUTTON_TEXT_SHADOW_OFFSET_Y_KEY     @"buttonTextShadowOffsetY"
+/**
+ The button text shadow alpha key in the design configuration file
+ */
 #define BUTTON_TEXT_SHADOW_ALPHA_KEY        @"buttonTextShadowAlpha"
 
-
+/**
+ The default element padding used for positionning
+ */
 #define ELEMENTS_PADDING                    16.0f
+
+/**
+ The animation duration used for setting the blur
+ */
 #define ANIMATION_DURATION                  0.5
 
+/**
+ Undocumented private methods calls for internal use
+ */
 @interface MessageBanner (MessageBannerView)
     - (void) hideMessageBanner:(MessageBannerView *)messageBanner
                    withGesture:(UIGestureRecognizer *)gesture
-                 andCompletion:(void (^)())completion; // use private call of MessageBanner
+                 andCompletion:(void (^)())completion;
 
 @end
 
+/**
+ General banner design
+ */
 static NSMutableDictionary* _messageBannerDesign;
 
 @interface MessageBannerView ()
 
+/**
+ The title label view
+ */
 @property (nonatomic, strong) UILabel*      titleLabel;
+/**
+ The subtitle label view
+ */
 @property (nonatomic, strong) UILabel*      subtitleLabel;
+/**
+ The image view
+ */
 @property (nonatomic, strong) UIImageView*  imageView;
+/**
+ The button view
+ */
 @property (nonatomic, strong) UIButton*     button;
-
+/**
+ The blurr view attached to the viewcontroller if activated
+ */
 @property (nonatomic, strong) FXBlurView*   blurView;
-@property (nonatomic, assign) CGFloat       blurRadius;
-
+/**
+ The message view height used for calculs
+ */
 @property (nonatomic, assign) CGFloat  messageViewHeight;
 
 @end
@@ -229,37 +360,31 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 #pragma mark View Management
 
 - (void)setBlur {
-    if (self.blurRadius != 0.0) {
+    CGFloat blurRadius = [[_currentDesign objectForKey:BLUR_RADIUS_KEY] floatValue];
+    
+    if (blurRadius != 0.0) {
         self.blurView = [[FXBlurView alloc] initWithFrame:self.viewController.view.bounds];
         self.blurView.underlyingView = self.viewController.view;
         self.blurView.tintColor = [UIColor clearColor];
-        self.blurView.blurRadius = self.blurRadius;
+        self.blurView.blurRadius = blurRadius;
         self.blurView.alpha = 0.f;
         
         [self.viewController.view addSubview:self.blurView];
-        
-        
         [UIView animateWithDuration:ANIMATION_DURATION animations:^{
             self.blurView.alpha = 1.f;
-        } completion:^(BOOL finished) {
-            [UIView animateWithDuration:ANIMATION_DURATION animations:^{
-                self.viewController.view.alpha = 1.0f;
-            }];
-        }];
+        } completion:nil];
     }
 }
 
 - (void)unsetBlur {
-    if (self.blurRadius != 0.0) {
-        [UIView animateWithDuration:ANIMATION_DURATION
-                         animations:^{
-                         } completion:^(BOOL finished) {
-                             [UIView animateWithDuration:ANIMATION_DURATION animations:^{
-                                 self.blurView.alpha = 0.f;
-                             } completion:^(BOOL finished) {
-                                 [self.blurView removeFromSuperview];
-                             }];
-                         }];
+     CGFloat blurRadius = [[_currentDesign objectForKey:BLUR_RADIUS_KEY] floatValue];
+    
+    if (blurRadius != 0.0) {
+        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+            self.blurView.alpha = 0.f;
+        } completion:^(BOOL finished) {
+            [self.blurView removeFromSuperview];
+        }];
     }
 }
 
@@ -470,8 +595,6 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 }
 
 - (void)applyMessageStyleFromDictionnary:(NSDictionary *)messageStyle {
- 
-    self.blurRadius = [[messageStyle objectForKey:BLUR_RADIUS_KEY] floatValue];
     
     [self setBackgroundColor:[UIColor colorWithHexString:[messageStyle objectForKey:BACKGROUND_COLOR_KEY] alpha:[[messageStyle objectForKey:BACKGROUND_ALPHA_KEY] floatValue]]];
     if ([messageStyle objectForKey:BACKGROUND_IMAGE_KEY] && [UIImage imageNamed:[messageStyle objectForKey:BACKGROUND_IMAGE_KEY]]) {
