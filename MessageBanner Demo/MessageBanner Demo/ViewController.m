@@ -28,6 +28,8 @@
 
 @implementation ViewController
 
+#pragma mark - Life cycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -44,6 +46,83 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBannerViewDidAppearNotification:) name:MESSAGE_BANNER_VIEW_DID_APPEAR_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBannerViewWillDisappearNotification:) name:MESSAGE_BANNER_VIEW_WILL_DISAPPEAR_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBannerViewDidDisappearNotification:) name:MESSAGE_BANNER_VIEW_DID_DISAPPEAR_NOTIFICATION object:nil];
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark -
+#pragma mark Popup buttons
+
+- (IBAction)popMeOne:(id)sender {
+    
+    
+    //    [MessageBanner setMessageBannerDelegate:self];
+    
+    [MessageBanner showMessageBannerInViewController:self.navigationController
+                                               title:self.bannerTitle
+                                            subtitle:self.subTitle
+                                               image:self.image
+                                                type:self.messageType
+                                            duration:self.duration
+                              userDissmissedCallback:^(MessageBannerView* message) {
+                                  NSLog(@"Banner with :\n{\n"
+                                        "Title: [%@]\n"
+                                        "Subtitle: [%@]\n"
+                                        "Image: [%@]\n"
+                                        "Type: [%@]\n"
+                                        "Duration: [%f]\n"
+                                        "Position: [%@]\n"
+                                        "User interaction allowed: [%@]\n"
+                                        "}\n has been [DISMISSED]."
+                                        , message.titleBanner
+                                        , message.subTitle
+                                        , (message.image ? @"Icon setted" : @"No icon setted")
+                                        , [self getTypeDescription:message.bannerType]
+                                        , message.duration
+                                        , [self getPositionDescription:message.position]
+                                        , (message.userDismissEnabled ? @"YES" : @"NO")
+                                        );
+                                  
+                                  return ;
+                              }
+                                         buttonTitle:self.buttonTitle
+                           userPressedButtonCallback:^ (MessageBannerView* banner) {
+                               
+                               [MessageBanner hideMessageBannerWithCompletion:^{
+                                   NSLog(@"Dismissed");
+                               }];
+                               return ;
+                           }
+                                          atPosition:self.messagePosition
+                                canBeDismissedByUser:self.userDismissEnabled
+                                            delegate:self];
+    
+    
+    
+    NSLog(@"Banner with :\n{\n"
+          "Title: [%@]\n "
+          "Subtitle: [%@]\n"
+          "Image: [%@]\n"
+          "Type: [%@]\n"
+          "Duration: [%f]\n"
+          "Position: [%@]\n"
+          "User interaction allowed: [%@]\n"
+          "}\n is [SHOWED]."
+          , self.bannerTitle
+          , self.subTitle
+          , (self.image ? @"Icon setted." : @"No icon setted.")
+          , [self getTypeDescription:self.messageType]
+          , self.duration
+          , [self getPositionDescription:self.messagePosition]
+          , (self.userDismissEnabled ? @"YES" : @"NO")
+          );
 }
 
 #pragma mark -
@@ -146,83 +225,6 @@
 - (IBAction)toggleNavBar:(id)sender {
     self.navigationController.navigationBarHidden = !self.navigationController.navigationBarHidden;
     self.navigationController.toolbarHidden = !self.navigationController.toolbarHidden;
-}
-
-#pragma mark -
-#pragma mark Popup buttons
-
-- (IBAction)popMeOne:(id)sender {
-    
-    
-//    [MessageBanner setMessageBannerDelegate:self];
-    
-    [MessageBanner showMessageBannerInViewController:self
-                                              title:self.bannerTitle
-                                           subtitle:self.subTitle
-                                              image:self.image
-                                               type:self.messageType
-                                           duration:self.duration
-                                           userDissmissedCallback:^(MessageBannerView* message) {
-                                               NSLog(@"Banner with :\n{\n"
-                                                     "Title: [%@]\n"
-                                                     "Subtitle: [%@]\n"
-                                                     "Image: [%@]\n"
-                                                     "Type: [%@]\n"
-                                                     "Duration: [%f]\n"
-                                                     "Position: [%@]\n"
-                                                     "User interaction allowed: [%@]\n"
-                                                     "}\n has been [DISMISSED]."
-                                                     , message.titleBanner
-                                                     , message.subTitle
-                                                     , (message.image ? @"Icon setted" : @"No icon setted")
-                                                     , [self getTypeDescription:message.bannerType]
-                                                     , message.duration
-                                                     , [self getPositionDescription:message.position]
-                                                     , (message.userDismissEnabled ? @"YES" : @"NO")
-                                                     );
-                                               
-                                               return ;
-                                           }
-                                         buttonTitle:self.buttonTitle
-                                     userPressedButtonCallback:^ (MessageBannerView* banner) {
-                                         
-                                         [MessageBanner hideMessageBannerWithCompletion:^{
-                                             NSLog(@"Dismissed");
-                                         }];
-                                         return ;
-                                     }
-                                         atPosition:self.messagePosition
-                               canBeDismissedByUser:self.userDismissEnabled
-                                           delegate:self];
-
-    
-    
-    NSLog(@"Banner with :\n{\n"
-          "Title: [%@]\n "
-          "Subtitle: [%@]\n"
-          "Image: [%@]\n"
-          "Type: [%@]\n"
-          "Duration: [%f]\n"
-          "Position: [%@]\n"
-          "User interaction allowed: [%@]\n"
-          "}\n is [SHOWED]."
-          , self.bannerTitle
-          , self.subTitle
-          , (self.image ? @"Icon setted." : @"No icon setted.")
-          , [self getTypeDescription:self.messageType]
-          , self.duration
-          , [self getPositionDescription:self.messagePosition]
-          , (self.userDismissEnabled ? @"YES" : @"NO")
-          );
-}
-
--(void)viewDidAppear:(BOOL)animated {
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark -

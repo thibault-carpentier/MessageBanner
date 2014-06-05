@@ -1,14 +1,12 @@
-- Finalize JSON View Style Config file
-	- Add Blur opt in view
+- Know bug
+	- Fix problems when passing a UINavigationcontroller in parameters
+	- Correct bad position when phone rotate if on top with navBar
+	- Finish testing when screen transitions (make the popup depot or not)
 
 - Create JSON View Behavior Config File
 	- Create Config for dismiss methods
-
 	- Create config for animation times
-
-
 	- Create config for stay in screen automatic mode calculation
-
 	- Add default image enabled or not
 
 
@@ -22,15 +20,8 @@
 
 
 - Implement default View Controller methods
-- Add/Send signals On same moments as delegates
-
-
-- Correct bad position when phone rotate if on top with navBar
-
-- Finish testing when screen transitions (make the popup depot or not)
-
 - Create correct github arborescence
-- Write documentation and correct readme.MD
+- Write readme.MD
 - Release a POD module.
 
 - Create Swift Version
