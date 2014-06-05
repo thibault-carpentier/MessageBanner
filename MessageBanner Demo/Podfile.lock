@@ -1,10 +1,13 @@
 PODS:
+  - FXBlurView (1.6.1)
   - HexColors (2.2.1)
 
 DEPENDENCIES:
+  - FXBlurView (~> 1.6.1)
   - HexColors (~> 2)
 
 SPEC CHECKSUMS:
+  FXBlurView: 1d01b96076d65027314d1be024c7506c292392aa
   HexColors: 01384d2bbe8dc4ffa43c3b4135db6e976952d153
 
-COCOAPODS: 0.32.1
+COCOAPODS: 0.33.1

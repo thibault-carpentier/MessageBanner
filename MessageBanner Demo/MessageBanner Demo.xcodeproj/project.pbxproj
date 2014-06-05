@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0EFFCE34193F8881008F002F /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFFCE33193F8881008F002F /* FXBlurView.m */; };
-		0EFFCE36193F88A3008F002F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFFCE35193F88A3008F002F /* Accelerate.framework */; };
 		21082DF1193DA1CB000023A0 /* MessageBannerDesign.json in Resources */ = {isa = PBXBuildFile; fileRef = 21082DF0193DA1CB000023A0 /* MessageBannerDesign.json */; };
 		21082DFA193DA4BA000023A0 /* ErrorBackgroundDefaultImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 21082DF2193DA4BA000023A0 /* ErrorBackgroundDefaultImage.png */; };
 		21082DFB193DA4BA000023A0 /* ErrorBackgroundDefaultImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 21082DF3193DA4BA000023A0 /* ErrorBackgroundDefaultImage@2x.png */; };
@@ -56,9 +54,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0EFFCE32193F8881008F002F /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FXBlurView.h; path = MessageBanner/Classes/FXBlurView/FXBlurView.h; sourceTree = SOURCE_ROOT; };
-		0EFFCE33193F8881008F002F /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FXBlurView.m; path = MessageBanner/Classes/FXBlurView/FXBlurView.m; sourceTree = SOURCE_ROOT; };
-		0EFFCE35193F88A3008F002F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		21082DF0193DA1CB000023A0 /* MessageBannerDesign.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MessageBannerDesign.json; sourceTree = "<group>"; };
 		21082DF2193DA4BA000023A0 /* ErrorBackgroundDefaultImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ErrorBackgroundDefaultImage.png; sourceTree = "<group>"; };
 		21082DF3193DA4BA000023A0 /* ErrorBackgroundDefaultImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ErrorBackgroundDefaultImage@2x.png"; sourceTree = "<group>"; };
@@ -107,7 +102,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0EFFCE36193F88A3008F002F /* Accelerate.framework in Frameworks */,
 				21D0CFA9193BEE2B00C160EC /* CoreGraphics.framework in Frameworks */,
 				21D0CFAB193BEE2B00C160EC /* UIKit.framework in Frameworks */,
 				21D0CFA7193BEE2B00C160EC /* Foundation.framework in Frameworks */,
@@ -128,16 +122,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0EFFCE31193F882A008F002F /* FXBlurView */ = {
-			isa = PBXGroup;
-			children = (
-				0EFFCE32193F8881008F002F /* FXBlurView.h */,
-				0EFFCE33193F8881008F002F /* FXBlurView.m */,
-			);
-			name = FXBlurView;
-			path = ../Ressources;
-			sourceTree = "<group>";
-		};
 		21082DED193D9FA0000023A0 /* Ressources */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,7 +185,6 @@
 		21D0CFA5193BEE2B00C160EC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0EFFCE35193F88A3008F002F /* Accelerate.framework */,
 				21D0CFA6193BEE2B00C160EC /* Foundation.framework */,
 				21D0CFA8193BEE2B00C160EC /* CoreGraphics.framework */,
 				21D0CFAA193BEE2B00C160EC /* UIKit.framework */,
@@ -250,7 +233,6 @@
 		21D0CFDC193BEEB700C160EC /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				0EFFCE31193F882A008F002F /* FXBlurView */,
 				21D0CFDD193BEEB700C160EC /* MessageBanner.h */,
 				21D0CFDE193BEEB700C160EC /* MessageBanner.m */,
 			);
@@ -438,7 +420,6 @@
 				21D0CFB7193BEE2B00C160EC /* AppDelegate.m in Sources */,
 				21D0CFB3193BEE2B00C160EC /* main.m in Sources */,
 				21D0CFE3193BEEB700C160EC /* MessageBannerView.m in Sources */,
-				0EFFCE34193F8881008F002F /* FXBlurView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

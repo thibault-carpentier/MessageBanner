@@ -2,7 +2,7 @@
     "Error": {
          "defaultImageForType"              : "ErrorDefaultLeftImage.png"
         
-        ,"blurOption"                       : false
+        ,"blurRadius"                       : 0.0
         
         ,"backgroundColor"                  : "#EC736B"
         ,"backgroundImageName"              : "ErrorBackgroundDefaultImage.pngNO"
@@ -40,7 +40,7 @@
     "Warning": {
         "defaultImageForType"               : "WarningDefaultLeftImage.png"
         
-        ,"blurOption"                       : true
+        ,"blurRadius"                       : 10.0
         
         ,"backgroundColor"                  : "#F19B2C"
         ,"backgroundImageName"              : "WarningBackgroundDefaultImage.pngNOT"
@@ -78,7 +78,7 @@
     "Message": {
          "defaultImageForType"              : "MessageDefaultLeftImage.png"
         
-        ,"blurOption"                       : false
+        ,"blurRadius"                       : 20.0
         
         ,"backgroundColor"                  : "#87D3F2"
         ,"backgroundImageName"              : "MessageBackgroundDefaultImage.pngNOT_ACTIVE"
@@ -116,7 +116,7 @@
     "Success": {
          "defaultImageForType"              : "SuccessDefaultLeftImage.png"
         
-        ,"blurOption"                       : false
+        ,"blurRadius"                       : 80.0
  
         ,"backgroundColor"                  : "#78EE8A"
         ,"backgroundImageName"              : "SuccessBackgroundDefaultImage.pngNO"

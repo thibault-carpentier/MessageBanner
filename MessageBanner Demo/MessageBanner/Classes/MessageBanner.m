@@ -22,6 +22,13 @@
 @property (nonatomic, strong) NSMutableArray *messagesBannersList;
 @end
 
+@interface MessageBannerView ()
+
+    - (void)setBlur;
+    - (void)unsetBlur;
+
+@end
+
 @implementation MessageBanner
 
 
@@ -312,6 +319,8 @@ static struct delegateMethodsCaching {
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:MESSAGE_BANNER_VIEW_WILL_APPEAR_NOTIFICATION object:currentMessageBanner];
     
+    [currentMessageBanner setBlur];
+    
     CGPoint target = [self calculateTargetCenter:currentMessageBanner];
     [UIView animateKeyframesWithDuration:ANIMATION_DURATION delay:0.0f options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction animations:^{
         
@@ -372,6 +381,8 @@ static struct delegateMethodsCaching {
         [_delegate messageBannerViewWillDisappear:message];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:MESSAGE_BANNER_VIEW_WILL_DISAPPEAR_NOTIFICATION object:message];
+    
+    [message unsetBlur];
     
     CGPoint fadeOutCenter = CGPointMake(0, 0);
     

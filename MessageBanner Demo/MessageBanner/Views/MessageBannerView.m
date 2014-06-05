@@ -19,7 +19,7 @@
 #define MESSAGE_JSON_LABEL                  @"Message"
 #define SUCCESS_JSON_LABEL                  @"Success"
 
-#define BLUR_OPTION_KEY                     @"blurOption"
+#define BLUR_RADIUS_KEY                     @"blurRadius"
 
 #define BACKGROUND_COLOR_KEY                @"backgroundColor"
 #define BACKGROUND_ALPHA_KEY                @"backgroundAlpha"
@@ -65,6 +65,7 @@
     - (void) hideMessageBanner:(MessageBannerView *)messageBanner
                    withGesture:(UIGestureRecognizer *)gesture
                  andCompletion:(void (^)())completion; // use private call of MessageBanner
+
 @end
 
 static NSMutableDictionary* _messageBannerDesign;
@@ -77,7 +78,7 @@ static NSMutableDictionary* _messageBannerDesign;
 @property (nonatomic, strong) UIButton*     button;
 
 @property (nonatomic, strong) FXBlurView*   blurView;
-@property (nonatomic, assign) BOOL          isBlurEnabled;
+@property (nonatomic, assign) CGFloat       blurRadius;
 
 @property (nonatomic, assign) CGFloat  messageViewHeight;
 
@@ -188,8 +189,6 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
             [self addDismissMethod];
         }
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillAppear:) name:MESSAGE_BANNER_VIEW_WILL_APPEAR_NOTIFICATION object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillDisappear:) name:MESSAGE_BANNER_VIEW_WILL_DISAPPEAR_NOTIFICATION object:nil];
     }
     return self;
 }
@@ -229,12 +228,12 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 #pragma mark -
 #pragma mark View Management
 
-- (void)viewWillAppear:(MessageBannerView *)messageBanner {
-    if (self.isBlurEnabled == YES) {
+- (void)setBlur {
+    if (self.blurRadius != 0.0) {
         self.blurView = [[FXBlurView alloc] initWithFrame:self.viewController.view.bounds];
         self.blurView.underlyingView = self.viewController.view;
         self.blurView.tintColor = [UIColor clearColor];
-        self.blurView.blurRadius = 30.f;
+        self.blurView.blurRadius = self.blurRadius;
         self.blurView.alpha = 0.f;
         
         [self.viewController.view addSubview:self.blurView];
@@ -250,8 +249,8 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     }
 }
 
-- (void)viewWillDisappear:(MessageBannerView *)messageBanner {
-    if (self.isBlurEnabled == YES) {
+- (void)unsetBlur {
+    if (self.blurRadius != 0.0) {
         [UIView animateWithDuration:ANIMATION_DURATION
                          animations:^{
                          } completion:^(BOOL finished) {
@@ -262,8 +261,6 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
                              }];
                          }];
     }
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MESSAGE_BANNER_VIEW_WILL_APPEAR_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MESSAGE_BANNER_VIEW_WILL_DISAPPEAR_NOTIFICATION object:nil];
 }
 
 #pragma mark -
@@ -474,7 +471,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 
 - (void)applyMessageStyleFromDictionnary:(NSDictionary *)messageStyle {
  
-    self.isBlurEnabled = ((NSNumber *)[messageStyle valueForKey:BLUR_OPTION_KEY]).boolValue;
+    self.blurRadius = [[messageStyle objectForKey:BLUR_RADIUS_KEY] floatValue];
     
     [self setBackgroundColor:[UIColor colorWithHexString:[messageStyle objectForKey:BACKGROUND_COLOR_KEY] alpha:[[messageStyle objectForKey:BACKGROUND_ALPHA_KEY] floatValue]]];
     if ([messageStyle objectForKey:BACKGROUND_IMAGE_KEY] && [UIImage imageNamed:[messageStyle objectForKey:BACKGROUND_IMAGE_KEY]]) {
