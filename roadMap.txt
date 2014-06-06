@@ -1,5 +1,4 @@
 - Know bug
-	- Fix problems when passing a UINavigationcontroller in parameters
 	- Correct bad position when phone rotate if on top with navBar
 	- Finish testing when screen transitions (make the popup depot or not)
 
@@ -9,19 +8,15 @@
 	- Create config for stay in screen automatic mode calculation
 	- Add default image enabled or not
 
-
-
 - Create Manager JSON config File
 	- Create config for multipopups (then to move in behavior cfg to separate for each type)
-	- Create config to add “shadow” on given View Controller (Or view on screen if its a navigation controller)
+	- Create config to add “shadow” or “blur” on given View Controller (Or view on screen if its a navigation controller)
 	- Create config to allow or not user interaction on the presented view (then to move in behavior cfg to separate for each type)
 	- Create Auto depop when screen change var
 
 
-
-- Implement default View Controller methods
 - Create correct github arborescence
 - Write readme.MD
-- Release a POD module.
 
+- Release a POD module.
 - Create Swift Version

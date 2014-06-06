@@ -512,7 +512,7 @@ static struct delegateMethodsCaching {
     return (offset);
 }
 
--(CGFloat)calculateTopOffset:(MessageBannerView *)message {
+-(CGFloat)calculateTopOffsetAndAttachView:(MessageBannerView *)message {
     CGFloat topOffset = 0.0f;
     
     // If has a navigationController
@@ -544,14 +544,32 @@ static struct delegateMethodsCaching {
     return topOffset;
 }
 
--(CGFloat)calculateBottomOffset:(MessageBannerView *)message {
+-(CGFloat)calculateBottomOffsetAndAttachView:(MessageBannerView *)message {
     CGFloat bottomOffset = 0.0f;
-    
-    if (message.viewController.navigationController.isToolbarHidden == NO) {
-        bottomOffset = (message.viewController.navigationController.toolbar.frame.size.height);
+    UINavigationController *currentNavigationController;
+
+    if ([message.viewController isKindOfClass:[UINavigationController class]] || [message.viewController.parentViewController isKindOfClass:[UINavigationController class]]) {
+        
+        // Getting the current view Controller
+        if ([message.viewController isKindOfClass:[UINavigationController class]]) {
+            currentNavigationController = (UINavigationController *)message.viewController;
+        } else {
+            currentNavigationController = (UINavigationController *)message.viewController.parentViewController;
+        }
+    } else {
+        currentNavigationController = message.viewController.navigationController;
     }
+    
+    if (currentNavigationController.isToolbarHidden == NO) {
+        bottomOffset = (currentNavigationController.toolbar.frame.size.height);
+        [currentNavigationController.view insertSubview:message belowSubview:currentNavigationController.toolbar];
+    } else {
+        [message.viewController.view addSubview:message];
+    }
+
     return bottomOffset;
 }
+
 
 - (CGPoint)calculateTargetCenter:(MessageBannerView *)message {
     CGPoint result;
@@ -559,13 +577,10 @@ static struct delegateMethodsCaching {
     switch (message.position) {
         case MessageBannerPositionTop:
             result = CGPointMake(  message.center.x
-                                 , (message.frame.size.height / 2.0f) + [self calculateTopOffset:message]);
+                                 , (message.frame.size.height / 2.0f) + [self calculateTopOffsetAndAttachView:message]);
             break;
         case MessageBannerPositionBottom:
-            
-            // Adding the popup to the view
-            [message.viewController.view addSubview:message];
-            result = CGPointMake( message.center.x, message.viewController.view.frame.size.height - ((message.frame.size.height / 2.0f) + [self calculateBottomOffset:message]));
+            result = CGPointMake( message.center.x, message.viewController.view.frame.size.height - ((message.frame.size.height / 2.0f) + [self calculateBottomOffsetAndAttachView:message]));
             break;
         case MessageBannerPositionCenter:
             
