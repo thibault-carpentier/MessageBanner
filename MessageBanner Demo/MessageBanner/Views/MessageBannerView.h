@@ -96,4 +96,16 @@
          atPosition:(MessageBannerPosition)position
 canBeDismissedByUser:(BOOL)dismissingEnabled;
 
+/**
+ Load a custom design file
+ @param file the new design file
+ @returns value YES if the new file is loaded, NO otherwise.
+ */
++ (BOOL)addMessageBannerDesignFromFileNamed:(NSString *)file;
+/**
+ Return the currently set design file.
+ @returns the current design file.
+ */
++ (NSMutableDictionary *)messageBannerDesign;
+
 @end
