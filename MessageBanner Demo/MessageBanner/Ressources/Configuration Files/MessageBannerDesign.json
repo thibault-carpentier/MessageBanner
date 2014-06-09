@@ -40,7 +40,7 @@
     "Warning": {
         "defaultImageForType"               : "WarningDefaultLeftImage.png"
         
-        ,"blurRadius"                       : 30.0
+        ,"blurRadius"                       : 0.0
         
         ,"backgroundColor"                  : "#F19B2C"
         ,"backgroundImageName"              : "WarningBackgroundDefaultImage.pngNOT"
@@ -78,7 +78,7 @@
     "Message": {
          "defaultImageForType"              : "MessageDefaultLeftImage.png"
         
-        ,"blurRadius"                       : 20.0
+        ,"blurRadius"                       : 0.0
         
         ,"backgroundColor"                  : "#87D3F2"
         ,"backgroundImageName"              : "MessageBackgroundDefaultImage.pngNOT_ACTIVE"
@@ -116,7 +116,7 @@
     "Success": {
          "defaultImageForType"              : "SuccessDefaultLeftImage.png"
         
-        ,"blurRadius"                       : 80.0
+        ,"blurRadius"                       : 0.0
  
         ,"backgroundColor"                  : "#78EE8A"
         ,"backgroundImageName"              : "SuccessBackgroundDefaultImage.pngNO"

@@ -560,7 +560,7 @@ static struct delegateMethodsCaching {
         currentNavigationController = message.viewController.navigationController;
     }
     
-    if (currentNavigationController.isToolbarHidden == NO) {
+    if (currentNavigationController && currentNavigationController.isToolbarHidden == NO) {
         bottomOffset = (currentNavigationController.toolbar.frame.size.height);
         [currentNavigationController.view insertSubview:message belowSubview:currentNavigationController.toolbar];
     } else {
