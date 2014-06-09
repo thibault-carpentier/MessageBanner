@@ -23,8 +23,9 @@ Quick Start Guide
 ----------------
 Writting in progress 
 
-MessageBanner class Documentation
+Class documentation
 ----------------
+###MessageBanner class documentation
 The **MessageBanner class** provide the following methods
 
 ```objective-c
@@ -119,8 +120,7 @@ Hide the currently displayed message banner
 **Return value**
 * **BOOL**: Return YES if a message banner has been dismissed, NO otherwise.
 
-MessageBannerView Class Documentation
------------------------
+###MessageBannerView class documentation
 The **MessageBannerView** class provide the following methods:  
 ```objective-c
 + (BOOL)addMessageBannerDesignFromFileNamed:(NSString *)file;
@@ -146,10 +146,14 @@ NSNotifications
 ----------------
 The MessageBanner class also send signals when the message banner is about or did appear/disappear. Each notification is directly **sent by the messageBannerView**.
 The signals sent are:
-* **messageBannerViewWillAppearNotification**: Sent when the view is about to appear. You can use the define **MESSAGE_BANNER_VIEW_WILL_APPEAR_NOTIFICATION** to catch the notification.
-* **messageBannerViewDidAppearNotification**: Sent when the view has appeared. You can use the define **MESSAGE_BANNER_VIEW_DID_APPEAR_NOTIFICATION** to catch the notification.
-* **messageBannerViewWillDisappearNotification**: Sent when the view is about to disappear. You can use the define **MESSAGE_BANNER_VIEW_WILL_DISAPPEAR_NOTIFICATION** to catch the notification.
-* **messageBannerViewDidDisappearNotification**: Sent when the view has to disappeared. You can use the define **MESSAGE_BANNER_VIEW_DID_DISAPPEAR_NOTIFICATION** to catch the notification.
+
+
+|Description                               |Notification name                         |Notification define                            | 
+|:----------------------------------------:|:----------------------------------------:|:---------------------------------------------:|
+|Sent when the view is about to appear.    |messageBannerViewWillAppearNotification   |MESSAGE_BANNER_VIEW_WILL_APPEAR_NOTIFICATION   |
+|Sent when the view is about to appear.    |messageBannerViewDidAppearNotification    |MESSAGE_BANNER_VIEW_DID_APPEAR_NOTIFICATION    |
+|Sent when the view is about to disappear. |messageBannerViewWillDisappearNotification|MESSAGE_BANNER_VIEW_WILL_DISAPPEAR_NOTIFICATION|
+|Sent when the view is about to disappear. |messageBannerViewDidDisappearNotification |MESSAGE_BANNER_VIEW_DID_DISAPPEAR_NOTIFICATION |
 
 Message Positions
 -----------------
@@ -190,7 +194,83 @@ The message banner can be dismissed with multiple user gesture. The user can dis
 
 Design configuration file
 ----------------
-Writting in progress
+The configuration file is a JSON formated file.
+
+The JSON file is formatted this way :
+
+```JSON
+{
+    "MessageBannerTypeName": {
+        "PropertyName"    : "Property value"
+        ,"AnotherProperty" : 1.0
+    },
+    
+    "AnOtherMessageBannerTypeName": {
+        "PropertyName"    : "Property value"
+        ,"AnotherProperty" : 1.0
+    }
+}
+```
+
+This library come with 4 differents type of banner, with the following corresponding name for the JSON design file format :
+
+|   Name   |   Type   |
+|:--------:|:--------:|
+|Error     |MessageBannerTypeError|
+|Warning   |MessageBannerTypeWarning|
+|Message   |MessageBannerTypeMessage|
+|Success   |MessageBannerTypeSuccess|
+
+Each type of banner can have the following properties : 
+
+### General properties
+|     Property name     |                    Effect                   |    Possible values   |   Default value    |                Remarks                    |
+|:---------------------:|---------------------------------------------|:--------------------:|:------------------:|-------------------------------------------|
+|defaultImageForType    | Define a default left image                 | "The_image_name.png" |         None       |The image parameter override this setting  |
+|blurRadius             | Blur the attached view with the given radius|         0.0+         |   0.0 (Disabled)   | iOS7 style default radius for blur is 40.0|
+|backgroundColor        | Set the banner background color             |      "#FFFFFF"       | "#FFFFFF" (White)  | BackgroundImageName override this parameter|
+|backgroundImageName    | Set the banner background image             | "The_image_name.png" |        None        | Override BackgroundColor property         |
+|backgroundAlpha        | Set the banner background color transparency|     0.0 -> 1.0       |        1.0         |                                           |
+
+### Title properties
+|     Property name     |                    Effect                   |    Possible values   |   Default value    |                Remarks                    |
+|:---------------------:|---------------------------------------------|:--------------------:|:------------------:|-------------------------------------------|
+|titleTextColor         | Set the banner title text color             |     "#FFFFFF"        | "#000000" (Black)  |                                           |
+|titleTextSize          | Set the banner title text size              | 0.0+                 |        14.0        |                                           |
+|titleTextShadowColor   | Set the banner title text shadow color      | "#FFFFFF"            | "#FFFFFF" (White)  |                                           |
+|titleTextShadowAlpha   | Set the banner title text shadow transparency| 0.0 -> 1.0          |        1.0         |                                           |
+|titleTextShadowOffsetX | Set the banner title text x shadow offset   |      -0.0+           |         0.0        |                                           |
+|titleTextShadowOffsetY | Set the banner title text y shadow offset   |      -0.0+           |         1.0        |                                           |
+
+### Subtitle properties
+|     Property name     |                    Effect                   |    Possible values   |   Default value    |                Remarks                    |
+|:---------------------:|---------------------------------------------|:--------------------:|:------------------:|-------------------------------------------|
+|subtitleTextColor         | Set the banner subtitle text color             |     "#FFFFFF"        | "#000000" (Black)  |                                           |
+|subtitleTextSize          | Set the banner subtitle text size              | 0.0+                 |        14.0        |                                           |
+|subtitleTextShadowColor   | Set the banner subtitle text shadow color      | "#FFFFFF"            | "#FFFFFF" (White)  |                                           |
+|subtitleTextShadowAlpha   | Set the banner subtitle text shadow transparency| 0.0 -> 1.0          |        1.0         |                                           |
+|subtitleTextShadowOffsetX | Set the banner subtitle text x shadow offset   |      -0.0+           |         0.0        |                                           |
+|subtitleTextShadowOffsetY | Set the banner subtitle text y shadow offset   |      -0.0+           |         1.0        |                                           |
+
+### Button properties
+|     Property name     |                    Effect                   |    Possible values   |   Default value    |                Remarks                    |
+|:---------------------:|---------------------------------------------|:--------------------:|:------------------:|-------------------------------------------|
+|buttonBackgroundColor  | Set the button background color             | "#FFFFFF"            |  "#FFFFFF" (White) | buttonBackgroundImage and buttonBackgroundPatternImage override this parameter|
+|buttonBackgroundImage  | Set the button background image               |  "The_image_name.png"|        None        | Ovveride buttonBackgroundColor            |
+|buttonBackgroundPatternImage  | Set the button background image with a pattern image |  "The_image_name.png"|        None        | Ovveride buttonBackgroundImage            |
+|buttonBackgroundAlpha  | Set the button background transparency      |  0.0 -> 1.0          |        1.0         |                                           |
+|buttonCornerRadius     | Set the button corner radius                |       0.0+           |        0.0         |                                           |
+|buttonBorderColor      | Set the button border color                 | "#FFFFFF"            |  "#000000"(Black)  | Visible only if buttonBorderSize >= 1     |
+|buttonBorderAlpha      | Set the button border transparency          | 0.0 -> 1.0           |       1.0          |                                           |
+|buttonBorderSize       | Set the border size of the button           | 0.0+                 |      0.0 (None)    |                                           |
+|buttonTextColor         | Set the banner button text color             |     "#FFFFFF"        | "#000000" (Black)  |                                           |
+|buttonTextSize          | Set the banner button text size              | 0.0+                 |        14.0        |                                           |
+|buttonTextShadowColor   | Set the banner button text shadow color      | "#FFFFFF"            | "#FFFFFF" (White)  |                                           |
+|buttonTextShadowAlpha   | Set the banner button text shadow transparency| 0.0 -> 1.0          |        1.0         |                                           |
+|buttonTextShadowOffsetX | Set the banner button text x shadow offset   |      -0.0+           |         0.0        |                                           |
+|buttonTextShadowOffsetY | Set the banner button text y shadow offset   |      -0.0+           |         1.0        |                                           |
+
+
 
 FAQ
 ----------------
