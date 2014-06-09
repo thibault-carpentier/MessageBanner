@@ -369,7 +369,20 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         self.blurView.blurRadius = blurRadius;
         self.blurView.alpha = 0.f;
         
-        [self.viewController.view addSubview:self.blurView];
+        if ([self.viewController isKindOfClass:[UINavigationController class]] || [self.viewController.parentViewController isKindOfClass:[UINavigationController class]]) {
+            
+            if ([self.viewController isKindOfClass:[UINavigationController class]]) {
+                [((UINavigationController *)self.viewController).view insertSubview:self.blurView
+                                                                       belowSubview:[((UINavigationController *)self.viewController) navigationBar]];
+            } else {
+                [((UINavigationController *)self.viewController.parentViewController).visibleViewController.view addSubview:self.blurView];
+                
+            }
+        }
+        else {
+            [self.viewController.view addSubview:self.blurView];
+        }
+        
         [UIView animateWithDuration:ANIMATION_DURATION animations:^{
             self.blurView.alpha = 1.f;
         } completion:nil];
