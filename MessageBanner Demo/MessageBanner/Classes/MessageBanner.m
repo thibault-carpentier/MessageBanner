@@ -328,30 +328,140 @@ static struct delegateMethodsCaching {
 #pragma mark -
 #pragma mark Fade-in Message Banner methods
 
--(void)attachBannerConstraints:(MessageBannerView*)message {
+- (UIViewController *)getParentViewController:(MessageBannerView*)message {
+    UIViewController *parentViewController;
     
-    id<UILayoutSupport> topLayoutGuide = message.viewController.topLayoutGuide;
-    NSDictionary *topViewsDictionary = NSDictionaryOfVariableBindings (message, topLayoutGuide);
-//    NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(message, message.viewController);
+    if ([message.viewController isKindOfClass:[UINavigationController class]] || [message.viewController.parentViewController isKindOfClass:[UINavigationController class]]) {
+        
+        // Getting the current view Controller
+        UINavigationController *currentNavigationController;
+        if ([message.viewController isKindOfClass:[UINavigationController class]]) {
+            currentNavigationController = (UINavigationController *)message.viewController;
+        } else {
+            currentNavigationController = (UINavigationController *)message.viewController.parentViewController;
+        }
+        switch (message.position) {
+            case MessageBannerPositionTop:
+                if (![currentNavigationController isNavigationBarHidden] &&
+                    ![[currentNavigationController navigationBar] isHidden]) {
+                    parentViewController = currentNavigationController;
+                }
+                else {
+                    parentViewController = message.viewController;
+                }
+                break;
+            case MessageBannerPositionCenter: {
+                parentViewController = message.viewController;
+                break;
+            }
+            case MessageBannerPositionBottom:
+                if (currentNavigationController && currentNavigationController.isToolbarHidden == NO) {
+                    parentViewController = currentNavigationController;
+                }
+                else {
+                    parentViewController = message.viewController;
+                }
+                break;
+                
+            default:
+                break;
+        }
+    }
+    else {
+        parentViewController = message.viewController;
+    }
     
-    
+    return parentViewController;
+}
 
+-(void)attachVerticalBannerConstraint:(MessageBannerView*)message onViewController:(UIViewController*)viewController {
     
-//    [message.viewController.view addConstraint:
-//     [NSLayoutConstraint constraintWithItem:message attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:message.viewController.view attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0]
-//     ];
-//    [message.viewController.view addConstraints:
-//     [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-0-[message]-0-|"
-//                                             options: 0
-//                                             metrics: nil
-//                                               views: NSDictionaryOfVariableBindings(message)]
-//     ];
-//    [message.viewController.view addConstraints:
-//     [NSLayoutConstraint constraintsWithVisualFormat: @"V:[topLayoutGuide]-0-[message]"
-//                                             options: 0
-//                                             metrics: nil
-//                                               views: topViewsDictionary]
-//     ];
+    switch (message.position) {
+        case MessageBannerPositionTop: {
+            UIViewController* realViewController;
+            
+            if ([viewController isKindOfClass:[UINavigationController class]] &&
+                ![(UINavigationController*)viewController isNavigationBarHidden] &&
+                ![[(UINavigationController*)viewController navigationBar] isHidden]) {
+                realViewController = [(UINavigationController*)viewController visibleViewController];
+            } else {
+                realViewController = viewController;
+            }
+            
+            [viewController.view addConstraint:[NSLayoutConstraint constraintWithItem:realViewController.topLayoutGuide
+                                                                            attribute:NSLayoutAttributeBottom
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:message
+                                                                            attribute:NSLayoutAttributeTop
+                                                                           multiplier:1.0f
+                                                                             constant:0.0f]];
+            
+//            [viewController.view addConstraint:[NSLayoutConstraint constraintWithItem:viewController.view
+//                                                                            attribute:NSLayoutAttributeHeight
+//                                                                            relatedBy:NSLayoutRelationEqual
+//                                                                               toItem:message
+//                                                                            attribute:NSLayoutAttributeBottom
+//                                                                           multiplier:1.0f
+//                                                                             constant:0.0f]];
+//
+//            id<UILayoutSupport> topLayoutGuide = viewController.topLayoutGuide;
+//            NSDictionary *topViewsDictionary = NSDictionaryOfVariableBindings (message, topLayoutGuide);
+//
+//            [viewController.view addConstraints:
+//             [NSLayoutConstraint constraintsWithVisualFormat: @"V:[topLayoutGuide]-0-[message]"
+//                                                     options: 0
+//                                                     metrics: nil
+//                                                       views: topViewsDictionary]
+//             ];
+//            break;
+        }
+        case MessageBannerPositionCenter: {
+            
+            [viewController.view addConstraint:
+             [NSLayoutConstraint constraintWithItem:viewController.view
+                                          attribute:NSLayoutAttributeCenterY
+                                          relatedBy:NSLayoutRelationEqual
+                                             toItem:message
+                                          attribute:NSLayoutAttributeCenterY
+                                         multiplier:1.0f
+                                           constant:0.0f]];
+            
+            break;
+        }
+        case MessageBannerPositionBottom: {
+            
+            id<UILayoutSupport> bottomLayoutGuide = viewController.bottomLayoutGuide;
+            NSDictionary *bottomViewsDictionary = NSDictionaryOfVariableBindings (message, bottomLayoutGuide);
+            
+            [viewController.view addConstraints:
+             [NSLayoutConstraint constraintsWithVisualFormat: @"V:[message]-0-[bottomLayoutGuide]"
+                                                     options: 0
+                                                     metrics: nil
+                                                       views: bottomViewsDictionary]
+             ];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+-(void)attachBannerConstraints:(MessageBannerView*)message onViewController:(UIViewController*)viewController {
+    
+    // Adding horizontal allignment
+    [viewController.view addConstraint:
+     [NSLayoutConstraint constraintWithItem:viewController.view attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:message attribute:NSLayoutAttributeWidth multiplier:1.0f constant:0.0f]
+     ];
+    
+    [viewController.view addConstraints:
+     [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-0-[message]-0-|"
+                                             options: 0
+                                             metrics: nil
+                                               views: NSDictionaryOfVariableBindings(message)]
+     ];
+    
+    [self attachVerticalBannerConstraint:message onViewController:viewController];
+
 }
 
 - (void)showMessageBannerOnScreen {
@@ -379,7 +489,7 @@ static struct delegateMethodsCaching {
         
     } completion:^(BOOL finished) {
         
-        [self attachBannerConstraints:currentMessageBanner];
+        [self attachBannerConstraints:currentMessageBanner onViewController:[self getParentViewController:currentMessageBanner]];
         
         currentMessageBanner.isBannerDisplayed = YES;
         if (_delegate && _delegateRespondTo.MessageBannerViewDidAppear == YES) {
