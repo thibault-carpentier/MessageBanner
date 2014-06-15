@@ -297,15 +297,19 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         [self addSubview:self.titleLabel];
         
         //        Setting up subtitle
-        self.subtitleLabel = [self createSubtitleLabel];
-        [self addSubview:self.subtitleLabel];
+        if (self.subTitle) {
+            self.subtitleLabel = [self createSubtitleLabel];
+            [self addSubview:self.subtitleLabel];
+        }
 
         // Setting up style
         [self setupStyleWithType:self.bannerType];
         
         //        Setting up frames
         [self setTitleFrame:self.titleLabel];
-        [self setSubtitleFrame:self.subtitleLabel];
+        if (self.subTitle) {
+            [self setSubtitleFrame:self.subtitleLabel];
+        }
         [self addImageOnBannerAndSetupFrame:self.image];
         [self centerButton];
         //        [self setImageFrame:image]
@@ -321,7 +325,59 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         }
         
     }
+    
+    [self setupViewsAutoLayout];
+    
     return self;
+}
+
+#pragma mark -
+#pragma mark Autolayout methods
+
+-(void)layoutSubviews {
+    [super layoutSubviews];
+}
+
+-(void)setupTitleAutoLayout {
+//    NSDictionary *titleAndViewDictionary = NSDictionaryOfVariableBindings (_titleLabel, self);
+//    NSDictionary *titleAndImageDictionary = (self.image ? NSDictionaryOfVariableBindings (self.titleLabel, self.image) : nil);
+//    NSDictionary *titleAndButtonDictionary = (self.button ? NSDictionaryOfVariableBindings (self.titleLabel, self.button) : nil);
+//    NSDictionary *titleAndSubtitleDictionary = (self.subtitleLabel ? NSDictionaryOfVariableBindings (self.titleLabel, self.subTitle) : nil);
+//    
+//    [self.titleLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+//    if (self.subtitleLabel) {
+//        [self addConstraint:
+//         [NSLayoutConstraint constraintWithItem:self.titleLabel
+//                                  attribute:NSLayoutAttributeWidth
+//                                  relatedBy:NSLayoutRelationEqual
+//                                     toItem:self.subtitleLabel
+//                                  attribute:NSLayoutAttributeWidth
+//                                 multiplier:1.0f
+//                                   constant:0.0f]];
+//    }
+//    NSString *topConstraintVisualFormat = [NSString stringWithFormat:@"V:|-%f-[_titleLabel]|", ELEMENTS_PADDING];
+//    [self addConstraints:
+//     [NSLayoutConstraint constraintsWithVisualFormat:topConstraintVisualFormat options:0 metrics:nil views:titleAndViewDictionary]];
+}
+
+- (void)setupViewsAutoLayout {
+//    [self setupTitleAutoLayout];
+    
+    NSString* heightConstraintVisualFormat = [NSString stringWithFormat:@"H:[self(>=%f)]", self.viewController.view.frame.size.width];
+    [self addConstraints:
+     [NSLayoutConstraint constraintsWithVisualFormat:heightConstraintVisualFormat
+                                             options:0
+                                             metrics:nil
+                                               views:NSDictionaryOfVariableBindings(self)]];
+ 
+    NSString* widthConstraintVisualFormat = [NSString stringWithFormat:@"V:[self(>=%f)]", self.messageViewHeight];
+    
+    [self addConstraints:
+     [NSLayoutConstraint constraintsWithVisualFormat:widthConstraintVisualFormat
+                                             options:0
+                                             metrics:nil
+                                               views:NSDictionaryOfVariableBindings(self)]];
+    
 }
 
 #pragma mark -
@@ -376,7 +432,6 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
                                                                        belowSubview:[((UINavigationController *)self.viewController) navigationBar]];
             } else {
                 [((UINavigationController *)self.viewController.parentViewController).visibleViewController.view addSubview:self.blurView];
-                
             }
         }
         else {
@@ -410,16 +465,16 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     self.messageViewHeight += ELEMENTS_PADDING;
     
     switch (self.position) {
-        case MessageBannerPositionTop:
+        case MessageBannerPositionTop: {
             
             
-            self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+            self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
             viewFrame = CGRectMake(  0
                                    , 0 - self.messageViewHeight
                                    , self.viewController.view.bounds.size.width
                                    , self.messageViewHeight);
             break;
-            
+        }
         case MessageBannerPositionBottom:
             
             self.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
@@ -441,6 +496,9 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         default:
             break;
     }
+    
+    // Used to add constraints  when the view will pop
+    [self setTranslatesAutoresizingMaskIntoConstraints:NO];
     return viewFrame;
 }
 

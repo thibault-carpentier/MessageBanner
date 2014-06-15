@@ -328,6 +328,32 @@ static struct delegateMethodsCaching {
 #pragma mark -
 #pragma mark Fade-in Message Banner methods
 
+-(void)attachBannerConstraints:(MessageBannerView*)message {
+    
+    id<UILayoutSupport> topLayoutGuide = message.viewController.topLayoutGuide;
+    NSDictionary *topViewsDictionary = NSDictionaryOfVariableBindings (message, topLayoutGuide);
+//    NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(message, message.viewController);
+    
+    
+
+    
+//    [message.viewController.view addConstraint:
+//     [NSLayoutConstraint constraintWithItem:message attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:message.viewController.view attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0]
+//     ];
+//    [message.viewController.view addConstraints:
+//     [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-0-[message]-0-|"
+//                                             options: 0
+//                                             metrics: nil
+//                                               views: NSDictionaryOfVariableBindings(message)]
+//     ];
+//    [message.viewController.view addConstraints:
+//     [NSLayoutConstraint constraintsWithVisualFormat: @"V:[topLayoutGuide]-0-[message]"
+//                                             options: 0
+//                                             metrics: nil
+//                                               views: topViewsDictionary]
+//     ];
+}
+
 - (void)showMessageBannerOnScreen {
     
     _messageOnScreen = YES;
@@ -352,6 +378,9 @@ static struct delegateMethodsCaching {
         currentMessageBanner.center = target;
         
     } completion:^(BOOL finished) {
+        
+        [self attachBannerConstraints:currentMessageBanner];
+        
         currentMessageBanner.isBannerDisplayed = YES;
         if (_delegate && _delegateRespondTo.MessageBannerViewDidAppear == YES) {
             [_delegate messageBannerViewDidAppear:currentMessageBanner];
