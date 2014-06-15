@@ -106,7 +106,10 @@ static struct delegateMethodsCaching {
     }
     return sharedSingleton;
 }
-
+/**
+ Returns the default view controller
+ @returns the default view controller where the banner is attached if the viewcontroller parameter is nil
+ */
 + (UIViewController*)defaultViewController {
     __strong UIViewController* defaultViewController = _defaultViewController;
     if (!defaultViewController) {
@@ -125,7 +128,10 @@ static struct delegateMethodsCaching {
 
 #pragma mark -
 #pragma mark Default view controller methods
-
+/**
+ Set the default view controller
+ @param aViewController The new controller to set as default
+ */
 + (void)setDefaultViewController:(UIViewController *)aViewController {
     _defaultViewController = aViewController;
 }
@@ -388,8 +394,6 @@ static struct delegateMethodsCaching {
                 realViewController = viewController;
             }
             
-            NSLog(@"%@", realViewController.topLayoutGuide);
-            
             [viewController.view addConstraint:[NSLayoutConstraint constraintWithItem:realViewController.topLayoutGuide
                                                                             attribute:NSLayoutAttributeBottom
                                                                             relatedBy:NSLayoutRelationEqual
@@ -397,24 +401,6 @@ static struct delegateMethodsCaching {
                                                                             attribute:NSLayoutAttributeTop
                                                                            multiplier:1.0f
                                                                              constant:0.0f]];
-            
-            [viewController.view addConstraint:[NSLayoutConstraint constraintWithItem:message
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:realViewController.topLayoutGuide
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                           multiplier:1.0f
-                                                                             constant:message.messageViewHeight]];
-//
-//            id<UILayoutSupport> topLayoutGuide = viewController.topLayoutGuide;
-//            NSDictionary *topViewsDictionary = NSDictionaryOfVariableBindings (message, topLayoutGuide);
-//
-//            [viewController.view addConstraints:
-//             [NSLayoutConstraint constraintsWithVisualFormat: @"V:[topLayoutGuide]-0-[message]"
-//                                                     options: 0
-//                                                     metrics: nil
-//                                                       views: topViewsDictionary]
-//             ];
             break;
         }
         case MessageBannerPositionCenter: {
@@ -427,20 +413,27 @@ static struct delegateMethodsCaching {
                                           attribute:NSLayoutAttributeCenterY
                                          multiplier:1.0f
                                            constant:0.0f]];
-            
             break;
         }
         case MessageBannerPositionBottom: {
+
+            UIViewController* realViewController;
             
-            id<UILayoutSupport> bottomLayoutGuide = viewController.bottomLayoutGuide;
-            NSDictionary *bottomViewsDictionary = NSDictionaryOfVariableBindings (message, bottomLayoutGuide);
+            if ([viewController isKindOfClass:[UINavigationController class]] &&
+                ![(UINavigationController*)viewController isToolbarHidden]) {
+                realViewController = [(UINavigationController*)viewController visibleViewController];
+            } else {
+                realViewController = viewController;
+            }
             
-            [viewController.view addConstraints:
-             [NSLayoutConstraint constraintsWithVisualFormat: @"V:[message]-0-[bottomLayoutGuide]"
-                                                     options: 0
-                                                     metrics: nil
-                                                       views: bottomViewsDictionary]
-             ];
+            [viewController.view addConstraint:
+             [NSLayoutConstraint constraintWithItem:realViewController.bottomLayoutGuide
+                                          attribute:NSLayoutAttributeTop
+                                          relatedBy:NSLayoutRelationEqual
+                                             toItem:message
+                                          attribute:NSLayoutAttributeBottom
+                                         multiplier:1.0f
+                                           constant:0.0f]];
             break;
         }
         default:
@@ -452,7 +445,13 @@ static struct delegateMethodsCaching {
     
     // Adding horizontal allignment
     [viewController.view addConstraint:
-     [NSLayoutConstraint constraintWithItem:viewController.view attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:message attribute:NSLayoutAttributeWidth multiplier:1.0f constant:0.0f]
+     [NSLayoutConstraint constraintWithItem:viewController.view
+                                  attribute:NSLayoutAttributeWidth
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:message
+                                  attribute:NSLayoutAttributeWidth
+                                 multiplier:1.0f
+                                   constant:0.0f]
      ];
     
     [viewController.view addConstraints:

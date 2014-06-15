@@ -371,7 +371,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
                                              metrics:nil
                                                views:NSDictionaryOfVariableBindings(self)]];
  
-    NSString* widthConstraintVisualFormat = [NSString stringWithFormat:@"V:[self(>=%f)]", self.messageViewHeight];
+    NSString* widthConstraintVisualFormat = [NSString stringWithFormat:@"V:[self(>=%f,<=%f)]", self.messageViewHeight, 2.0f * self.messageViewHeight];
     
     [self addConstraints:
      [NSLayoutConstraint constraintsWithVisualFormat:widthConstraintVisualFormat
