@@ -68,6 +68,10 @@
  The banner design dictionnary
  */
 @property (nonatomic, readonly, copy)   NSDictionary            *currentDesign;
+/**
+ The message view height used for calculs
+ */
+@property (nonatomic, readonly, assign) CGFloat  messageViewHeight;
 
 /**
  Create a message banner

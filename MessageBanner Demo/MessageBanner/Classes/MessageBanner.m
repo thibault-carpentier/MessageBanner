@@ -388,6 +388,8 @@ static struct delegateMethodsCaching {
                 realViewController = viewController;
             }
             
+            NSLog(@"%@", realViewController.topLayoutGuide);
+            
             [viewController.view addConstraint:[NSLayoutConstraint constraintWithItem:realViewController.topLayoutGuide
                                                                             attribute:NSLayoutAttributeBottom
                                                                             relatedBy:NSLayoutRelationEqual
@@ -396,13 +398,13 @@ static struct delegateMethodsCaching {
                                                                            multiplier:1.0f
                                                                              constant:0.0f]];
             
-//            [viewController.view addConstraint:[NSLayoutConstraint constraintWithItem:viewController.view
-//                                                                            attribute:NSLayoutAttributeHeight
-//                                                                            relatedBy:NSLayoutRelationEqual
-//                                                                               toItem:message
-//                                                                            attribute:NSLayoutAttributeBottom
-//                                                                           multiplier:1.0f
-//                                                                             constant:0.0f]];
+            [viewController.view addConstraint:[NSLayoutConstraint constraintWithItem:message
+                                                                            attribute:NSLayoutAttributeBottom
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:realViewController.topLayoutGuide
+                                                                            attribute:NSLayoutAttributeBottom
+                                                                           multiplier:1.0f
+                                                                             constant:message.messageViewHeight]];
 //
 //            id<UILayoutSupport> topLayoutGuide = viewController.topLayoutGuide;
 //            NSDictionary *topViewsDictionary = NSDictionaryOfVariableBindings (message, topLayoutGuide);
@@ -413,7 +415,7 @@ static struct delegateMethodsCaching {
 //                                                     metrics: nil
 //                                                       views: topViewsDictionary]
 //             ];
-//            break;
+            break;
         }
         case MessageBannerPositionCenter: {
             

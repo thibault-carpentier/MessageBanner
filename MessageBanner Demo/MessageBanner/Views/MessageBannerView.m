@@ -211,11 +211,12 @@ static NSMutableDictionary* _messageBannerDesign;
 /**
  The message view height used for calculs
  */
-@property (nonatomic, assign) CGFloat  messageViewHeight;
+@property (nonatomic, readwrite, assign) CGFloat  messageViewHeight;
 
 @end
 
 @implementation MessageBannerView
+
 
 #pragma mark -
 #pragma mark Message Banner Design File Methods
