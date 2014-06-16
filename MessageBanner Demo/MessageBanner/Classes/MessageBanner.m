@@ -484,13 +484,14 @@ static struct delegateMethodsCaching {
     [currentMessageBanner setBlur];
     
     CGPoint target = [self calculateTargetCenter:currentMessageBanner];
+    [self attachBannerConstraints:currentMessageBanner onViewController:[self getParentViewController:currentMessageBanner]];
+    
     [UIView animateKeyframesWithDuration:ANIMATION_DURATION delay:0.0f options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction animations:^{
+        
         
         currentMessageBanner.center = target;
         
     } completion:^(BOOL finished) {
-        
-        [self attachBannerConstraints:currentMessageBanner onViewController:[self getParentViewController:currentMessageBanner]];
         
         currentMessageBanner.isBannerDisplayed = YES;
         if (_delegate && _delegateRespondTo.MessageBannerViewDidAppear == YES) {
@@ -706,7 +707,6 @@ static struct delegateMethodsCaching {
     } else {
         [message.viewController.view addSubview:message];
     }
-
     return bottomOffset;
 }
 
