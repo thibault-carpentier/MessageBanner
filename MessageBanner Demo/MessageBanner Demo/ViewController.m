@@ -42,10 +42,22 @@
     self.userDismissEnabled = YES;
     self.buttonTitle = nil;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBannerViewWillAppearNotification:) name:MESSAGE_BANNER_VIEW_WILL_APPEAR_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBannerViewDidAppearNotification:) name:MESSAGE_BANNER_VIEW_DID_APPEAR_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBannerViewWillDisappearNotification:) name:MESSAGE_BANNER_VIEW_WILL_DISAPPEAR_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageBannerViewDidDisappearNotification:) name:MESSAGE_BANNER_VIEW_DID_DISAPPEAR_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(messageBannerViewWillAppearNotification:)
+                                                 name:MESSAGE_BANNER_VIEW_WILL_APPEAR_NOTIFICATION
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(messageBannerViewDidAppearNotification:)
+                                                 name:MESSAGE_BANNER_VIEW_DID_APPEAR_NOTIFICATION
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(messageBannerViewWillDisappearNotification:)
+                                                 name:MESSAGE_BANNER_VIEW_WILL_DISAPPEAR_NOTIFICATION
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(messageBannerViewDidDisappearNotification:)
+                                                 name:MESSAGE_BANNER_VIEW_DID_DISAPPEAR_NOTIFICATION
+                                               object:nil];
 }
 
 -(void)viewDidAppear:(BOOL)animated {

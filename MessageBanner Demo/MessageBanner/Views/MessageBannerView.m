@@ -231,7 +231,9 @@ static NSMutableDictionary* _messageBannerDesign;
                                                                 error:&error];
     if (error) {
         success = NO;
-        @throw ([NSException exceptionWithName:@"Error loading design" reason:[NSString stringWithFormat:@"Can not load %@.\nError:%@", file, error] userInfo:nil]);
+        @throw ([NSException exceptionWithName:@"Error loading design"
+                                        reason:
+                 [NSString stringWithFormat:@"Can not load %@.\nError:%@", file, error] userInfo:nil]);
     } else {
         [[MessageBannerView messageBannerDesign] addEntriesFromDictionary:newDesign];
     }
@@ -241,11 +243,17 @@ static NSMutableDictionary* _messageBannerDesign;
 + (NSMutableDictionary *)messageBannerDesign {
     if (!_messageBannerDesign) {
         NSError* error;
-        NSString *filePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:DEFAULT_DESIGN_FILE];
-        _messageBannerDesign = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath] options:kNilOptions error:&error];
+        NSString *filePath = [[[NSBundle mainBundle] resourcePath]
+                              stringByAppendingPathComponent:DEFAULT_DESIGN_FILE];
+        _messageBannerDesign = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath]
+                                                               options:kNilOptions
+                                                                 error:&error];
         
         if (error) {
-            @throw ([NSException exceptionWithName:@"Error loading default design" reason:[NSString stringWithFormat:@"Can not load %@.\nError:%@", DEFAULT_DESIGN_FILE, error] userInfo:nil]);
+            @throw ([NSException exceptionWithName:@"Error loading default design"
+                                            reason:
+                     [NSString stringWithFormat:@"Can not load %@.\nError:%@", DEFAULT_DESIGN_FILE, error]
+                                          userInfo:nil]);
         }
     }
     return _messageBannerDesign;
@@ -284,7 +292,8 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         self.messageViewHeight = 0.0f;
         _isBannerDisplayed = NO;
 
-        _currentDesign = [[MessageBannerView messageBannerDesign] objectForKey:[self getStyleTypeLabel:self.bannerType]];
+        _currentDesign = [[MessageBannerView messageBannerDesign]
+                          objectForKey:[self getStyleTypeLabel:self.bannerType]];
         // Adding Default Image from config
         if (_image == nil) {
             _image = [UIImage imageNamed:[_currentDesign objectForKey:DEFAULT_TYPE_IMAGE_KEY]];
@@ -339,39 +348,37 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     [super layoutSubviews];
 }
 
--(void)setupTitleAutoLayout {
-//    NSDictionary *titleAndViewDictionary = NSDictionaryOfVariableBindings (_titleLabel, self);
-//    NSDictionary *titleAndImageDictionary = (self.image ? NSDictionaryOfVariableBindings (self.titleLabel, self.image) : nil);
-//    NSDictionary *titleAndButtonDictionary = (self.button ? NSDictionaryOfVariableBindings (self.titleLabel, self.button) : nil);
-//    NSDictionary *titleAndSubtitleDictionary = (self.subtitleLabel ? NSDictionaryOfVariableBindings (self.titleLabel, self.subTitle) : nil);
-//    
-//    [self.titleLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-//    if (self.subtitleLabel) {
-//        [self addConstraint:
-//         [NSLayoutConstraint constraintWithItem:self.titleLabel
-//                                  attribute:NSLayoutAttributeWidth
-//                                  relatedBy:NSLayoutRelationEqual
-//                                     toItem:self.subtitleLabel
-//                                  attribute:NSLayoutAttributeWidth
-//                                 multiplier:1.0f
-//                                   constant:0.0f]];
-//    }
-//    NSString *topConstraintVisualFormat = [NSString stringWithFormat:@"V:|-%f-[_titleLabel]|", ELEMENTS_PADDING];
-//    [self addConstraints:
-//     [NSLayoutConstraint constraintsWithVisualFormat:topConstraintVisualFormat options:0 metrics:nil views:titleAndViewDictionary]];
-}
-
 - (void)setupViewsAutoLayout {
-//    [self setupTitleAutoLayout];
+    [self setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.titleLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.subtitleLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.imageView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.button setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    NSString* heightConstraintVisualFormat = [NSString stringWithFormat:@"H:[self(>=%f)]", self.viewController.view.frame.size.width];
+    [self setupTitleAutoLayout];
+    
+    if (self.subTitle) {
+        [self setupSubtitleAutoLayout];
+    }
+    
+    if (self.image) {
+        [self setupImageAutoLayout];
+    }
+    
+    if (self.buttonTitle && [self.buttonTitle length]) {
+        [self setupButtonAutoLayout];
+    }
+    
+    NSString* heightConstraintVisualFormat = [NSString stringWithFormat:@"H:[self(>=%f)]",
+                                              self.viewController.view.frame.size.width];
     [self addConstraints:
      [NSLayoutConstraint constraintsWithVisualFormat:heightConstraintVisualFormat
                                              options:0
                                              metrics:nil
                                                views:NSDictionaryOfVariableBindings(self)]];
  
-    NSString* widthConstraintVisualFormat = [NSString stringWithFormat:@"V:[self(>=%f,<=%f)]", self.messageViewHeight, 2.0f * self.messageViewHeight];
+    NSString* widthConstraintVisualFormat = [NSString stringWithFormat:@"V:[self(>=%f,<=%f)]",
+                                             self.messageViewHeight, 2.0f * self.messageViewHeight];
     
     [self addConstraints:
      [NSLayoutConstraint constraintsWithVisualFormat:widthConstraintVisualFormat
@@ -386,7 +393,8 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 
 - (void)addDismissMethod {
     // Adding swipe to dismiss if setted
-    UISwipeGestureRecognizer *dismissGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(dismissViewWithGesture:)];
+    UISwipeGestureRecognizer *dismissGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self
+                                                                                         action:@selector(dismissViewWithGesture:)];
     
     switch (self.position) {
         case MessageBannerPositionTop:
@@ -397,7 +405,8 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
             break;
         case MessageBannerPositionCenter: {
             [dismissGesture setDirection:UISwipeGestureRecognizerDirectionLeft];
-            UISwipeGestureRecognizer *dismissGesture2 = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(dismissViewWithGesture:)];
+            UISwipeGestureRecognizer *dismissGesture2 = [[UISwipeGestureRecognizer alloc] initWithTarget:self
+                                                                                                  action:@selector(dismissViewWithGesture:)];
             [dismissGesture2 setDirection:UISwipeGestureRecognizerDirectionRight];
             [self addGestureRecognizer:dismissGesture2];
             break;
@@ -408,7 +417,8 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     }
     [self addGestureRecognizer:dismissGesture];
     
-    UITapGestureRecognizer *dismissGesture3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissViewWithGesture:)];
+    UITapGestureRecognizer *dismissGesture3 = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                      action:@selector(dismissViewWithGesture:)];
     [dismissGesture3 setNumberOfTapsRequired:1];
     [self addGestureRecognizer:dismissGesture3];
 }
@@ -426,11 +436,14 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         self.blurView.blurRadius = blurRadius;
         self.blurView.alpha = 0.f;
         
-        if ([self.viewController isKindOfClass:[UINavigationController class]] || [self.viewController.parentViewController isKindOfClass:[UINavigationController class]]) {
+        if ([self.viewController isKindOfClass:[UINavigationController class]] ||
+            [self.viewController.parentViewController isKindOfClass:[UINavigationController class]]) {
             
             if ([self.viewController isKindOfClass:[UINavigationController class]]) {
                 [((UINavigationController *)self.viewController).view insertSubview:self.blurView
-                                                                       belowSubview:[((UINavigationController *)self.viewController) navigationBar]];
+                                                                       belowSubview:
+                 [((UINavigationController *)self.viewController) navigationBar]];
+                
             } else {
                 [((UINavigationController *)self.viewController.parentViewController).visibleViewController.view addSubview:self.blurView];
             }
@@ -499,7 +512,6 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     }
     
     // Used to add constraints  when the view will pop
-    [self setTranslatesAutoresizingMaskIntoConstraints:NO];
     return viewFrame;
 }
 
@@ -549,6 +561,64 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     self.messageViewHeight += (titleView.frame.origin.y + titleView.frame.size.height);
 }
 
+-(void)setupTitleAutoLayout {
+    NSDictionary *titleAndViewDictionary = [[NSMutableDictionary alloc]
+                                            initWithDictionary:NSDictionaryOfVariableBindings (_titleLabel, self)];
+    
+    NSMutableDictionary *titleAndImageDictionary = (self.image ? [[NSMutableDictionary alloc]
+                                                           initWithDictionary:NSDictionaryOfVariableBindings (_titleLabel, _imageView)] : nil);
+    NSMutableDictionary *titleAndButtonDictionary = (self.button ? [[NSMutableDictionary alloc] initWithDictionary: NSDictionaryOfVariableBindings (_titleLabel, _button)] : nil);
+    NSMutableDictionary *titleAndSubtitleDictionary = (self.subtitleLabel ? [[NSMutableDictionary alloc] initWithDictionary:NSDictionaryOfVariableBindings (_titleLabel, _subtitleLabel)] : nil);
+    
+    
+    // Top attach layout and bottom :
+    NSString *topBotConstraintVisualFormat;
+    NSMutableDictionary *topBotCorrectDictionnary;
+    
+    if (!titleAndSubtitleDictionary) {
+        topBotConstraintVisualFormat = [NSString stringWithFormat:@"V:|-==%f-[_titleLabel]-==%f-|", ELEMENTS_PADDING, ELEMENTS_PADDING];
+        topBotCorrectDictionnary = [[NSMutableDictionary alloc] initWithDictionary:titleAndViewDictionary];
+    } else {
+        topBotConstraintVisualFormat = [NSString stringWithFormat:@"V:|-==%f-[_titleLabel]->=%f-[_subtitleLabel]", ELEMENTS_PADDING, ELEMENTS_PADDING];
+        topBotCorrectDictionnary = titleAndSubtitleDictionary;
+    }
+    [self addConstraints:
+     [NSLayoutConstraint constraintsWithVisualFormat:topBotConstraintVisualFormat
+                                             options:0
+                                             metrics:nil
+                                               views:topBotCorrectDictionnary]];
+    
+    // Left and right layouuts
+    NSString *leftRightConstraintVisualFormat;
+    NSMutableDictionary *leftRightCorrectDictionnary;
+    
+    // left positionning
+    if (titleAndImageDictionary) {
+        leftRightConstraintVisualFormat = [NSString stringWithFormat:@"H:[_imageView]->=%f-[_titleLabel]", ELEMENTS_PADDING];
+        leftRightCorrectDictionnary = titleAndImageDictionary;
+    } else {
+        leftRightConstraintVisualFormat = [NSString stringWithFormat:@"H:|-==%f-[_titleLabel]", ELEMENTS_PADDING];
+        leftRightCorrectDictionnary = [[NSMutableDictionary alloc] initWithDictionary:titleAndViewDictionary];
+    }
+    
+    // right positionning
+    if (titleAndButtonDictionary) {
+        leftRightConstraintVisualFormat = [NSString stringWithFormat:@"%@->=%f-[_button]"
+                                           , leftRightConstraintVisualFormat
+                                           , ELEMENTS_PADDING];
+        [leftRightCorrectDictionnary addEntriesFromDictionary:titleAndButtonDictionary];
+    } else {
+        leftRightConstraintVisualFormat = [NSString stringWithFormat:@"%@-==%f-|"
+                                           , leftRightConstraintVisualFormat
+                                           , ELEMENTS_PADDING];
+    }
+    [self addConstraints:
+     [NSLayoutConstraint constraintsWithVisualFormat:leftRightConstraintVisualFormat
+                                             options:0
+                                             metrics:nil
+                                               views:leftRightCorrectDictionnary]];
+}
+
 #pragma mark -
 #pragma mark Subtitle Label methods
 
@@ -592,6 +662,62 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     self.messageViewHeight += (subtitleView.frame.origin.y - self.messageViewHeight) + subtitleView.frame.size.height;
 }
 
+-(void)setupSubtitleAutoLayout {
+    NSDictionary *subtitleAndViewDictionary = [[NSMutableDictionary alloc]
+                                            initWithDictionary:NSDictionaryOfVariableBindings (_subtitleLabel, self)];
+    
+    
+    
+    NSMutableDictionary *subtitleAndImageDictionary = (self.image ? [[NSMutableDictionary alloc]
+                                                                  initWithDictionary:NSDictionaryOfVariableBindings (_subtitleLabel, _imageView)] : nil);
+    NSMutableDictionary *subtitleAndButtonDictionary = (self.button ? [[NSMutableDictionary alloc] initWithDictionary: NSDictionaryOfVariableBindings (_subtitleLabel, _button)] : nil);
+    NSMutableDictionary *subtitleAndTitleDictionary = (self.subtitleLabel ? [[NSMutableDictionary alloc] initWithDictionary:NSDictionaryOfVariableBindings (_subtitleLabel, _titleLabel)] : nil);
+    
+    
+    // Top attach layout and bottom :
+    NSString *topBotConstraintVisualFormat;
+    NSMutableDictionary *topBotCorrectDictionnary;
+    
+    topBotConstraintVisualFormat = [NSString stringWithFormat:@"V:[_titleLabel]->=%f-[_subtitleLabel]-==%f-|", ELEMENTS_PADDING, ELEMENTS_PADDING];
+    topBotCorrectDictionnary = subtitleAndTitleDictionary;
+    [self addConstraints:
+     [NSLayoutConstraint constraintsWithVisualFormat:topBotConstraintVisualFormat
+                                             options:0
+                                             metrics:nil
+                                               views:topBotCorrectDictionnary]];
+    
+    // Left and right layouuts
+    NSString *leftRightConstraintVisualFormat;
+    NSMutableDictionary *leftRightCorrectDictionnary;
+    
+    // left positionning
+    if (subtitleAndImageDictionary) {
+        leftRightConstraintVisualFormat = [NSString stringWithFormat:@"H:[_imageView]->=%f-[_subtitleLabel]", ELEMENTS_PADDING];
+        leftRightCorrectDictionnary = subtitleAndImageDictionary;
+    } else {
+        leftRightConstraintVisualFormat = [NSString stringWithFormat:@"H:|-==%f-[_subtitleLabel]", ELEMENTS_PADDING];
+        leftRightCorrectDictionnary = [[NSMutableDictionary alloc] initWithDictionary:subtitleAndViewDictionary];
+    }
+    
+    // right positionning
+    if (subtitleAndButtonDictionary) {
+        leftRightConstraintVisualFormat = [NSString stringWithFormat:@"%@->=%f-[_button]"
+                                           , leftRightConstraintVisualFormat
+                                           , ELEMENTS_PADDING];
+        [leftRightCorrectDictionnary addEntriesFromDictionary:subtitleAndButtonDictionary];
+    } else {
+        leftRightConstraintVisualFormat = [NSString stringWithFormat:@"%@-==%f-|"
+                                           , leftRightConstraintVisualFormat
+                                           , ELEMENTS_PADDING];
+    }
+    [self addConstraints:
+     [NSLayoutConstraint constraintsWithVisualFormat:leftRightConstraintVisualFormat
+                                             options:0
+                                             metrics:nil
+                                               views:leftRightCorrectDictionnary]];
+}
+
+
 #pragma mark -
 #pragma mark Image View methods
 
@@ -604,6 +730,59 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
                                       image.size.height);
     
     [self addSubview:self.imageView];
+}
+
+-(void)setupImageAutoLayout {
+    NSMutableDictionary *imageAndsubTitleDictionary = (self.subTitle ? [[NSMutableDictionary alloc]
+                                                                     initWithDictionary:NSDictionaryOfVariableBindings (_subtitleLabel, _imageView)] : nil);
+    NSMutableDictionary *imageAndTitleDictionary = (self.titleBanner ? [[NSMutableDictionary alloc] initWithDictionary:NSDictionaryOfVariableBindings (_imageView, _titleLabel)] : nil);
+
+    [self addConstraint:
+     [NSLayoutConstraint constraintWithItem:self
+                                  attribute:NSLayoutAttributeCenterY
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:_imageView
+                                  attribute:NSLayoutAttributeCenterY
+                                 multiplier:1.0f
+                                   constant:0.0f]];
+    
+    
+    NSString* leftRightConstraintsVisualFormat = [NSString stringWithFormat:@"H:|-==%f-[_imageView]->=%f-[_titleLabel]"
+                                                  , ELEMENTS_PADDING
+                                                  , ELEMENTS_PADDING];
+    [self addConstraints:
+     [NSLayoutConstraint constraintsWithVisualFormat:leftRightConstraintsVisualFormat
+                                             options:0
+                                             metrics:nil
+                                               views:imageAndTitleDictionary]];
+    if (imageAndsubTitleDictionary) {
+        [self addConstraints:
+         [NSLayoutConstraint constraintsWithVisualFormat:
+          [NSString stringWithFormat:@"H:|-==%f-[_imageView]->=%f-[_subtitleLabel]"
+                                    , ELEMENTS_PADDING
+                                    , ELEMENTS_PADDING]
+                                                 options:0
+                                                 metrics:nil
+                                                   views:imageAndsubTitleDictionary]];
+    }
+    
+    
+    NSString *widthImageFormat = [NSString stringWithFormat:@"[_imageView(==%f)]",
+                                   _imageView.frame.size.width];
+    [self addConstraints:
+     [NSLayoutConstraint constraintsWithVisualFormat:widthImageFormat
+                                             options:0
+                                             metrics:nil
+                                               views:NSDictionaryOfVariableBindings(_imageView)]];
+    
+    NSString *heightImageFormat = [NSString stringWithFormat:@"V:[_imageView(==%f)]",
+                                    _imageView.frame.size.height];
+    [self addConstraints:
+     [NSLayoutConstraint constraintsWithVisualFormat:heightImageFormat
+                                             options:0
+                                             metrics:nil
+                                               views:NSDictionaryOfVariableBindings(_imageView)]];
+    
 }
 
 #pragma mark -
@@ -631,6 +810,59 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         [self addSubview:self.button];
     }
 }
+
+-(void)setupButtonAutoLayout {
+    NSMutableDictionary *buttonAndsubTitleDictionary = (self.subTitle ? [[NSMutableDictionary alloc]
+                                                                        initWithDictionary:NSDictionaryOfVariableBindings (_subtitleLabel, _button)] : nil);
+    NSMutableDictionary *buttonAndTitleDictionary = (self.titleBanner ? [[NSMutableDictionary alloc] initWithDictionary:NSDictionaryOfVariableBindings (_button, _titleLabel)] : nil);
+    
+    [self addConstraint:
+     [NSLayoutConstraint constraintWithItem:self
+                                  attribute:NSLayoutAttributeCenterY
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:_button
+                                  attribute:NSLayoutAttributeCenterY
+                                 multiplier:1.0f
+                                   constant:0.0f]];
+    
+    
+    NSString* leftRightConstraintsVisualFormat = [NSString stringWithFormat:@"H:[_titleLabel]->=%f-[_button]-==%f-|"
+                                                  , ELEMENTS_PADDING
+                                                  , ELEMENTS_PADDING];
+    [self addConstraints:
+     [NSLayoutConstraint constraintsWithVisualFormat:leftRightConstraintsVisualFormat
+                                             options:0
+                                             metrics:nil
+                                               views:buttonAndTitleDictionary]];
+    if (buttonAndsubTitleDictionary) {
+        [self addConstraints:
+         [NSLayoutConstraint constraintsWithVisualFormat:
+          [NSString stringWithFormat:@"H:[_subtitleLabel]->=%f-[_button]-==%f-|"
+           , ELEMENTS_PADDING
+           , ELEMENTS_PADDING]
+                                                 options:0
+                                                 metrics:nil
+                                                   views:buttonAndsubTitleDictionary]];
+    }
+    
+    NSString *widthButtonFormat = [NSString stringWithFormat:@"[_button(==%f)]",
+                                   _button.frame.size.width];
+    [self addConstraints:
+     [NSLayoutConstraint constraintsWithVisualFormat:widthButtonFormat
+                                             options:0
+                                             metrics:nil
+                                               views:NSDictionaryOfVariableBindings(_button)]];
+    
+    NSString *heightButtonFormat = [NSString stringWithFormat:@"V:[_button(==%f)]",
+                                   _button.frame.size.height];
+    [self addConstraints:
+     [NSLayoutConstraint constraintsWithVisualFormat:heightButtonFormat
+                                             options:0
+                                             metrics:nil
+                                               views:NSDictionaryOfVariableBindings(_button)]];
+    
+}
+
 
 - (void)centerButton {
     self.button.center = CGPointMake(  self.button.center.x
