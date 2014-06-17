@@ -337,19 +337,17 @@ static struct delegateMethodsCaching {
 - (UIViewController *)getParentViewController:(MessageBannerView*)message {
     UIViewController *parentViewController;
     
-    if ([message.viewController isKindOfClass:[UINavigationController class]] || [message.viewController.parentViewController isKindOfClass:[UINavigationController class]]) {
-        
+    if ([self isViewControllerOrParentViewControllerNavigationController:message]) {
         // Getting the current view Controller
         UINavigationController *currentNavigationController;
-        if ([message.viewController isKindOfClass:[UINavigationController class]]) {
+        if ([self isViewControllerNavigationController:message]) {
             currentNavigationController = (UINavigationController *)message.viewController;
         } else {
             currentNavigationController = (UINavigationController *)message.viewController.parentViewController;
         }
         switch (message.position) {
             case MessageBannerPositionTop:
-                if (![currentNavigationController isNavigationBarHidden] &&
-                    ![[currentNavigationController navigationBar] isHidden]) {
+                if ([self isNavigationBarVisible:currentNavigationController]) {
                     parentViewController = currentNavigationController;
                 }
                 else {
@@ -361,7 +359,7 @@ static struct delegateMethodsCaching {
                 break;
             }
             case MessageBannerPositionBottom:
-                if (currentNavigationController && currentNavigationController.isToolbarHidden == NO) {
+                if ([self isToolBarHidden:currentNavigationController]) {
                     parentViewController = currentNavigationController;
                 }
                 else {
@@ -655,20 +653,18 @@ static struct delegateMethodsCaching {
     CGFloat topOffset = 0.0f;
     
     // If has a navigationController
-    if ([message.viewController isKindOfClass:[UINavigationController class]] || [message.viewController.parentViewController isKindOfClass:[UINavigationController class]]) {
+    if ([self isViewControllerOrParentViewControllerNavigationController:message]) {
         
         // Getting the current view Controller
         UINavigationController *currentNavigationController;
-        if ([message.viewController isKindOfClass:[UINavigationController class]]) {
+        if ([self isViewControllerNavigationController:message]) {
             currentNavigationController = (UINavigationController *)message.viewController;
         } else {
             currentNavigationController = (UINavigationController *)message.viewController.parentViewController;
         }
         
         // If the navigationBar is visible we add his height as an offset
-        if (![currentNavigationController isNavigationBarHidden] &&
-            ![[currentNavigationController navigationBar] isHidden]) {
-            
+        if ([self isNavigationBarVisible:currentNavigationController]) {
             // Adding the view on the navcontroller
             [currentNavigationController.view insertSubview:message belowSubview:[currentNavigationController navigationBar]];
             
@@ -687,10 +683,10 @@ static struct delegateMethodsCaching {
     CGFloat bottomOffset = 0.0f;
     UINavigationController *currentNavigationController;
 
-    if ([message.viewController isKindOfClass:[UINavigationController class]] || [message.viewController.parentViewController isKindOfClass:[UINavigationController class]]) {
+    if ([self isViewControllerOrParentViewControllerNavigationController:message]) {
         
         // Getting the current view Controller
-        if ([message.viewController isKindOfClass:[UINavigationController class]]) {
+        if ([self isViewControllerNavigationController:message]) {
             currentNavigationController = (UINavigationController *)message.viewController;
         } else {
             currentNavigationController = (UINavigationController *)message.viewController.parentViewController;
@@ -699,7 +695,7 @@ static struct delegateMethodsCaching {
         currentNavigationController = message.viewController.navigationController;
     }
     
-    if (currentNavigationController && currentNavigationController.isToolbarHidden == NO) {
+    if ([self isToolBarHidden:currentNavigationController]) {
         bottomOffset = (currentNavigationController.toolbar.frame.size.height);
         [currentNavigationController.view insertSubview:message belowSubview:currentNavigationController.toolbar];
     } else {
@@ -732,6 +728,27 @@ static struct delegateMethodsCaching {
             break;
     }
     return (result);
+}
+
+#pragma mark -
+#pragma mark Checks Methods
+
+- (BOOL)isViewControllerOrParentViewControllerNavigationController:(MessageBannerView *)message {
+    return ([message.viewController isKindOfClass:[UINavigationController class]]
+            || [message.viewController.parentViewController isKindOfClass:[UINavigationController class]]);
+}
+
+- (BOOL)isViewControllerNavigationController:(MessageBannerView *)message {
+    return ([message.viewController isKindOfClass:[UINavigationController class]]);
+}
+
+- (BOOL)isNavigationBarVisible:(UINavigationController *)currentNavigationController {
+    return (![currentNavigationController isNavigationBarHidden] &&
+            ![[currentNavigationController navigationBar] isHidden]);
+}
+
+- (BOOL)isToolBarHidden:(UINavigationController *)currentNavigationController {
+    return (currentNavigationController && currentNavigationController.isToolbarHidden == NO);
 }
 
 @end
