@@ -386,9 +386,7 @@ static struct delegateMethodsCaching {
         case MessageBannerPositionTop: {
             UIViewController* realViewController;
             
-            if ([viewController isKindOfClass:[UINavigationController class]] &&
-                ![(UINavigationController*)viewController isNavigationBarHidden] &&
-                ![[(UINavigationController*)viewController navigationBar] isHidden]) {
+            if ([viewController isKindOfClass:[UINavigationController class]]) {
                 realViewController = [(UINavigationController*)viewController visibleViewController];
             } else {
                 realViewController = viewController;
