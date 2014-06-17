@@ -179,6 +179,14 @@
                    withGesture:(UIGestureRecognizer *)gesture
                  andCompletion:(void (^)())completion;
 
+    - (BOOL)isViewControllerOrParentViewControllerNavigationController:(MessageBannerView *)message;
+
+    - (BOOL)isViewControllerNavigationController:(MessageBannerView *)message;
+
+    - (BOOL)isNavigationBarVisible:(UINavigationController *)currentNavigationController;
+
+    - (BOOL)isToolBarHidden:(UINavigationController *)currentNavigationController;
+
 @end
 
 /**
@@ -428,10 +436,8 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         self.blurView.blurRadius = blurRadius;
         self.blurView.alpha = 0.f;
         
-        if ([self.viewController isKindOfClass:[UINavigationController class]] ||
-            [self.viewController.parentViewController isKindOfClass:[UINavigationController class]]) {
-            
-            if ([self.viewController isKindOfClass:[UINavigationController class]]) {
+        if ([[MessageBanner sharedSingleton] isViewControllerOrParentViewControllerNavigationController:self]) {
+            if ([[MessageBanner sharedSingleton] isViewControllerNavigationController:self]) {
                 [((UINavigationController *)self.viewController).view insertSubview:self.blurView
                                                                        belowSubview:
                  [((UINavigationController *)self.viewController) navigationBar]];
@@ -937,7 +943,6 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     
     [self.button.layer setBorderColor:[[UIColor colorWithHexString:[messageStyle objectForKey:BUTTON_BORDER_COLOR_KEY] alpha:[[messageStyle objectForKey:BUTTON_BORDER_ALPHA_KEY] floatValue]] CGColor]];
     [self.button.layer setBorderWidth:[[messageStyle objectForKey:BUTTON_BORDER_SIZE_KEY] floatValue]];
-    
     
 }
 
