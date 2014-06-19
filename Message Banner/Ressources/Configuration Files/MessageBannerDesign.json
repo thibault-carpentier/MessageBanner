@@ -2,7 +2,7 @@
     "Error": {
          "defaultImageForType"              : "ErrorDefaultLeftImage.pngYOUWISH"
         
-        ,"blurRadius"                       : 0.0
+        ,"blurRadius"                       : 20.0
         
         ,"backgroundColor"                  : "#EC736B"
         ,"backgroundImageName"              : "ErrorBackgroundDefaultImage.pngNO"
