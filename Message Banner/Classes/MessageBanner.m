@@ -415,8 +415,7 @@ static struct delegateMethodsCaching {
 
             UIViewController* realViewController;
             
-            if ([viewController isKindOfClass:[UINavigationController class]] &&
-                ![(UINavigationController*)viewController isToolbarHidden]) {
+            if ([viewController isKindOfClass:[UINavigationController class]]) {
                 realViewController = [(UINavigationController*)viewController visibleViewController];
             } else {
                 realViewController = viewController;

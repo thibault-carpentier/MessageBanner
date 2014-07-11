@@ -76,7 +76,6 @@
     
 
     //    [MessageBanner setMessageBannerDelegate:self];
-    
     [MessageBanner showMessageBannerInViewController:self.navigationController
                                                title:self.bannerTitle
                                             subtitle:self.subTitle

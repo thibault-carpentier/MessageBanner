@@ -438,9 +438,15 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         
         if ([[MessageBanner sharedSingleton] isViewControllerOrParentViewControllerNavigationController:self]) {
             if ([[MessageBanner sharedSingleton] isViewControllerNavigationController:self]) {
+                UIView *correctView = [((UINavigationController *)self.viewController) navigationBar];
+                
+                if (self.position == MessageBannerPositionBottom) {
+                    correctView = [((UINavigationController *)self.viewController) toolbar];
+                }
+                
                 [((UINavigationController *)self.viewController).view insertSubview:self.blurView
-                                                                       belowSubview:
-                 [((UINavigationController *)self.viewController) navigationBar]];
+                                                                       belowSubview:correctView
+                 ];
                 
             } else {
                 [((UINavigationController *)self.viewController.parentViewController).visibleViewController.view addSubview:self.blurView];

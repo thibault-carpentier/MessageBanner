@@ -11,7 +11,6 @@ Each different type of banner can have different and fully customizable appearan
 
 Each banner can show a **title**, a **subtitle**, an **image** and a **button**.
 
-
 ScreenShots
 ----------------
 ![Error](/Screenshots/ErrorMessageBanner.png?raw=true "Standart Error message banner")
@@ -19,9 +18,47 @@ ScreenShots
 ![Message](/Screenshots/MessageMessageBanner.png?raw=true "Standart Message message banner")
 ![Success](/Screenshots/SuccessMessageBanner.png?raw=true "Standart Success message banner")
 
+Installation
+----------------
+### From CocoaPods
+Add ```pod 'MessageBanner'``` to your Podfile.
+### Manually
+Writting in progress
+
 Quick Start Guide
 ----------------
-Writting in progress 
+
+
+Add the import on the right place : 
+```objective-c
+#import <MessageBanner.h>
+```
+
+To show a basic notification use one of the following call :
+```objective-c
+[MessageBanner showMessageBannerInViewController:aViewController
+		                                   title:@"aTitle"
+       		                            subtitle:@"aSubtitle"];
+
+// ------------------------- OR ------------------------- 
+
+    [MessageBanner showMessageBannerInViewController:self
+                                               title:@"aTitle"
+                                            subtitle:@"aSubtitle"
+                                               image:[UIImage imageNamed:@"icon.png"]
+                                                type:MessageBannerTypeMessage
+                                            duration:MessageBannerDurationDefault
+                              userDissmissedCallback:^(MessageBannerView *bannerView) {
+                                  return;
+                              }
+                                         buttonTitle:@"BtnTitile"
+                           userPressedButtonCallback:^(MessageBannerView *banner) {
+                                  return;
+                              }
+                                          atPosition:MessageBannerPositionTop
+                                canBeDismissedByUser:YES delegate:self];
+
+```
 
 Class documentation
 ----------------
@@ -270,15 +307,16 @@ Each type of banner can have the following properties :
 |buttonTextShadowOffsetX | Set the banner button text x shadow offset   |      -0.0+           |         0.0        |                                           |
 |buttonTextShadowOffsetY | Set the banner button text y shadow offset   |      -0.0+           |         1.0        |                                           |
 
-
-
+Roadmap
+----------------
+Writting in progress
 FAQ
 ----------------
-Writting in progress 
+No question asked so far.
 
 Requirements
 ----------------
-Writting in progress 
+Writting in progress
 
 Repository Infos
 ----------------
