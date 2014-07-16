@@ -21,15 +21,64 @@ ScreenShots
 Installation
 ----------------
 ### From CocoaPods
-Add ```pod 'MessageBanner'``` to your Podfile.
+ 
+**Not ready yet !**
+
+The recommended approach for installating ```MessageBanner``` is via the [CocoaPods](http://cocoapods.org/) package manager, as it provides flexible dependency management and dead simple installation: 
+
+```bash
+$ [sudo] gem install cocoapods
+$ pod setup
+```
+Change to the directory of your Xcode project:
+
+``` bash
+$ cd /path/to/MyProject
+$ touch Podfile
+$ edit Podfile
+```
+
+Edit your Podfile and add MessageBanner:
+
+``` bash
+platform :ios, '7.0'
+pod 'MessageBanner', '~> 1.0'
+```
+
+Install into your Xcode project:
+
+``` bash
+$ pod install
+```
+
+Open your project in Xcode from the .xcworkspace file (not the usual project file)
+
+``` bash
+$ open MyProject.xcworkspace
+```
+
+Please note that if your installation fails, it may be because you are installing with a version of Git lower than CocoaPods is expecting. Please ensure that you are running Git >= **1.8.0** by executing `git --version`. You can get a full picture of the installation details by executing `pod install --verbose`.
+
+
+
 ### Manually
-Writting in progress
+#### Dependency :
+The project use [HexColors](https://github.com/mRs-/HexColors) and [FXBlurView](https://github.com/nicklockwood/FXBlurView)
+You need to also install them manually. Please consult their installation requirement on their github pages.
+
+#### MessageBanner manual installation
+Download Message banner project. You can download it directly from his [github page](https://github.com/Loadex/Message-Banner)  
+or via the command line : 
+``` bash
+$ git clone https://github.com/Loadex/Message-Banner.git
+```
+Drag the ```Message Banner``` folder into your project.
 
 Quick Start Guide
 ----------------
 
 
-Add the import on the right place : 
+Add the import to the top of classes that will use it. : 
 ```objective-c
 #import <MessageBanner.h>
 ```
@@ -309,14 +358,48 @@ Each type of banner can have the following properties :
 
 Roadmap
 ----------------
-Writting in progress
+####Current Version : ***0.9***  
+
+- ***V1.0:***  
+	+ Eventual bug fixes
+	+ Finish Readme.md documentation
+	+ Fix incorrect project organisation
+	+ Create Pod Module
+
+- ***V1.1:***
+	+ Create JSON View Behavior Config File
+		- Create Config for custom dismiss methods
+		- Create config for custom animation times
+		- Create config for custom stay in screen time automatic mode calculation
+		- Add default image enabled or not  
+
+- ***V1.2:***
+	+ Create Manager JSON config File
+		- Create config for multipopups (then to move in behavior cfg to separate for each type)
+		- Create config to add “shadow” or “blur” on given View Controller (Or view on screen if its a navigation controller)
+		- Create config to allow or not user interaction on the presented view (then to move in behavior cfg to separate for each type)
+		- Create Auto depop when screen change var
+- ***V1.3:***
+	- Create Swift Version%
+
 FAQ
 ----------------
 No question asked so far.
 
 Requirements
 ----------------
-Writting in progress
+This project require :
++ ```iOS7```
++ ```ARC```
+
+Licence
+----------------
+```
+"THE BEER-WARE LICENSE":
+Thibault Carpentier wrote this project. As long as you retain this notice you
+can do whatever you want with this stuff. If we meet some day, and you think
+this stuff is worth it, you can buy me a beer in return.
+```
 
 Repository Infos
 ----------------
