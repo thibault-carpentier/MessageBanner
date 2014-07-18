@@ -1,18 +1,18 @@
 //
 //  ViewController.m
-//  MessageBanner
+//  MBLMessageBanner
 //
 //  Created by Thibault Carpentier on 4/22/14.
 //  Copyright (c) 2014 Thibault Carpentier. All rights reserved.
 //
 
 #import "ViewController.h"
-#import "MessageBannerView.h"
+#import "MBLMessageBannerView.h"
 
 @interface ViewController ()
 
-@property (nonatomic, assign) MessageBannerPosition messagePosition;
-@property (nonatomic, assign) MessageBannerType     messageType;
+@property (nonatomic, assign) MBLMessageBannerPosition messagePosition;
+@property (nonatomic, assign) MBLMessageBannerType     messageType;
 @property (nonatomic, copy)   NSString*             bannerTitle;
 @property (nonatomic, copy)   NSString*             subTitle;
 @property (nonatomic, copy)   UIImage*              image;
@@ -36,9 +36,9 @@
     self.bannerTitle = @"Small title.";
     self.subTitle = @"Small subtitle.";
     self.image = nil;
-    self.duration = MessageBannerDurationDefault;
-    self.messageType = MessageBannerTypeError;
-    self.messagePosition = MessageBannerPositionTop;
+    self.duration = MBLMessageBannerDurationDefault;
+    self.messageType = MBLMessageBannerTypeError;
+    self.messagePosition = MBLMessageBannerPositionTop;
     self.userDismissEnabled = YES;
     self.buttonTitle = nil;
     
@@ -75,14 +75,14 @@
 - (IBAction)popMeOne:(id)sender {
     
 
-    //    [MessageBanner setMessageBannerDelegate:self];
-    [MessageBanner showMessageBannerInViewController:self.navigationController
+    //    [MBLMessageBanner setMessageBannerDelegate:self];
+    [MBLMessageBanner showMessageBannerInViewController:self.navigationController
                                                title:self.bannerTitle
                                             subtitle:self.subTitle
                                                image:self.image
                                                 type:self.messageType
                                             duration:self.duration
-                              userDissmissedCallback:^(MessageBannerView* message) {
+                              userDissmissedCallback:^(MBLMessageBannerView* message) {
                                   NSLog(@"Banner with :\n{\n"
                                         "Title: [%@]\n"
                                         "Subtitle: [%@]\n"
@@ -104,9 +104,9 @@
                                   return ;
                               }
                                          buttonTitle:self.buttonTitle
-                           userPressedButtonCallback:^ (MessageBannerView* banner) {
+                           userPressedButtonCallback:^ (MBLMessageBannerView* banner) {
                                
-                               [MessageBanner hideMessageBannerWithCompletion:^{
+                               [MBLMessageBanner hideMessageBannerWithCompletion:^{
                                    NSLog(@"Dismissed");
                                }];
                                return ;
@@ -137,64 +137,64 @@
 }
 
 #pragma mark -
-#pragma mark MessageBanner delegate methods
+#pragma mark MBLMessageBanner delegate methods
 
-- (void)messageBannerViewWillAppear:(MessageBannerView *)messageBanner {
-    NSLog(@"MessageBanner [WILL APPEAR]");
+- (void)messageBannerViewWillAppear:(MBLMessageBannerView *)messageBanner {
+    NSLog(@"MBLMessageBanner [WILL APPEAR]");
 }
 
-- (void)messageBannerViewDidAppear:(MessageBannerView *)messageBanner {
-    NSLog(@"MessageBanner [DID APPEAR]");
+- (void)messageBannerViewDidAppear:(MBLMessageBannerView *)messageBanner {
+    NSLog(@"MBLMessageBanner [DID APPEAR]");
 }
 
-- (void)messageBannerViewWillDisappear:(MessageBannerView *)messageBanner {
-    NSLog(@"MessageBanner [WILL DISAPPEAR]");
+- (void)messageBannerViewWillDisappear:(MBLMessageBannerView *)messageBanner {
+    NSLog(@"MBLMessageBanner [WILL DISAPPEAR]");
 }
 
-- (void)messageBannerViewDidDisappear:(MessageBannerView *)messageBanner {
-    NSLog(@"MessageBanner [DID DISAPPEAR]");
+- (void)messageBannerViewDidDisappear:(MBLMessageBannerView *)messageBanner {
+    NSLog(@"MBLMessageBanner [DID DISAPPEAR]");
 }
 
 #pragma mark -
-#pragma mark MessageBanner notification methods
+#pragma mark MBLMessageBanner notification methods
 
-- (void)messageBannerViewWillAppearNotification:(MessageBannerView *)messageBanner {
-    NSLog(@"NOTIFICATION => MessageBanner [WILL APPEAR]");
+- (void)messageBannerViewWillAppearNotification:(MBLMessageBannerView *)messageBanner {
+    NSLog(@"NOTIFICATION => MBLMessageBanner [WILL APPEAR]");
 }
 
-- (void)messageBannerViewDidAppearNotification:(MessageBannerView *)messageBanner {
-    NSLog(@"NOTIFICATION => MessageBanner [DID APPEAR]");
+- (void)messageBannerViewDidAppearNotification:(MBLMessageBannerView *)messageBanner {
+    NSLog(@"NOTIFICATION => MBLMessageBanner [DID APPEAR]");
 }
 
-- (void)messageBannerViewWillDisappearNotification:(MessageBannerView *)messageBanner {
-    NSLog(@"NOTIFICATION => MessageBanner [WILL DISAPPEAR]");
+- (void)messageBannerViewWillDisappearNotification:(MBLMessageBannerView *)messageBanner {
+    NSLog(@"NOTIFICATION => MBLMessageBanner [WILL DISAPPEAR]");
 }
 
-- (void)messageBannerViewDidDisappearNotification:(MessageBannerView *)messageBanner {
-    NSLog(@"NOTIFICATION => MessageBanner [DID DISAPPEAR]");
+- (void)messageBannerViewDidDisappearNotification:(MBLMessageBannerView *)messageBanner {
+    NSLog(@"NOTIFICATION => MBLMessageBanner [DID DISAPPEAR]");
 }
 
 
 #pragma mark -
 #pragma mark ConvertionMethods
 
-- (NSString *)getTypeDescription:(MessageBannerType)bannerType {
+- (NSString *)getTypeDescription:(MBLMessageBannerType)bannerType {
     NSString* result;
     
     switch (bannerType) {
-        case MessageBannerTypeError: {
+        case MBLMessageBannerTypeError: {
             result = @"Message Banner Error";
             break;
         }
-        case MessageBannerTypeWarning: {
+        case MBLMessageBannerTypeWarning: {
             result = @"Message Banner Warning";
             break;
         }
-        case MessageBannerTypeMessage: {
+        case MBLMessageBannerTypeMessage: {
             result = @"Message Banner Message";
             break;
         }
-        case MessageBannerTypeSuccess: {
+        case MBLMessageBannerTypeSuccess: {
             result = @"Message Banner Success";
             break;
         }
@@ -206,18 +206,18 @@
     return result;
 }
 
-- (NSString *)getPositionDescription:(MessageBannerPosition)bannerPosition {
+- (NSString *)getPositionDescription:(MBLMessageBannerPosition)bannerPosition {
     NSString* result;
     switch (bannerPosition) {
-        case MessageBannerPositionBottom: {
+        case MBLMessageBannerPositionBottom: {
             result = @"Message Banner Bottom";
             break;
         }
-        case MessageBannerPositionCenter: {
+        case MBLMessageBannerPositionCenter: {
             result = @"Message Banner Middle";
             break;
         }
-        case MessageBannerPositionTop: {
+        case MBLMessageBannerPositionTop: {
             result = @"Message Banner Top";
             break;
         }
@@ -282,19 +282,19 @@
 - (IBAction)messageTypeSegmentedControlValueChanged:(UISegmentedControl *)sender {
     switch (sender.selectedSegmentIndex) {
         case 0: {
-            self.messageType = MessageBannerTypeError;
+            self.messageType = MBLMessageBannerTypeError;
             break;
         }
         case 1: {
-            self.messageType = MessageBannerTypeWarning;
+            self.messageType = MBLMessageBannerTypeWarning;
             break;
         }
         case 2: {
-            self.messageType = MessageBannerTypeMessage;
+            self.messageType = MBLMessageBannerTypeMessage;
             break;
         }
         case 3: {
-            self.messageType = MessageBannerTypeSuccess;
+            self.messageType = MBLMessageBannerTypeSuccess;
             break;
         }
         default:
@@ -305,15 +305,15 @@
 - (IBAction)messagePositionSegmentedControlValueChanged:(UISegmentedControl *)sender {
     switch (sender.selectedSegmentIndex) {
         case 0: {
-            self.messagePosition = MessageBannerPositionTop;
+            self.messagePosition = MBLMessageBannerPositionTop;
             break;
         }
         case 1: {
-            self.messagePosition = MessageBannerPositionCenter;
+            self.messagePosition = MBLMessageBannerPositionCenter;
             break;
         }
         case 2: {
-            self.messagePosition = MessageBannerPositionBottom;
+            self.messagePosition = MBLMessageBannerPositionBottom;
             break;
         }
         default:
@@ -355,12 +355,12 @@
     switch (rounded) {
         case -1: {
             self.durationLabel.text = @"Endless";
-            self.duration = MessageBannerDurationEndless;
+            self.duration = MBLMessageBannerDurationEndless;
             break;
         }
         case 0: {
             self.durationLabel.text = @"Automatic";
-            self.duration = MessageBannerDurationDefault;
+            self.duration = MBLMessageBannerDurationDefault;
             break;
         }
         default: {

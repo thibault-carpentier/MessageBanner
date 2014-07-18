@@ -1,17 +1,17 @@
 /**
- * @file   MessageBanner.m
+ * @file   MBLMessageBanner.m
  * @Author Thibault Carpentier
  * @date   2014
- * @brief  MessageBannerView manager.
+ * @brief  MBLMessageBannerView manager.
  *
- * MessageBanner allow to easilly manage popups.
+ * MBLMessageBanner allow to easilly manage popups.
  */
 
-#import "MessageBanner.h"
-#import "MessageBannerView.h"
+#import "MBLMessageBanner.h"
+#import "MBLMessageBannerView.h"
 
-#pragma mark - MessageBanner interface
-@interface MessageBanner ()
+#pragma mark - MBLMessageBanner interface
+@interface MBLMessageBanner ()
 /**
  Determine if a message is on the screen or not
  */
@@ -22,16 +22,16 @@
 @property (nonatomic, strong) NSMutableArray *messagesBannersList;
 @end
 
-#pragma mark - MessageBannerView usefull methods
+#pragma mark - MBLMessageBannerView usefull methods
 /**
  Undocumented private methods calls for internal use
  */
-@interface MessageBannerView ()
+@interface MBLMessageBannerView ()
     - (void)setBlur;
     - (void)unsetBlur;
 @end
 
-@implementation MessageBanner
+@implementation MBLMessageBanner
 
 
 #pragma mark - Default Calculation duration values
@@ -53,15 +53,15 @@
 /**
  Default banner type
  */
-#define TYPE_DEFAULT            MessageBannerTypeMessage
+#define TYPE_DEFAULT            MBLMessageBannerTypeMessage
 /**
  Default message banner duration mode
  */
-#define DURATION_DEFAULT        MessageBannerDurationDefault
+#define DURATION_DEFAULT        MBLMessageBannerDurationDefault
 /**
  Default message banner position mode
  */
-#define POSITION_DEFAULT        MessageBannerPositionTop
+#define POSITION_DEFAULT        MBLMessageBannerPositionTop
 /**
  Default user dismiss message banner mode
  */
@@ -71,7 +71,7 @@
 /**
  Singleton instance
  */
-static MessageBanner *sharedSingleton;
+static MBLMessageBanner *sharedSingleton;
 /**
  Default view controller used if viewcontroller is nil or not passed as a parameter
  */
@@ -79,16 +79,16 @@ static UIViewController* _defaultViewController;
 /**
  Class delegate instance
  */
-static id <MessageBannerDelegate> _delegate;
+static id <MBLMessageBannerDelegate> _delegate;
 /**
  Caching delegate methods implementation stucture
  */
 static struct delegateMethodsCaching {
     
     unsigned int messageBannerViewWillAppear:1;
-    unsigned int MessageBannerViewDidAppear:1;
-    unsigned int MessageBannerViewWillDisappear:1;
-    unsigned int MessageBannerViewDidDisappear:1;
+    unsigned int messageBannerViewDidAppear:1;
+    unsigned int messageBannerViewWillDisappear:1;
+    unsigned int messageBannerViewDidDisappear:1;
     
 } _delegateRespondTo;
 
@@ -98,7 +98,7 @@ static struct delegateMethodsCaching {
  Returns the shared instance of the manager
  @returns manager shared instance
  */
-+ (MessageBanner *)sharedSingleton
++ (MBLMessageBanner *)sharedSingleton
 {
     if (!sharedSingleton)
     {
@@ -139,7 +139,7 @@ static struct delegateMethodsCaching {
 #pragma mark -
 #pragma mark Delegate Methods
 
-+ (void)setMessageBannerDelegate:(id<MessageBannerDelegate>)aDelegate {
++ (void)setMessageBannerDelegate:(id<MBLMessageBannerDelegate>)aDelegate {
     if (_delegate != aDelegate) {
         
         _delegate = aDelegate;
@@ -148,11 +148,11 @@ static struct delegateMethodsCaching {
         
         newMethodCaching.messageBannerViewWillAppear = [_delegate respondsToSelector:@selector(messageBannerViewWillAppear:)];
         
-        newMethodCaching.MessageBannerViewDidAppear = [_delegate respondsToSelector:@selector(messageBannerViewDidAppear:)];
+        newMethodCaching.messageBannerViewDidAppear = [_delegate respondsToSelector:@selector(messageBannerViewDidAppear:)];
         
-        newMethodCaching.MessageBannerViewWillDisappear = [_delegate respondsToSelector:@selector(messageBannerViewWillDisappear:)];
+        newMethodCaching.messageBannerViewWillDisappear = [_delegate respondsToSelector:@selector(messageBannerViewWillDisappear:)];
         
-        newMethodCaching.MessageBannerViewDidDisappear = [_delegate respondsToSelector:@selector(messageBannerViewDidDisappear:)];
+        newMethodCaching.messageBannerViewDidDisappear = [_delegate respondsToSelector:@selector(messageBannerViewDidDisappear:)];
         
         _delegateRespondTo = newMethodCaching;
     }
@@ -181,7 +181,7 @@ static struct delegateMethodsCaching {
 + (void)showMessageBannerInViewController:(UIViewController *)viewController
                                     title:(NSString *)title
                                  subtitle:(NSString *)subtitle
-                               atPosition:(MessageBannerPosition)messagePosition {
+                               atPosition:(MBLMessageBannerPosition)messagePosition {
     
     [self showMessageBannerInViewController:viewController
                                       title:title
@@ -200,8 +200,8 @@ static struct delegateMethodsCaching {
 + (void)showMessageBannerInViewController:(UIViewController *)viewController
                                     title:(NSString *)title
                                  subtitle:(NSString *)subtitle
-                                     type:(MessageBannerType)type
-                               atPosition:(MessageBannerPosition)messagePosition {
+                                     type:(MBLMessageBannerType)type
+                               atPosition:(MBLMessageBannerPosition)messagePosition {
     
     [self showMessageBannerInViewController:viewController
                                       title:title
@@ -220,9 +220,9 @@ static struct delegateMethodsCaching {
 + (void)showMessageBannerInViewController:(UIViewController *)viewController
                                     title:(NSString *)title
                                  subtitle:(NSString *)subtitle
-                                     type:(MessageBannerType)type
+                                     type:(MBLMessageBannerType)type
                                  duration:(NSTimeInterval)duration
-                               atPosition:(MessageBannerPosition)messagePosition {
+                               atPosition:(MBLMessageBannerPosition)messagePosition {
     
     [self showMessageBannerInViewController:viewController
                                       title:title
@@ -241,10 +241,10 @@ static struct delegateMethodsCaching {
 + (void)showMessageBannerInViewController:(UIViewController *)viewController
                                     title:(NSString *)title
                                  subtitle:(NSString *)subtitle
-                                     type:(MessageBannerType)type
+                                     type:(MBLMessageBannerType)type
                                  duration:(NSTimeInterval)duration
-                   userDissmissedCallback:(void (^)(MessageBannerView *))userDissmissedCallback
-                               atPosition:(MessageBannerPosition)messagePosition
+                   userDissmissedCallback:(void (^)(MBLMessageBannerView *))userDissmissedCallback
+                               atPosition:(MBLMessageBannerPosition)messagePosition
                      canBeDismissedByUser:(BOOL)dismissingEnabled {
     
     [self showMessageBannerInViewController:viewController
@@ -265,10 +265,10 @@ static struct delegateMethodsCaching {
                                     title:(NSString *)title
                                  subtitle:(NSString *)subtitle
                                     image:(UIImage *)image
-                                     type:(MessageBannerType)type
+                                     type:(MBLMessageBannerType)type
                                  duration:(NSTimeInterval)duration
-                   userDissmissedCallback:(void (^)(MessageBannerView *))userDissmissedCallback
-                               atPosition:(MessageBannerPosition)messagePosition
+                   userDissmissedCallback:(void (^)(MBLMessageBannerView *))userDissmissedCallback
+                               atPosition:(MBLMessageBannerPosition)messagePosition
                      canBeDismissedByUser:(BOOL)dismissingEnabled {
     [self showMessageBannerInViewController:viewController
                                       title:title
@@ -288,22 +288,22 @@ static struct delegateMethodsCaching {
                                     title:(NSString *)title
                                  subtitle:(NSString *)subtitle
                                     image:(UIImage *)image
-                                     type:(MessageBannerType)type
+                                     type:(MBLMessageBannerType)type
                                  duration:(NSTimeInterval)duration
-                   userDissmissedCallback:(void (^)(MessageBannerView *bannerView))userDissmissedCallback
+                   userDissmissedCallback:(void (^)(MBLMessageBannerView *bannerView))userDissmissedCallback
                               buttonTitle:(NSString *)buttonTitle
-                userPressedButtonCallback:(void (^)(MessageBannerView* banner))userPressedButtonCallback
-                               atPosition:(MessageBannerPosition)messagePosition
+                userPressedButtonCallback:(void (^)(MBLMessageBannerView* banner))userPressedButtonCallback
+                               atPosition:(MBLMessageBannerPosition)messagePosition
                      canBeDismissedByUser:(BOOL)dismissingEnabled
-                    delegate:(id<MessageBannerDelegate>)aDelegate {
+                    delegate:(id<MBLMessageBannerDelegate>)aDelegate {
     
     
     // if not correctlyset, we use the default view controller
     if (!viewController) {
-        viewController = [MessageBanner defaultViewController];
+        viewController = [MBLMessageBanner defaultViewController];
     }
     
-    MessageBannerView *messageBannerView = [[MessageBannerView alloc] initWithTitle:title subtitle:subtitle image:image type:type duration:duration inViewController:viewController userDissmissedCallback:userDissmissedCallback buttonTitle:buttonTitle userPressedButtonCallback:userPressedButtonCallback atPosition:messagePosition canBeDismissedByUser:dismissingEnabled];
+    MBLMessageBannerView *messageBannerView = [[MBLMessageBannerView alloc] initWithTitle:title subtitle:subtitle image:image type:type duration:duration inViewController:viewController userDissmissedCallback:userDissmissedCallback buttonTitle:buttonTitle userPressedButtonCallback:userPressedButtonCallback atPosition:messagePosition canBeDismissedByUser:dismissingEnabled];
     
     
     // Preparing and showing notification
@@ -311,7 +311,7 @@ static struct delegateMethodsCaching {
     
     //    NSString *title = messageBannerView.title;
     //    NSString *subtitle = messageBannerView.subTitle;
-    //    for (MessageBannerView *n in [MessageBanner sharedSingleton].messagesBannersList)
+    //    for (MBLMessageBannerView *n in [MBLMessageBanner sharedSingleton].messagesBannersList)
     //    {
     //        if (([n.title isEqualToString:title] || (!n.title && !title)) && ([n.subTitle isEqualToString:subtitle] || (!n.subTitle && !subtitle)))
     //        {
@@ -322,19 +322,19 @@ static struct delegateMethodsCaching {
     
     
     if (_delegate == nil) {
-        [MessageBanner setMessageBannerDelegate:aDelegate];
+        [MBLMessageBanner setMessageBannerDelegate:aDelegate];
     }
-    [[MessageBanner sharedSingleton].messagesBannersList addObject:messageBannerView];
+    [[MBLMessageBanner sharedSingleton].messagesBannersList addObject:messageBannerView];
     
-    if ([[MessageBanner sharedSingleton] messageOnScreen] == NO) {
-        [[MessageBanner sharedSingleton] showMessageBannerOnScreen];
+    if ([[MBLMessageBanner sharedSingleton] messageOnScreen] == NO) {
+        [[MBLMessageBanner sharedSingleton] showMessageBannerOnScreen];
     }
 }
 
 #pragma mark -
 #pragma mark Fade-in Message Banner methods
 
-- (UIViewController *)getParentViewController:(MessageBannerView*)message {
+- (UIViewController *)getParentViewController:(MBLMessageBannerView*)message {
     UIViewController *parentViewController;
     
     if ([self isViewControllerOrParentViewControllerNavigationController:message]) {
@@ -346,7 +346,7 @@ static struct delegateMethodsCaching {
             currentNavigationController = (UINavigationController *)message.viewController.parentViewController;
         }
         switch (message.position) {
-            case MessageBannerPositionTop:
+            case MBLMessageBannerPositionTop:
                 if ([self isNavigationBarVisible:currentNavigationController]) {
                     parentViewController = currentNavigationController;
                 }
@@ -354,11 +354,11 @@ static struct delegateMethodsCaching {
                     parentViewController = message.viewController;
                 }
                 break;
-            case MessageBannerPositionCenter: {
+            case MBLMessageBannerPositionCenter: {
                 parentViewController = message.viewController;
                 break;
             }
-            case MessageBannerPositionBottom:
+            case MBLMessageBannerPositionBottom:
                 if ([self isToolBarHidden:currentNavigationController]) {
                     parentViewController = currentNavigationController;
                 }
@@ -378,10 +378,10 @@ static struct delegateMethodsCaching {
     return parentViewController;
 }
 
--(void)attachVerticalBannerConstraint:(MessageBannerView*)message onViewController:(UIViewController*)viewController {
+-(void)attachVerticalBannerConstraint:(MBLMessageBannerView*)message onViewController:(UIViewController*)viewController {
     
     switch (message.position) {
-        case MessageBannerPositionTop: {
+        case MBLMessageBannerPositionTop: {
             UIViewController* realViewController;
             
             if ([viewController isKindOfClass:[UINavigationController class]]) {
@@ -399,7 +399,7 @@ static struct delegateMethodsCaching {
                                                                              constant:0.0f]];
             break;
         }
-        case MessageBannerPositionCenter: {
+        case MBLMessageBannerPositionCenter: {
             
             [viewController.view addConstraint:
              [NSLayoutConstraint constraintWithItem:viewController.view
@@ -411,7 +411,7 @@ static struct delegateMethodsCaching {
                                            constant:0.0f]];
             break;
         }
-        case MessageBannerPositionBottom: {
+        case MBLMessageBannerPositionBottom: {
 
             UIViewController* realViewController;
             
@@ -436,7 +436,7 @@ static struct delegateMethodsCaching {
     }
 }
 
--(void)attachBannerConstraints:(MessageBannerView*)message onViewController:(UIViewController*)viewController {
+-(void)attachBannerConstraints:(MBLMessageBannerView*)message onViewController:(UIViewController*)viewController {
     
     // Adding horizontal allignment
     [viewController.view addConstraint:
@@ -464,12 +464,12 @@ static struct delegateMethodsCaching {
     
     _messageOnScreen = YES;
     
-    if (![[MessageBanner sharedSingleton].messagesBannersList count]) {
+    if (![[MBLMessageBanner sharedSingleton].messagesBannersList count]) {
         NSLog(@"No Message Banner to show");
         return;
     }
     
-    MessageBannerView *currentMessageBanner = [[MessageBanner sharedSingleton].messagesBannersList firstObject];
+    MBLMessageBannerView *currentMessageBanner = [[MBLMessageBanner sharedSingleton].messagesBannersList firstObject];
     
     if (_delegate && _delegateRespondTo.messageBannerViewWillAppear == YES) {
         [_delegate messageBannerViewWillAppear:currentMessageBanner];
@@ -489,7 +489,7 @@ static struct delegateMethodsCaching {
     } completion:^(BOOL finished) {
         
         currentMessageBanner.isBannerDisplayed = YES;
-        if (_delegate && _delegateRespondTo.MessageBannerViewDidAppear == YES) {
+        if (_delegate && _delegateRespondTo.messageBannerViewDidAppear == YES) {
             [_delegate messageBannerViewDidAppear:currentMessageBanner];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:MESSAGE_BANNER_VIEW_DID_APPEAR_NOTIFICATION object:currentMessageBanner];
@@ -508,16 +508,16 @@ static struct delegateMethodsCaching {
 + (BOOL) hideMessageBannerWithCompletion:(void (^)())completion {
     BOOL success = NO;
     
-    if ([[[MessageBanner sharedSingleton] messagesBannersList] count]) {
+    if ([[[MBLMessageBanner sharedSingleton] messagesBannersList] count]) {
         success = YES;
         dispatch_async(dispatch_get_main_queue(), ^
                        {
-                           if ([[[MessageBanner sharedSingleton] messagesBannersList] count]) {
+                           if ([[[MBLMessageBanner sharedSingleton] messagesBannersList] count]) {
                                
-                               MessageBannerView *currentView = [[[MessageBanner sharedSingleton] messagesBannersList] objectAtIndex:0];
+                               MBLMessageBannerView *currentView = [[[MBLMessageBanner sharedSingleton] messagesBannersList] objectAtIndex:0];
                                if (currentView.isBannerDisplayed)
                                {
-                                   [[MessageBanner sharedSingleton] hideMessageBanner:currentView withGesture:nil andCompletion:completion];
+                                   [[MBLMessageBanner sharedSingleton] hideMessageBanner:currentView withGesture:nil andCompletion:completion];
                                }
                            }
                        });
@@ -529,16 +529,16 @@ static struct delegateMethodsCaching {
 #pragma mark -
 #pragma mark Fade-out Message Banner methods
 
-- (void) hideMessageBanner:(MessageBannerView *)message withGesture:(UIGestureRecognizer *)gesture andCompletion:(void (^)())completion {
+- (void) hideMessageBanner:(MBLMessageBannerView *)message withGesture:(UIGestureRecognizer *)gesture andCompletion:(void (^)())completion {
     
     //    Removing timer Callback
     message.isBannerDisplayed = NO;
     
-    if (message.duration != MessageBannerDurationEndless) {
+    if (message.duration != MBLMessageBannerDurationEndless) {
         [message.dismissTimer invalidate];
     }
     
-    if (_delegate && _delegateRespondTo.MessageBannerViewWillDisappear == YES) {
+    if (_delegate && _delegateRespondTo.messageBannerViewWillDisappear == YES) {
         [_delegate messageBannerViewWillDisappear:message];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:MESSAGE_BANNER_VIEW_WILL_DISAPPEAR_NOTIFICATION object:message];
@@ -548,15 +548,15 @@ static struct delegateMethodsCaching {
     CGPoint fadeOutCenter = CGPointMake(0, 0);
     
     switch (message.position) {
-        case MessageBannerPositionTop:
+        case MBLMessageBannerPositionTop:
             fadeOutCenter = CGPointMake(  message.center.x
                                         , -(message.frame.size.height / 2.0f) );
             break;
-        case MessageBannerPositionBottom:
+        case MBLMessageBannerPositionBottom:
             fadeOutCenter = CGPointMake(  message.center.x
                                         , message.viewController.view.bounds.size.height + (message.frame.size.height / 2.0f) );
             break;
-        case MessageBannerPositionCenter:
+        case MBLMessageBannerPositionCenter:
             if ([gesture isKindOfClass:[UISwipeGestureRecognizer class]]) {
                 
                 UISwipeGestureRecognizer *swipeGesture = (UISwipeGestureRecognizer*)gesture;
@@ -586,22 +586,22 @@ static struct delegateMethodsCaching {
         [message setCenter:fadeOutCenter];
     } completion:^(BOOL finished) {
         [message removeFromSuperview];
-        [[[MessageBanner sharedSingleton] messagesBannersList] removeObjectAtIndex:0];
-        [MessageBanner sharedSingleton].messageOnScreen = NO;
+        [[[MBLMessageBanner sharedSingleton] messagesBannersList] removeObjectAtIndex:0];
+        [MBLMessageBanner sharedSingleton].messageOnScreen = NO;
         
         if (completion) {
             completion();
         }
         
         
-        if (_delegate && _delegateRespondTo.MessageBannerViewDidDisappear == YES) {
+        if (_delegate && _delegateRespondTo.messageBannerViewDidDisappear == YES) {
             [_delegate messageBannerViewDidDisappear:message];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:MESSAGE_BANNER_VIEW_DID_DISAPPEAR_NOTIFICATION object:message];
 
         
-        if ([[[MessageBanner sharedSingleton] messagesBannersList] count]) {
-            [[MessageBanner sharedSingleton] showMessageBannerOnScreen];
+        if ([[[MBLMessageBanner sharedSingleton] messagesBannersList] count]) {
+            [[MBLMessageBanner sharedSingleton] showMessageBannerOnScreen];
         }
         
          }];
@@ -610,12 +610,12 @@ static struct delegateMethodsCaching {
 #pragma mark -
 #pragma mark Message Banner Timer method
 
-- (void) initAutoDismissTimerforBanner:(MessageBannerView *)message {
+- (void) initAutoDismissTimerforBanner:(MBLMessageBannerView *)message {
     CGFloat timerSec = ANIMATION_DURATION;
     
-    if (message.duration != MessageBannerDurationEndless) {
+    if (message.duration != MBLMessageBannerDurationEndless) {
         
-        if (message.duration == MessageBannerDurationDefault) {
+        if (message.duration == MBLMessageBannerDurationDefault) {
             timerSec += DISPLAY_DEFAULT_DURATION + (message.frame.size.height * DISPLAY_TIME_PER_PIXEL);
         } else {
             timerSec += message.duration;
@@ -623,10 +623,10 @@ static struct delegateMethodsCaching {
         
         UITapGestureRecognizer *tap = nil;
         void (^completion)() = nil;
-        NSMethodSignature *meth = [[MessageBanner sharedSingleton]methodSignatureForSelector:@selector(hideMessageBanner:withGesture:andCompletion:)];
+        NSMethodSignature *meth = [[MBLMessageBanner sharedSingleton]methodSignatureForSelector:@selector(hideMessageBanner:withGesture:andCompletion:)];
         NSInvocation *hideMethodInvocation = [NSInvocation invocationWithMethodSignature:meth];
         [hideMethodInvocation setSelector:@selector(hideMessageBanner:withGesture:andCompletion:)];
-        [hideMethodInvocation setTarget:[MessageBanner sharedSingleton]];
+        [hideMethodInvocation setTarget:[MBLMessageBanner sharedSingleton]];
         [hideMethodInvocation setArgument:&message atIndex:2];
         [hideMethodInvocation setArgument:&tap atIndex:3];
         [hideMethodInvocation setArgument:&completion atIndex:4];
@@ -648,7 +648,7 @@ static struct delegateMethodsCaching {
     return (offset);
 }
 
--(CGFloat)calculateTopOffsetAndAttachView:(MessageBannerView *)message {
+-(CGFloat)calculateTopOffsetAndAttachView:(MBLMessageBannerView *)message {
     CGFloat topOffset = 0.0f;
     
     // If has a navigationController
@@ -678,7 +678,7 @@ static struct delegateMethodsCaching {
     return topOffset;
 }
 
--(CGFloat)calculateBottomOffsetAndAttachView:(MessageBannerView *)message {
+-(CGFloat)calculateBottomOffsetAndAttachView:(MBLMessageBannerView *)message {
     CGFloat bottomOffset = 0.0f;
     UINavigationController *currentNavigationController;
 
@@ -704,18 +704,18 @@ static struct delegateMethodsCaching {
 }
 
 
-- (CGPoint)calculateTargetCenter:(MessageBannerView *)message {
+- (CGPoint)calculateTargetCenter:(MBLMessageBannerView *)message {
     CGPoint result;
     
     switch (message.position) {
-        case MessageBannerPositionTop:
+        case MBLMessageBannerPositionTop:
             result = CGPointMake(  message.center.x
                                  , (message.frame.size.height / 2.0f) + [self calculateTopOffsetAndAttachView:message]);
             break;
-        case MessageBannerPositionBottom:
+        case MBLMessageBannerPositionBottom:
             result = CGPointMake( message.center.x, message.viewController.view.frame.size.height - ((message.frame.size.height / 2.0f) + [self calculateBottomOffsetAndAttachView:message]));
             break;
-        case MessageBannerPositionCenter:
+        case MBLMessageBannerPositionCenter:
             
             // Adding the popup to the view
             [message.viewController.view addSubview:message];
@@ -732,12 +732,12 @@ static struct delegateMethodsCaching {
 #pragma mark -
 #pragma mark Checks Methods
 
-- (BOOL)isViewControllerOrParentViewControllerNavigationController:(MessageBannerView *)message {
+- (BOOL)isViewControllerOrParentViewControllerNavigationController:(MBLMessageBannerView *)message {
     return ([message.viewController isKindOfClass:[UINavigationController class]]
             || [message.viewController.parentViewController isKindOfClass:[UINavigationController class]]);
 }
 
-- (BOOL)isViewControllerNavigationController:(MessageBannerView *)message {
+- (BOOL)isViewControllerNavigationController:(MBLMessageBannerView *)message {
     return ([message.viewController isKindOfClass:[UINavigationController class]]);
 }
 

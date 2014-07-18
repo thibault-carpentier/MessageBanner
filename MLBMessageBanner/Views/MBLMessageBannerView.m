@@ -2,13 +2,13 @@
  * @file   MessageBanneviewr.m
  * @Author Thibault Carpentier
  * @date   2014
- * @brief  MessageBannerView popup flat styled view.
+ * @brief  MBLMessageBannerView popup flat styled view.
  *
- * MessageBannerView a customisable popupview
+ * MBLMessageBannerView a customisable popupview
  */
 
-#import "MessageBannerView.h"
-#import "MessageBanner.h"
+#import "MBLMessageBannerView.h"
+#import "MBLMessageBanner.h"
 #import "HexColor.h"
 #import "FXBlurView.h"
 /**
@@ -174,14 +174,14 @@
 /**
  Undocumented private methods calls for internal use
  */
-@interface MessageBanner (MessageBannerView)
-    - (void) hideMessageBanner:(MessageBannerView *)messageBanner
+@interface MBLMessageBanner (MBLMessageBannerView)
+    - (void) hideMessageBanner:(MBLMessageBannerView *)messageBanner
                    withGesture:(UIGestureRecognizer *)gesture
                  andCompletion:(void (^)())completion;
 
-    - (BOOL)isViewControllerOrParentViewControllerNavigationController:(MessageBannerView *)message;
+    - (BOOL)isViewControllerOrParentViewControllerNavigationController:(MBLMessageBannerView *)message;
 
-    - (BOOL)isViewControllerNavigationController:(MessageBannerView *)message;
+    - (BOOL)isViewControllerNavigationController:(MBLMessageBannerView *)message;
 
     - (BOOL)isNavigationBarVisible:(UINavigationController *)currentNavigationController;
 
@@ -194,7 +194,7 @@
  */
 static NSMutableDictionary* _messageBannerDesign;
 
-@interface MessageBannerView ()
+@interface MBLMessageBannerView ()
 
 /**
  The title label view
@@ -223,7 +223,7 @@ static NSMutableDictionary* _messageBannerDesign;
 
 @end
 
-@implementation MessageBannerView
+@implementation MBLMessageBannerView
 
 
 #pragma mark -
@@ -243,7 +243,7 @@ static NSMutableDictionary* _messageBannerDesign;
                                         reason:
                  [NSString stringWithFormat:@"Can not load %@.\nError:%@", file, error] userInfo:nil]);
     } else {
-        [[MessageBannerView messageBannerDesign] addEntriesFromDictionary:newDesign];
+        [[MBLMessageBannerView messageBannerDesign] addEntriesFromDictionary:newDesign];
     }
     return success;
 }
@@ -273,13 +273,13 @@ static NSMutableDictionary* _messageBannerDesign;
 - (id)initWithTitle:(NSString *)title
            subtitle:(NSString *)subtitle
               image:(UIImage *)image
-               type:(MessageBannerType)bannerType
+               type:(MBLMessageBannerType)bannerType
            duration:(CGFloat)duration
    inViewController:(UIViewController *)viewController
-           userDissmissedCallback:(void (^)(MessageBannerView* banner))userDissmissedCallback
+           userDissmissedCallback:(void (^)(MBLMessageBannerView* banner))userDissmissedCallback
         buttonTitle:(NSString *)buttonTitle
-     userPressedButtonCallback:(void (^)(MessageBannerView* banner))userPressedButtonCallback
-         atPosition:(MessageBannerPosition)position
+     userPressedButtonCallback:(void (^)(MBLMessageBannerView* banner))userPressedButtonCallback
+         atPosition:(MBLMessageBannerPosition)position
 canBeDismissedByUser:(BOOL)dismissingEnabled {
    
     if ((self = [self init])) {
@@ -300,7 +300,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         self.messageViewHeight = 0.0f;
         _isBannerDisplayed = NO;
 
-        _currentDesign = [[MessageBannerView messageBannerDesign]
+        _currentDesign = [[MBLMessageBannerView messageBannerDesign]
                           objectForKey:[self getStyleTypeLabel:self.bannerType]];
         // Adding Default Image from config
         if (_image == nil) {
@@ -397,13 +397,13 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
                                                                                          action:@selector(dismissViewWithGesture:)];
     
     switch (self.position) {
-        case MessageBannerPositionTop:
+        case MBLMessageBannerPositionTop:
             [dismissGesture setDirection:UISwipeGestureRecognizerDirectionUp];;
             break;
-        case MessageBannerPositionBottom:
+        case MBLMessageBannerPositionBottom:
             [dismissGesture setDirection:UISwipeGestureRecognizerDirectionDown];
             break;
-        case MessageBannerPositionCenter: {
+        case MBLMessageBannerPositionCenter: {
             [dismissGesture setDirection:UISwipeGestureRecognizerDirectionLeft];
             UISwipeGestureRecognizer *dismissGesture2 = [[UISwipeGestureRecognizer alloc] initWithTarget:self
                                                                                                   action:@selector(dismissViewWithGesture:)];
@@ -436,11 +436,11 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
         self.blurView.blurRadius = blurRadius;
         self.blurView.alpha = 0.f;
         
-        if ([[MessageBanner sharedSingleton] isViewControllerOrParentViewControllerNavigationController:self]) {
-            if ([[MessageBanner sharedSingleton] isViewControllerNavigationController:self]) {
+        if ([[MBLMessageBanner sharedSingleton] isViewControllerOrParentViewControllerNavigationController:self]) {
+            if ([[MBLMessageBanner sharedSingleton] isViewControllerNavigationController:self]) {
                 UIView *correctView = [((UINavigationController *)self.viewController) navigationBar];
                 
-                if (self.position == MessageBannerPositionBottom) {
+                if (self.position == MBLMessageBannerPositionBottom) {
                     correctView = [((UINavigationController *)self.viewController) toolbar];
                 }
                 
@@ -483,7 +483,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     self.messageViewHeight += ELEMENTS_PADDING;
     
     switch (self.position) {
-        case MessageBannerPositionTop: {
+        case MBLMessageBannerPositionTop: {
             
             
             self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
@@ -493,7 +493,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
                                    , self.messageViewHeight);
             break;
         }
-        case MessageBannerPositionBottom:
+        case MBLMessageBannerPositionBottom:
             
             self.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
             viewFrame = CGRectMake(  0
@@ -502,7 +502,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
                                    , self.messageViewHeight);
             break;
             
-        case MessageBannerPositionCenter:
+        case MBLMessageBannerPositionCenter:
             
             self.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
             viewFrame = CGRectMake(  -(self.viewController.view.bounds.size.width)
@@ -875,20 +875,20 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 
 #pragma mark -
 #pragma mark View Cosmetic
--(NSString *)getStyleTypeLabel:(MessageBannerType)bannerType {
+-(NSString *)getStyleTypeLabel:(MBLMessageBannerType)bannerType {
     NSString* styleLabel;
     
     switch (bannerType) {
-        case MessageBannerTypeError:
+        case MBLMessageBannerTypeError:
             styleLabel = ERROR_JSON_LABEL;
             break;
-        case MessageBannerTypeWarning:
+        case MBLMessageBannerTypeWarning:
             styleLabel = WARNING_JSON_LABEL;
             break;
-        case MessageBannerTypeMessage:
+        case MBLMessageBannerTypeMessage:
             styleLabel = MESSAGE_JSON_LABEL;
             break;
-        case MessageBannerTypeSuccess:
+        case MBLMessageBannerTypeSuccess:
             styleLabel = SUCCESS_JSON_LABEL;
             break;
         default:
@@ -898,7 +898,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     return styleLabel;
 }
 
-- (void) setupStyleWithType:(MessageBannerType)bannerType {
+- (void) setupStyleWithType:(MBLMessageBannerType)bannerType {
      [self applyMessageStyleFromDictionnary:_currentDesign];
 }
 
@@ -963,7 +963,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
             if (self.userDissmissedCallback) {
                 self.userDissmissedCallback(self);
             }
-            [[MessageBanner sharedSingleton] hideMessageBanner:self withGesture:gesture andCompletion:nil];
+            [[MBLMessageBanner sharedSingleton] hideMessageBanner:self withGesture:gesture andCompletion:nil];
         });
         
     }

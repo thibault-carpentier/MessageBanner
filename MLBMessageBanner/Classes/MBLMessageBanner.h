@@ -1,10 +1,10 @@
 /**
- * @file   MessageBanner.h
+ * @file   MBLMessageBanner.h
  * @Author Thibault Carpentier
  * @date   2014
- * @brief  MessageBannerView manager.
+ * @brief  MBLMessageBannerView manager.
  *
- * MessageBanner allow to easilly manage popups.
+ * MBLMessageBanner allow to easilly manage popups.
  */
 
 
@@ -13,82 +13,82 @@
 /**
  Message banner notification sended when the messagebanner will appear
  */
-#define MESSAGE_BANNER_VIEW_WILL_APPEAR_NOTIFICATION @"messageBannerViewWillAppearNotification"
+#define MESSAGE_BANNER_VIEW_WILL_APPEAR_NOTIFICATION @"MBLMessageBannerViewWillAppearNotification"
 /**
  Message banner notification sended when the messagebanner did appear
  */
-#define MESSAGE_BANNER_VIEW_DID_APPEAR_NOTIFICATION @"messageBannerViewDidAppearNotification"
+#define MESSAGE_BANNER_VIEW_DID_APPEAR_NOTIFICATION @"MBLMessageBannerViewDidAppearNotification"
 /**
  Message banner notification sended when the messagebanner will disappear
  */
-#define MESSAGE_BANNER_VIEW_WILL_DISAPPEAR_NOTIFICATION @"messageBannerViewWillDisappearNotification"
+#define MESSAGE_BANNER_VIEW_WILL_DISAPPEAR_NOTIFICATION @"MBLMessageBannerViewWillDisappearNotification"
 /**
  Message banner notification sended when the messagebanner did disappear
  */
-#define MESSAGE_BANNER_VIEW_DID_DISAPPEAR_NOTIFICATION @"messageBannerViewDidDisappearNotification"
+#define MESSAGE_BANNER_VIEW_DID_DISAPPEAR_NOTIFICATION @"MBLMessageBannerViewDidDisappearNotification"
 
 
 // Forward declaration to avoid double includes problems
-@class MessageBannerView;
+@class MBLMessageBannerView;
 
 /**
- An enumeration of MessageBannerView types
+ An enumeration of MBLMessageBannerView types
  */
-typedef NS_ENUM(NSInteger, MessageBannerType) {
-      MessageBannerTypeError    = 0 /** A message banner used to show errors   */
-    , MessageBannerTypeWarning  = 1 /** A message banner used to show warnings */
-    , MessageBannerTypeMessage  = 2 /** A message banner used to show message  */
-    , MessageBannerTypeSuccess  = 3 /** A message banner used to show success  */
+typedef NS_ENUM(NSInteger, MBLMessageBannerType) {
+      MBLMessageBannerTypeError    = 0 /** A message banner used to show errors   */
+    , MBLMessageBannerTypeWarning  = 1 /** A message banner used to show warnings */
+    , MBLMessageBannerTypeMessage  = 2 /** A message banner used to show message  */
+    , MBLMessageBannerTypeSuccess  = 3 /** A message banner used to show success  */
 };
 /**
- An enumeration of MessageBannerView positions
+ An enumeration of MBLMessageBannerView positions
  */
-typedef NS_ENUM(NSInteger, MessageBannerPosition) {
-      MessageBannerPositionTop    = 0 /** A top positioned message banner      */
-    , MessageBannerPositionCenter = 1 /** A centered positioned message banner */
-    , MessageBannerPositionBottom = 2 /** A bottom positioned message banner   */
+typedef NS_ENUM(NSInteger, MBLMessageBannerPosition) {
+      MBLMessageBannerPositionTop    = 0 /** A top positioned message banner      */
+    , MBLMessageBannerPositionCenter = 1 /** A centered positioned message banner */
+    , MBLMessageBannerPositionBottom = 2 /** A bottom positioned message banner   */
 };
 /**
  An enumeration of custom message banner duration
  */
-typedef NS_ENUM(NSInteger, MessageBannerDuration) {
-      MessageBannerDurationDefault = 0  /** A duration calculated automatically */
-    , MessageBannerDurationEndless = -1 /** An endless duration                 */
+typedef NS_ENUM(NSInteger, MBLMessageBannerDuration) {
+      MBLMessageBannerDurationDefault = 0  /** A duration calculated automatically */
+    , MBLMessageBannerDurationEndless = -1 /** An endless duration                 */
 };
 
 
 /**
  Set of methods to implement to be notified on appearance/disappearance of message banners
  */
-@protocol MessageBannerDelegate <NSObject>
+@protocol MBLMessageBannerDelegate <NSObject>
 @optional
 /**
  A message Banner view will appear
- @param messageBanner the message banner about to appear
+ @param MessageBanner the message banner about to appear
  */
-- (void)messageBannerViewWillAppear:(MessageBannerView *)messageBanner;
+- (void)messageBannerViewWillAppear:(MBLMessageBannerView *)messageBanner;
 /**
  A message Banner view did appear
- @param messageBanner the message banner which appeared
+ @param MessageBanner the message banner which appeared
  */
-- (void)messageBannerViewDidAppear:(MessageBannerView *)messageBanner;
+- (void)messageBannerViewDidAppear:(MBLMessageBannerView *)messageBanner;
 /**
  A message Banner view will disappear
  @param messageBanner the message banner about to disappear
  */
-- (void)messageBannerViewWillDisappear:(MessageBannerView *)messageBanner;
+- (void)messageBannerViewWillDisappear:(MBLMessageBannerView *)messageBanner;
 /**
  A message Banner view did disappear
  @param messageBanner the message banner which disappeared
  */
-- (void)messageBannerViewDidDisappear:(MessageBannerView *)messageBanner;
+- (void)messageBannerViewDidDisappear:(MBLMessageBannerView *)messageBanner;
 @end
 
 
 /**
  A message banner manager class
  */
-@interface MessageBanner : NSObject
+@interface MBLMessageBanner : NSObject
 
 /**
  Returns the shared instance of the manager
@@ -111,7 +111,7 @@ typedef NS_ENUM(NSInteger, MessageBannerDuration) {
  Set MessageBanner delegate
  @param aDelegate the new message banner Delegate
  */
-+ (void)setMessageBannerDelegate:(id<MessageBannerDelegate>)aDelegate;
++ (void)setMessageBannerDelegate:(id<MBLMessageBannerDelegate>)aDelegate;
 
 #pragma mark - Show Methods
 
@@ -134,7 +134,7 @@ typedef NS_ENUM(NSInteger, MessageBannerDuration) {
 + (void)showMessageBannerInViewController:(UIViewController *)viewController
                                     title:(NSString *)title
                                  subtitle:(NSString *)subtitle
-                               atPosition:(MessageBannerPosition)messagePosition;
+                               atPosition:(MBLMessageBannerPosition)messagePosition;
 /**
  Show a message banner
  @param viewController The view where the message banner will be added
@@ -146,41 +146,41 @@ typedef NS_ENUM(NSInteger, MessageBannerDuration) {
 + (void)showMessageBannerInViewController:(UIViewController *)viewController
                                     title:(NSString *)title
                                  subtitle:(NSString *)subtitle
-                                     type:(MessageBannerType)type
-                               atPosition:(MessageBannerPosition)messagePosition;
+                                     type:(MBLMessageBannerType)type
+                               atPosition:(MBLMessageBannerPosition)messagePosition;
 /**
  Show a message banner
  @param viewController The view where the message banner will be added
  @param title The title of the message banner
  @param subtitle The subtitle of the message banner
- @param type The type of the message banner @see MessageBannerType values
- @param duration The popup duration on screen @see MessageBannerDuration for specials durations
- @param messagePosition The position of the message banner @see MessageBannerPosition values
+ @param type The type of the message banner @see MBLMessageBannerType values
+ @param duration The popup duration on screen @see MBLMessageBannerDuration for specials durations
+ @param messagePosition The position of the message banner @see MBLMessageBannerPosition values
  */
 + (void)showMessageBannerInViewController:(UIViewController *)viewController
                                     title:(NSString *)title
                                  subtitle:(NSString *)subtitle
-                                     type:(MessageBannerType)type
+                                     type:(MBLMessageBannerType)type
                                  duration:(NSTimeInterval)duration
-                               atPosition:(MessageBannerPosition)messagePosition;
+                               atPosition:(MBLMessageBannerPosition)messagePosition;
 /**
  Show a message banner
  @param viewController The view where the message banner will be added
  @param title The title of the message banner
  @param subtitle The subtitle of the message banner
- @param type The type of the message banner @see MessageBannerType values
- @param duration The popup duration on screen @see MessageBannerDuration for specials durations
+ @param type The type of the message banner @see MBLMessageBannerType values
+ @param duration The popup duration on screen @see MBLMessageBannerDuration for specials durations
  @param userDissmissedCallback A callback when the user dismiss the popup
- @param messagePosition The position of the message banner @see MessageBannerPosition values
+ @param messagePosition The position of the message banner @see MBLMessageBannerPosition values
  @param dismissingEnabled Enable/Disable user dismiss on the message banner
  */
 + (void)showMessageBannerInViewController:(UIViewController *)viewController
                                     title:(NSString *)title
                                  subtitle:(NSString *)subtitle
-                                     type:(MessageBannerType)type
+                                     type:(MBLMessageBannerType)type
                                  duration:(NSTimeInterval)duration
-                   userDissmissedCallback:(void (^)(MessageBannerView* bannerView))userDissmissedCallback
-                               atPosition:(MessageBannerPosition)messagePosition
+                   userDissmissedCallback:(void (^)(MBLMessageBannerView* bannerView))userDissmissedCallback
+                               atPosition:(MBLMessageBannerPosition)messagePosition
                      canBeDismissedByUser:(BOOL)dismissingEnabled;
 /**
  Show a message banner
@@ -188,20 +188,20 @@ typedef NS_ENUM(NSInteger, MessageBannerDuration) {
  @param title The title of the message banner
  @param subtitle The subtitle of the message banner
  @param image The image to show on the left of the message banner
- @param type The type of the message banner @see MessageBannerType values
- @param duration The popup duration on screen @see MessageBannerDuration for specials durations
+ @param type The type of the message banner @see MBLMessageBannerType values
+ @param duration The popup duration on screen @see MBLMessageBannerDuration for specials durations
  @param userDissmissedCallback A callback when the user dismiss the popup
- @param messagePosition The position of the message banner @see MessageBannerPosition values
+ @param messagePosition The position of the message banner @see MBLMessageBannerPosition values
  @param dismissingEnabled Enable/Disable user dismiss on the message banner
  */
 + (void)showMessageBannerInViewController:(UIViewController *)viewController
                                     title:(NSString *)title
                                  subtitle:(NSString *)subtitle
                                     image:(UIImage *)image
-                                     type:(MessageBannerType)type
+                                     type:(MBLMessageBannerType)type
                                  duration:(NSTimeInterval)duration
-                   userDissmissedCallback:(void (^)(MessageBannerView* bannerView))userDissmissedCallback
-                               atPosition:(MessageBannerPosition)messagePosition
+                   userDissmissedCallback:(void (^)(MBLMessageBannerView* bannerView))userDissmissedCallback
+                               atPosition:(MBLMessageBannerPosition)messagePosition
                      canBeDismissedByUser:(BOOL)dismissingEnabled;
 /**
  Show a message banner
@@ -209,12 +209,12 @@ typedef NS_ENUM(NSInteger, MessageBannerDuration) {
  @param title The title of the message banner
  @param subtitle The subtitle of the message banner
  @param image The image to show on the left of the message banner
- @param type The type of the message banner @see MessageBannerType values
- @param duration The popup duration on screen @see MessageBannerDuration for specials durations
+ @param type The type of the message banner @see MBLMessageBannerType values
+ @param duration The popup duration on screen @see MBLMessageBannerDuration for specials durations
  @param userDissmissedCallback A callback when the user dismiss the popup
  @param buttonTitle Enable a button on the right of the view created with this title
  @param userPressedButtonCallback A callback when the user press the button
- @param messagePosition The position of the message banner @see MessageBannerPosition values
+ @param messagePosition The position of the message banner @see MBLMessageBannerPosition values
  @param dismissingEnabled Enable/Disable user dismiss on the message banner
  @param aDelegate Set the class delegate if not setted yet
  */
@@ -222,14 +222,14 @@ typedef NS_ENUM(NSInteger, MessageBannerDuration) {
                                    title:(NSString *)title
                                 subtitle:(NSString *)subtitle
                                    image:(UIImage *)image
-                                    type:(MessageBannerType)type
+                                    type:(MBLMessageBannerType)type
                                 duration:(NSTimeInterval)duration
-                                userDissmissedCallback:(void (^)(MessageBannerView* bannerView))userDissmissedCallback
+                                userDissmissedCallback:(void (^)(MBLMessageBannerView* bannerView))userDissmissedCallback
                              buttonTitle:(NSString *)buttonTitle
-                          userPressedButtonCallback:(void (^)(MessageBannerView* banner))userPressedButtonCallback
-                              atPosition:(MessageBannerPosition)messagePosition
+                          userPressedButtonCallback:(void (^)(MBLMessageBannerView* banner))userPressedButtonCallback
+                              atPosition:(MBLMessageBannerPosition)messagePosition
                     canBeDismissedByUser:(BOOL)dismissingEnabled
-                                 delegate:(id <MessageBannerDelegate>)aDelegate;
+                                 delegate:(id <MBLMessageBannerDelegate>)aDelegate;
 
 #pragma mark - Hide Methods
 /**

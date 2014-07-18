@@ -24,7 +24,7 @@ Installation
  
 **Not ready yet !**
 
-The recommended approach for installating ```MessageBanner``` is via the [CocoaPods](http://cocoapods.org/) package manager, as it provides flexible dependency management and dead simple installation: 
+The recommended approach for installating ```MLBMessageBanner``` is via the [CocoaPods](http://cocoapods.org/) package manager, as it provides flexible dependency management and dead simple installation: 
 
 ```bash
 $ [sudo] gem install cocoapods
@@ -38,11 +38,11 @@ $ touch Podfile
 $ edit Podfile
 ```
 
-Edit your Podfile and add MessageBanner:
+Edit your Podfile and add MLBMessageBanner:
 
 ``` bash
 platform :ios, '7.0'
-pod 'MessageBanner', '~> 1.0'
+pod 'MLBMessageBanner', '~> 1.0'
 ```
 
 Install into your Xcode project:
@@ -66,7 +66,7 @@ Please note that if your installation fails, it may be because you are installin
 The project use [HexColors](https://github.com/mRs-/HexColors) and [FXBlurView](https://github.com/nicklockwood/FXBlurView)
 You need to also install them manually. Please consult their installation requirement on their github pages.
 
-#### MessageBanner manual installation
+#### MLBMessageBanner manual installation
 Download Message banner project. You can download it directly from his [github page](https://github.com/Loadex/Message-Banner)  
 or via the command line : 
 ``` bash
@@ -80,39 +80,39 @@ Quick Start Guide
 
 Add the import to the top of classes that will use it. : 
 ```objective-c
-#import <MessageBanner.h>
+#import <MLBMessageBanner.h>
 ```
 
 To show a basic notification use one of the following call :
 ```objective-c
-[MessageBanner showMessageBannerInViewController:aViewController
+[MLBMessageBanner showMessageBannerInViewController:aViewController
 		                                   title:@"aTitle"
        		                            subtitle:@"aSubtitle"];
 
 // ------------------------- OR ------------------------- 
 
-    [MessageBanner showMessageBannerInViewController:self
+    [MLBMessageBanner showMessageBannerInViewController:self
                                                title:@"aTitle"
                                             subtitle:@"aSubtitle"
                                                image:[UIImage imageNamed:@"icon.png"]
-                                                type:MessageBannerTypeMessage
-                                            duration:MessageBannerDurationDefault
-                              userDissmissedCallback:^(MessageBannerView *bannerView) {
+                                                type:MLBMessageBannerTypeMessage
+                                            duration:MLBMessageBannerDurationDefault
+                              userDissmissedCallback:^(MLBMessageBannerView *bannerView) {
                                   return;
                               }
                                          buttonTitle:@"BtnTitile"
-                           userPressedButtonCallback:^(MessageBannerView *banner) {
+                           userPressedButtonCallback:^(MLBMessageBannerView *banner) {
                                   return;
                               }
-                                          atPosition:MessageBannerPositionTop
+                                          atPosition:MLBMessageBannerPositionTop
                                 canBeDismissedByUser:YES delegate:self];
 
 ```
 
 Class documentation
 ----------------
-###MessageBanner class documentation
-The **MessageBanner class** provide the following methods
+###MLBMessageBanner class documentation
+The **MLBMessageBanner class** provide the following methods
 
 ```objective-c
 + (void)setDefaultViewController:(UIViewController *)aViewController;
@@ -121,9 +121,9 @@ Allow you to set a default view controller where the banners will be attached.
 **Default value** : UIApplication sharedApplication].keyWindow.rootViewController
 
 ```objective-c
-+ (void)setMessageBannerDelegate:(id<MessageBannerDelegate>)aDelegate;
++ (void)setMessageBannerDelegate:(id<MLBMessageBannerDelegate>)aDelegate;
 ```  
-Allow to set the delegate of MessageBanner class  
+Allow to set the delegate of MLBMessageBanner class  
 **See delegate documentation**
 
 ```objective-c
@@ -134,54 +134,54 @@ Allow to set the delegate of MessageBanner class
 + (void)showMessageBannerInViewController:(UIViewController *)viewController
                                     title:(NSString *)title
                                  subtitle:(NSString *)subtitle
-                               atPosition:(MessageBannerPosition)messagePosition;
+                               atPosition:(MLBMessageBannerPosition)messagePosition;
 
 + (void)showMessageBannerInViewController:(UIViewController *)viewController
                                     title:(NSString *)title
                                  subtitle:(NSString *)subtitle
-                                     type:(MessageBannerType)type
-                               atPosition:(MessageBannerPosition)messagePosition;
+                                     type:(MLBMessageBannerType)type
+                               atPosition:(MLBMessageBannerPosition)messagePosition;
 
 + (void)showMessageBannerInViewController:(UIViewController *)viewController
                                     title:(NSString *)title
                                  subtitle:(NSString *)subtitle
-                                     type:(MessageBannerType)type
+                                     type:(MLBMessageBannerType)type
                                  duration:(NSTimeInterval)duration
-                               atPosition:(MessageBannerPosition)messagePosition;
+                               atPosition:(MLBMessageBannerPosition)messagePosition;
 
 + (void)showMessageBannerInViewController:(UIViewController *)viewController
                                     title:(NSString *)title
                                  subtitle:(NSString *)subtitle
-                                     type:(MessageBannerType)type
+                                     type:(MLBMessageBannerType)type
                                  duration:(NSTimeInterval)duration
-                   userDissmissedCallback:(void (^)(MessageBannerView* bannerView))userDissmissedCallback
-                               atPosition:(MessageBannerPosition)messagePosition
+                   userDissmissedCallback:(void (^)(MLBMessageBannerView* bannerView))userDissmissedCallback
+                               atPosition:(MLBMessageBannerPosition)messagePosition
                      canBeDismissedByUser:(BOOL)dismissingEnabled;
 
 + (void)showMessageBannerInViewController:(UIViewController *)viewController
                                     title:(NSString *)title
                                  subtitle:(NSString *)subtitle
                                     image:(UIImage *)image
-                                     type:(MessageBannerType)type
+                                     type:(MLBMessageBannerType)type
                                  duration:(NSTimeInterval)duration
-                   userDissmissedCallback:(void (^)(MessageBannerView* bannerView))userDissmissedCallback
-                               atPosition:(MessageBannerPosition)messagePosition
+                   userDissmissedCallback:(void (^)(MLBMessageBannerView* bannerView))userDissmissedCallback
+                               atPosition:(MLBMessageBannerPosition)messagePosition
                      canBeDismissedByUser:(BOOL)dismissingEnabled;
 
 + (void)showMessageBannerInViewController:(UIViewController *)viewController
                                    title:(NSString *)title
                                 subtitle:(NSString *)subtitle
                                    image:(UIImage *)image
-                                    type:(MessageBannerType)type
+                                    type:(MLBMessageBannerType)type
                                 duration:(NSTimeInterval)duration
-                                userDissmissedCallback:(void (^)(MessageBannerView* bannerView))userDissmissedCallback
+                                userDissmissedCallback:(void (^)(MLBMessageBannerView* bannerView))userDissmissedCallback
                              buttonTitle:(NSString *)buttonTitle
-                          userPressedButtonCallback:(void (^)(MessageBannerView* banner))userPressedButtonCallback
-                              atPosition:(MessageBannerPosition)messagePosition
+                          userPressedButtonCallback:(void (^)(MLBMessageBannerView* banner))userPressedButtonCallback
+                              atPosition:(MLBMessageBannerPosition)messagePosition
                     canBeDismissedByUser:(BOOL)dismissingEnabled
-                                 delegate:(id <MessageBannerDelegate>)aDelegate;
+                                 delegate:(id <MLBMessageBannerDelegate>)aDelegate;
 ```
-Add a new MessageBannerView to be displayed. Each MessageBannerView is shown on the screen alone. If multiple calls, the MessageBanner will show it when the previous message banner views disappeared.  
+Add a new MLBMessageBannerView to be displayed. Each MLBMessageBannerView is shown on the screen alone. If multiple calls, the MLBMessageBanner will show it when the previous message banner views disappeared.  
 **Parameters description**  
 * **viewController**: The view controller to show the message banner in. Can also be a UINavigationController. If nil, will use the default view controller instead. 
 * **title**: The title in the message banner view.
@@ -206,8 +206,8 @@ Hide the currently displayed message banner
 **Return value**
 * **BOOL**: Return YES if a message banner has been dismissed, NO otherwise.
 
-###MessageBannerView class documentation
-The **MessageBannerView** class provide the following methods:  
+###MLBMessageBannerView class documentation
+The **MLBMessageBannerView** class provide the following methods:  
 ```objective-c
 + (BOOL)addMessageBannerDesignFromFileNamed:(NSString *)file;
 ```
@@ -220,17 +220,17 @@ Delegate methods
 ----------------
 The message banner class implements a delegate protocol with the following **optional** methods:
 ```objective-c
-- (void)messageBannerViewWillAppear:(MessageBannerView *)messageBanner;
-- (void)messageBannerViewDidAppear:(MessageBannerView *)messageBanner;
-- (void)messageBannerViewWillDisappear:(MessageBannerView *)messageBanner;
-- (void)messageBannerViewDidDisappear:(MessageBannerView *)messageBanner;
+- (void)messageBannerViewWillAppear:(MLBMessageBannerView *)messageBanner;
+- (void)messageBannerViewDidAppear:(MLBMessageBannerView *)messageBanner;
+- (void)messageBannerViewWillDisappear:(MLBMessageBannerView *)messageBanner;
+- (void)messageBannerViewDidDisappear:(MLBMessageBannerView *)messageBanner;
 ```
 **Parameters description**
 * messageBanner The message banner about to be displayed/hidden
 
 NSNotifications
 ----------------
-The MessageBanner class also send signals when the message banner is about or did appear/disappear. Each notification is directly **sent by the messageBannerView**.
+The MLBMessageBanner class also send signals when the message banner is about or did appear/disappear. Each notification is directly **sent by the MLBMessageBannerView**.
 The signals sent are:
 
 
@@ -243,11 +243,11 @@ The signals sent are:
 
 Message Positions
 -----------------
-Each Message Banner View has a position. By default or if not set, the message banner view will have the position defined by **MessageBannerPositionTop**
+Each Message Banner View has a position. By default or if not set, the message banner view will have the position defined by **MLBMessageBannerPositionTop**
 Available positions are:
-* **MessageBannerPositionTop**: The message banner will be displayed on the top of the view controller, right under the status bar or the navigation controller if the view has one.
-* **MessageBannerPositionCenter**: The message banner will be displayed on the middle of the view controller.
-* **MessageBannerPositionBottom**: The message banner will be displayed on the bottom of the view controller, or just above the toolbar if the view has one.  
+* **MLBMessageBannerPositionTop**: The message banner will be displayed on the top of the view controller, right under the status bar or the navigation controller if the view has one.
+* **MLBMessageBannerPositionCenter**: The message banner will be displayed on the middle of the view controller.
+* **MLBMessageBannerPositionBottom**: The message banner will be displayed on the bottom of the view controller, or just above the toolbar if the view has one.  
 ![Top Positionning](/Screenshots/MessageBannerTopPosition.png?raw=true "Top positioned message banner")
 ![Center Positioning](/Screenshots/MessageBannerMiddlePosition.png?raw=true "Centered message banner")
 ![Bottom Positioning](/Screenshots/MessageBannerBottomPosition.png?raw=true "Bottom positioned message banner")
@@ -256,10 +256,10 @@ Message types
 ----------------
 Each Message Banner is defined by his type. The desig in the config file is loaded according to the his type.
 Available type with their already setted design are :
-* **MessageBannerTypeError**: The error message banner.
-* **MessageBannerTypeWarning**: The warning message banner.
-* **MessageBannerTypeMessage**: The standart message banner.
-* **MessageBannerTypeSuccess**: The success message banner.  
+* **MLBMessageBannerTypeError**: The error message banner.
+* **MLBMessageBannerTypeWarning**: The warning message banner.
+* **MLBMessageBannerTypeMessage**: The standart message banner.
+* **MLBMessageBannerTypeSuccess**: The success message banner.  
 ![Message Error](/Screenshots/MessageBannerErrorType.png?raw=true "Error message banner")
 ![Message Warning](/Screenshots/MessageBannerWarningType.png?raw=true "Warning message banner")
 ![Message](/Screenshots/MessageBannerMessageType.png?raw=true "Message message banner")
@@ -268,15 +268,15 @@ Available type with their already setted design are :
 Message duration
 ----------------
 Each Message Banner has a "stay on screen" time. This duration can be manually setted by the method parameter. However, the class also provide custom durations :
-* **MessageBannerDurationDefault**: The duration will be automatically calculated according to the size of the message banner view.
-* **MessageBannerDurationEndless**: The message banner will be displayed until the user dismiss it or it is dismissed programatically.
+* **MLBMessageBannerDurationDefault**: The duration will be automatically calculated according to the size of the message banner view.
+* **MLBMessageBannerDurationEndless**: The message banner will be displayed until the user dismiss it or it is dismissed programatically.
 
 Dismiss methods
 ----------------
 The message banner can be dismissed with multiple user gesture. The user can dismiss it with a **single tap** on the view and swipes gesture. The swipes dismiss gesture are different according to the position of the banner.
-* **MessageBannerPositionTop**: The user can **swipe to the top** of the screen to dismiss the banner.
-* **MessageBannerPositionCenter**: The user can **swipe both to the left and right** to dismiss the banner.
-* **MessageBannerPositionBottom**: The user can **swipe to the bottom** of the screen to dismiss the banner.
+* **MLBMessageBannerPositionTop**: The user can **swipe to the top** of the screen to dismiss the banner.
+* **MLBMessageBannerPositionCenter**: The user can **swipe both to the left and right** to dismiss the banner.
+* **MLBMessageBannerPositionBottom**: The user can **swipe to the bottom** of the screen to dismiss the banner.
 
 Design configuration file
 ----------------
@@ -302,10 +302,10 @@ This library come with 4 differents type of banner, with the following correspon
 
 |   Name   |   Type   |
 |:--------:|:--------:|
-|Error     |MessageBannerTypeError|
-|Warning   |MessageBannerTypeWarning|
-|Message   |MessageBannerTypeMessage|
-|Success   |MessageBannerTypeSuccess|
+|Error     |MLBMessageBannerTypeError|
+|Warning   |MLBMessageBannerTypeWarning|
+|Message   |MLBMessageBannerTypeMessage|
+|Success   |MLBMessageBannerTypeSuccess|
 
 Each type of banner can have the following properties : 
 

@@ -2,15 +2,15 @@
  * @file   MessageBanneviewr.h
  * @Author Thibault Carpentier
  * @date   2014
- * @brief  MessageBannerView popup flat styled view.
+ * @brief  MBLMessageBannerView popup flat styled view.
  *
- * MessageBannerView a customisable popupview
+ * MBLMessageBannerView a customisable popupview
  */
 
 #import <UIKit/UIKit.h>
-#import "MessageBanner.h"
+#import "MBLMessageBanner.h"
 
-@interface MessageBannerView : UIView
+@interface MBLMessageBannerView : UIView
 
 /**
  The banner title
@@ -27,7 +27,7 @@
 /**
  The type of the banner
  */
-@property (nonatomic, readonly, assign) MessageBannerType       bannerType;
+@property (nonatomic, readonly, assign) MBLMessageBannerType       bannerType;
 /**
  The banner setted duration
  */
@@ -39,7 +39,7 @@
 /**
  The callback called when the user dismiss the popup
  */
-@property (nonatomic, readonly, copy)   void (^userDissmissedCallback)(MessageBannerView* banner);
+@property (nonatomic, readonly, copy)   void (^userDissmissedCallback)(MBLMessageBannerView* banner);
 /**
  The right button title
  */
@@ -47,11 +47,11 @@
 /**
  The button callback
  */
-@property (nonatomic, readonly, copy)   void (^userPressedButtonCallback)(MessageBannerView* banner);
+@property (nonatomic, readonly, copy)   void (^userPressedButtonCallback)(MBLMessageBannerView* banner);
 /**
  The banner position
  */
-@property (nonatomic, readonly, assign) MessageBannerPosition   position;
+@property (nonatomic, readonly, assign) MBLMessageBannerPosition   position;
 /**
  Determine if a user can dismiss or no a banner
  */
@@ -79,25 +79,25 @@
  @param title The title of the message banner
  @param subtitle The subtitle of the message banner
  @param image The image to show on the left of the message banner
- @param type The type of the message banner @see MessageBannerType values
- @param duration The popup duration on screen @see MessageBannerDuration for specials durations
+ @param type The type of the message banner @see MBLMessageBannerType values
+ @param duration The popup duration on screen @see MBLMessageBannerDuration for specials durations
  @param viewController The view where the message banner will be added
  @param userDissmissedCallback A callback when the user dismiss the popup
  @param buttonTitle Enable a button on the right of the view created with this title
  @param userPressedButtonCallback A callback when the user press the button
- @param messagePosition The position of the message banner @see MessageBannerPosition values
+ @param messagePosition The position of the message banner @see MBLMessageBannerPosition values
  @param dismissingEnabled Enable/Disable user dismiss on the message banner
  */
 - (id)initWithTitle:(NSString *)title
            subtitle:(NSString *)subtitle
               image:(UIImage *)image
-               type:(MessageBannerType)bannerType
+               type:(MBLMessageBannerType)bannerType
            duration:(CGFloat)duration
    inViewController:(UIViewController *)viewController
-           userDissmissedCallback:(void (^)(MessageBannerView* banner))callback
+           userDissmissedCallback:(void (^)(MBLMessageBannerView* banner))callback
         buttonTitle:(NSString *)buttonTitle
-     userPressedButtonCallback:(void (^)(MessageBannerView *banner))userPressedButtonCallback
-         atPosition:(MessageBannerPosition)position
+     userPressedButtonCallback:(void (^)(MBLMessageBannerView *banner))userPressedButtonCallback
+         atPosition:(MBLMessageBannerPosition)position
 canBeDismissedByUser:(BOOL)dismissingEnabled;
 
 /**

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MessageBanner.h"
+#import "MBLMessageBanner.h"
 
-@interface ViewController : UIViewController <MessageBannerDelegate>
+@interface ViewController : UIViewController <MBLMessageBannerDelegate>
 @end
