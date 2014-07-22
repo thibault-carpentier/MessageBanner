@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Thibault Carpentier. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "MBDViewController.h"
 #import "MBLMessageBannerView.h"
 
 @interface ViewController ()
@@ -74,46 +74,46 @@
 
 - (IBAction)popMeOne:(id)sender {
     
-
+    
     //    [MBLMessageBanner setMessageBannerDelegate:self];
     [MBLMessageBanner showMessageBannerInViewController:self.navigationController
-                                               title:self.bannerTitle
-                                            subtitle:self.subTitle
-                                               image:self.image
-                                                type:self.messageType
-                                            duration:self.duration
-                              userDissmissedCallback:^(MBLMessageBannerView* message) {
-                                  NSLog(@"Banner with :\n{\n"
-                                        "Title: [%@]\n"
-                                        "Subtitle: [%@]\n"
-                                        "Image: [%@]\n"
-                                        "Type: [%@]\n"
-                                        "Duration: [%f]\n"
-                                        "Position: [%@]\n"
-                                        "User interaction allowed: [%@]\n"
-                                        "}\n has been [DISMISSED]."
-                                        , message.titleBanner
-                                        , message.subTitle
-                                        , (message.image ? @"Icon setted" : @"No icon setted")
-                                        , [self getTypeDescription:message.bannerType]
-                                        , message.duration
-                                        , [self getPositionDescription:message.position]
-                                        , (message.userDismissEnabled ? @"YES" : @"NO")
-                                        );
+                                                  title:self.bannerTitle
+                                               subtitle:self.subTitle
+                                                  image:self.image
+                                                   type:self.messageType
+                                               duration:self.duration
+                                 userDissmissedCallback:^(MBLMessageBannerView* message) {
+                                     NSLog(@"Banner with :\n{\n"
+                                           "Title: [%@]\n"
+                                           "Subtitle: [%@]\n"
+                                           "Image: [%@]\n"
+                                           "Type: [%@]\n"
+                                           "Duration: [%f]\n"
+                                           "Position: [%@]\n"
+                                           "User interaction allowed: [%@]\n"
+                                           "}\n has been [DISMISSED]."
+                                           , message.titleBanner
+                                           , message.subTitle
+                                           , (message.image ? @"Icon setted" : @"No icon setted")
+                                           , [self getTypeDescription:message.bannerType]
+                                           , message.duration
+                                           , [self getPositionDescription:message.position]
+                                           , (message.userDismissEnabled ? @"YES" : @"NO")
+                                           );
+                                     
+                                     return ;
+                                 }
+                                            buttonTitle:self.buttonTitle
+                              userPressedButtonCallback:^ (MBLMessageBannerView* banner) {
                                   
+                                  [MBLMessageBanner hideMessageBannerWithCompletion:^{
+                                      NSLog(@"Dismissed");
+                                  }];
                                   return ;
                               }
-                                         buttonTitle:self.buttonTitle
-                           userPressedButtonCallback:^ (MBLMessageBannerView* banner) {
-                               
-                               [MBLMessageBanner hideMessageBannerWithCompletion:^{
-                                   NSLog(@"Dismissed");
-                               }];
-                               return ;
-                           }
-                                          atPosition:self.messagePosition
-                                canBeDismissedByUser:self.userDismissEnabled
-                                            delegate:self];
+                                             atPosition:self.messagePosition
+                                   canBeDismissedByUser:self.userDismissEnabled
+                                               delegate:self];
     
     
     
@@ -336,7 +336,7 @@
     } else {
         self.buttonTitle = @"Dismiss";
     }
-        
+    
 }
 
 

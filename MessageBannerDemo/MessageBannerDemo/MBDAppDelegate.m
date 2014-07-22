@@ -1,14 +1,14 @@
 //
-//  AppDelegate.m
-//  MessageBanner Demo
+//  MBDAppDelegate.m
+//  MessageBannerDemo
 //
-//  Created by Thibault Carpentier on 6/1/14.
+//  Created by Thibault Carpentier on 7/21/14.
 //  Copyright (c) 2014 Thibault Carpentier. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import "MBDAppDelegate.h"
 
-@implementation AppDelegate
+@implementation MBDAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

@@ -1,4 +1,0 @@
-platform :ios, '7.0'
-pod 'HexColors', '~> 2'
-platform :ios, '7.0'
-pod 'FXBlurView', '~> 1.6.1'

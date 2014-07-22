@@ -1,0 +1,20 @@
+PODS:
+  - FXBlurView (1.6.2)
+  - HexColors (2.2.1)
+  - MessageBanner (0.1.0):
+    - FXBlurView (~> 1.6.1)
+    - HexColors (~> 2)
+
+DEPENDENCIES:
+  - MessageBanner (from `../`)
+
+EXTERNAL SOURCES:
+  MessageBanner:
+    :path: ../
+
+SPEC CHECKSUMS:
+  FXBlurView: 47496afc9160097fa34af35fc4b310bd85d65dca
+  HexColors: 01384d2bbe8dc4ffa43c3b4135db6e976952d153
+  MessageBanner: 637a2fbff60ba86ea656c360d327afa94517dae0
+
+COCOAPODS: 0.33.1
