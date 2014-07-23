@@ -305,9 +305,9 @@ static struct delegateMethodsCaching {
     
     MBLMessageBannerView *messageBannerView = [[MBLMessageBannerView alloc] initWithTitle:title subtitle:subtitle image:image type:type duration:duration inViewController:viewController userDissmissedCallback:userDissmissedCallback buttonTitle:buttonTitle userPressedButtonCallback:userPressedButtonCallback atPosition:messagePosition canBeDismissedByUser:dismissingEnabled];
     
-    
-    // Preparing and showing notification
-#warning uncomment after testing
+
+    // Preparing and showing notification Future version protection
+//#warning uncomment after testing
     
     //    NSString *title = messageBannerView.title;
     //    NSString *subtitle = messageBannerView.subTitle;
