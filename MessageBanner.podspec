@@ -10,12 +10,17 @@
 Pod::Spec.new do |s|
   s.name             = "MessageBanner"
   s.version          = "0.1.0"
-  s.summary          = "A short description of MessageBanner."
+  s.summary          = "iOS Notification / Message easy to use and fully customisable"
   s.description      = <<-DESC
-                       An optional longer description of MessageBanner
 
-                       * Markdown format.
-                       * Don't worry about the indent, we strip it!
+                      This library provides an **easy to use and fully customizable class to show notifications** views on top/bottom/center of the screen.
+
+                      The messages banners are regrouped in 4 different type : **Error**, **Warning**, **Message** and **Success**.
+
+                      Each different type of banner can have different and fully customizable appearance and behavior. (See configuration section)
+
+                      Each banner can show a **title**, a **subtitle**, an **image** and a **button**.
+
                        DESC
   s.homepage         = "https://github.com/Loadex/MessageBanner"
   s.screenshots      =     "https://raw.githubusercontent.com/Loadex/MessageBanner/master/Screenshots/MessageBannerErrorType.png", "https://raw.githubusercontent.com/Loadex/MessageBanner/master/Screenshots/MessageBannerWarningType.png" , "https://raw.githubusercontent.com/Loadex/MessageBanner/master/Screenshots/MessageBannerMessageType.png" , "https://raw.githubusercontent.com/Loadex/MessageBanner/master/Screenshots/MessageBannerSuccessType.png"
