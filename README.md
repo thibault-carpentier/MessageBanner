@@ -354,7 +354,7 @@ Each type of banner can have the following properties :
 
 Roadmap
 ----------------
-####Current Version : ***0.9***  
+####Current Version : ***1.0***  
 
 - ***V1.0:***  
 	+ Eventual bug fixes
@@ -376,7 +376,10 @@ Roadmap
 		- Create config to allow or not user interaction on the presented view (then to move in behavior cfg to separate for each type)
 		- Create Auto depop when screen change var
 - ***V1.3:***
-	- Create Swift Version%
+	- Add auto-Banner for Network problem + config 
+
+- ***V2.0 ***
+	- Create Swift Version
 
 FAQ
 ----------------
