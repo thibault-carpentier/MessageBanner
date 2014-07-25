@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "MessageBanner"
-  s.version          = "0.1.0"
+  s.version          = "1.0.0"
   s.summary          = "iOS Notification / Message easy to use and fully customisable"
   s.description      = <<-DESC
 
