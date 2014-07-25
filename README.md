@@ -24,7 +24,7 @@ Installation
  
 **Not ready yet !**
 
-The recommended approach for installating ```MLBMessageBanner``` is via the [CocoaPods](http://cocoapods.org/) package manager, as it provides flexible dependency management and dead simple installation: 
+The recommended approach for installating ```MessageBanner``` is via the [CocoaPods](http://cocoapods.org/) package manager, as it provides flexible dependency management and dead simple installation: 
 
 ```bash
 $ [sudo] gem install cocoapods
@@ -38,11 +38,11 @@ $ touch Podfile
 $ edit Podfile
 ```
 
-Edit your Podfile and add MLBMessageBanner:
+Edit your Podfile and add MessageBanner:
 
 ``` bash
 platform :ios, '7.0'
-pod 'MLBMessageBanner', '~> 1.0'
+pod 'MessageBanner', '~> 1.0'
 ```
 
 Install into your Xcode project:
