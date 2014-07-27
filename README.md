@@ -9,6 +9,8 @@ Each different type of banner can have different and fully customizable appearan
 
 Each banner can show a **title**, a **subtitle**, an **image** and a **button**.
 
+![Demo](/Screenshots/liveDemo.gif "Message Banner demo")
+
 ScreenShots
 ----------------
 ![Error](/Screenshots/ErrorMessageBanner.png?raw=true "Standart Error message banner")
