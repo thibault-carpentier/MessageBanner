@@ -253,9 +253,9 @@ static NSMutableDictionary* _messageBannerDesign;
         NSError* error;
         NSString *filePath = [[[NSBundle mainBundle] resourcePath]
                               stringByAppendingPathComponent:DEFAULT_DESIGN_FILE];
-        _messageBannerDesign = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath]
-                                                               options:kNilOptions
-                                                                 error:&error];
+        _messageBannerDesign = [[NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath]
+                                                                options:kNilOptions
+                                                                  error:&error] mutableCopy];
         
         if (error) {
             @throw ([NSException exceptionWithName:@"Error loading default design"
