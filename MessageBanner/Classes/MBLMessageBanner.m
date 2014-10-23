@@ -161,6 +161,30 @@ static struct delegateMethodsCaching {
 #pragma mark -
 #pragma mark Show methods
 
++ (void)showMessageBanner:(MBLMessageBannerView *)messageBannerView {
+
+
+    // Preparing and showing notification Future version protection
+    //#warning uncomment after testing
+
+    //    NSString *title = messageBannerView.title;
+    //    NSString *subtitle = messageBannerView.subTitle;
+    //    for (MBLMessageBannerView *n in [MBLMessageBanner sharedSingleton].messagesBannersList)
+    //    {
+    //        if (([n.title isEqualToString:title] || (!n.title && !title)) && ([n.subTitle isEqualToString:subtitle] || (!n.subTitle && !subtitle)))
+    //        {
+    //            // Add some check in the config file later if it allow multiple pop-ups
+    //            return;
+    //        }
+    //    }
+
+    [[MBLMessageBanner sharedSingleton].messagesBannersList addObject:messageBannerView];
+
+    if ([[MBLMessageBanner sharedSingleton] messageOnScreen] == NO) {
+        [[MBLMessageBanner sharedSingleton] showMessageBannerOnScreen];
+    }
+}
+
 + (void)showMessageBannerInViewController:(UIViewController *)viewController
                                     title:(NSString *)title
                                  subtitle:(NSString *)subtitle {
@@ -296,39 +320,17 @@ static struct delegateMethodsCaching {
                                atPosition:(MBLMessageBannerPosition)messagePosition
                      canBeDismissedByUser:(BOOL)dismissingEnabled
                     delegate:(id<MBLMessageBannerDelegate>)aDelegate {
-    
-    
-    // if not correctlyset, we use the default view controller
+
     if (!viewController) {
         viewController = [MBLMessageBanner defaultViewController];
     }
-    
-    MBLMessageBannerView *messageBannerView = [[MBLMessageBannerView alloc] initWithTitle:title subtitle:subtitle image:image type:type duration:duration inViewController:viewController userDissmissedCallback:userDissmissedCallback buttonTitle:buttonTitle userPressedButtonCallback:userPressedButtonCallback atPosition:messagePosition canBeDismissedByUser:dismissingEnabled];
-    
 
-    // Preparing and showing notification Future version protection
-//#warning uncomment after testing
-    
-    //    NSString *title = messageBannerView.title;
-    //    NSString *subtitle = messageBannerView.subTitle;
-    //    for (MBLMessageBannerView *n in [MBLMessageBanner sharedSingleton].messagesBannersList)
-    //    {
-    //        if (([n.title isEqualToString:title] || (!n.title && !title)) && ([n.subTitle isEqualToString:subtitle] || (!n.subTitle && !subtitle)))
-    //        {
-    //            // Add some check in the config file later if it allow multiple pop-ups
-    //            return;
-    //        }
-    //    }
-    
-    
+    MBLMessageBannerView *messageBannerView = [[MBLMessageBannerView alloc] initWithTitle:title subtitle:subtitle image:image type:type duration:duration inViewController:viewController userDissmissedCallback:userDissmissedCallback buttonTitle:buttonTitle userPressedButtonCallback:userPressedButtonCallback atPosition:messagePosition canBeDismissedByUser:dismissingEnabled];
+
     if (_delegate == nil) {
         [MBLMessageBanner setMessageBannerDelegate:aDelegate];
     }
-    [[MBLMessageBanner sharedSingleton].messagesBannersList addObject:messageBannerView];
-    
-    if ([[MBLMessageBanner sharedSingleton] messageOnScreen] == NO) {
-        [[MBLMessageBanner sharedSingleton] showMessageBannerOnScreen];
-    }
+    [self showMessageBanner:messageBannerView];
 }
 
 #pragma mark -

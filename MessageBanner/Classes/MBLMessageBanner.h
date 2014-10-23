@@ -117,6 +117,13 @@ typedef NS_ENUM(NSInteger, MBLMessageBannerDuration) {
 
 /**
  Show a message banner
+ @param messageView The message banner view to show
+ @param viewController The view where the message banner will be added
+ */
++ (void)showMessageBanner:(MBLMessageBannerView*)messageView;
+
+/**
+ Show a message banner
  @param viewController The view where the message banner will be added
  @param title The title of the message banner
  @param subtitle The subtitle of the message banner

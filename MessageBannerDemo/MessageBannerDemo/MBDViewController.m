@@ -41,7 +41,8 @@
     self.messagePosition = MBLMessageBannerPositionTop;
     self.userDismissEnabled = YES;
     self.buttonTitle = nil;
-    
+
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(messageBannerViewWillAppearNotification:)
                                                  name:MESSAGE_BANNER_VIEW_WILL_APPEAR_NOTIFICATION

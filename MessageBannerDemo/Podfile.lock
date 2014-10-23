@@ -1,20 +1,20 @@
 PODS:
   - FXBlurView (1.6.2)
   - HexColors (2.2.1)
-  - MessageBanner (0.1.0):
+  - MessageBanner (1.0.1):
     - FXBlurView (~> 1.6.1)
     - HexColors (~> 2)
 
 DEPENDENCIES:
-  - MessageBanner (from `../`)
+  - MessageBanner (from `/Users/thibault/Documents/Work/iOS/MessageBannerWithDemo`)
 
 EXTERNAL SOURCES:
   MessageBanner:
-    :path: ../
+    :path: /Users/thibault/Documents/Work/iOS/MessageBannerWithDemo
 
 SPEC CHECKSUMS:
   FXBlurView: 47496afc9160097fa34af35fc4b310bd85d65dca
   HexColors: 01384d2bbe8dc4ffa43c3b4135db6e976952d153
-  MessageBanner: 637a2fbff60ba86ea656c360d327afa94517dae0
+  MessageBanner: 7a2d2caf8786311cdc89aa07124a0c58fb17c3b0
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.34.4
