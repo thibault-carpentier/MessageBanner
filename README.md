@@ -178,6 +178,9 @@ Allow to set the delegate of MBLMessageBanner class
                               atPosition:(MBLMessageBannerPosition)messagePosition
                     canBeDismissedByUser:(BOOL)dismissingEnabled
                                  delegate:(id <MBLMessageBannerDelegate>)aDelegate;
+                                 
+
++ (void)showMessageBanner:(MBLMessageBannerView *)messageBannerView;
 ```
 Add a new MBLMessageBannerView to be displayed. Each MBLMessageBannerView is shown on the screen alone. If multiple calls, the MBLMessageBanner will show it when the previous message banner views disappeared.  
 **Parameters description**  
@@ -193,6 +196,7 @@ Add a new MBLMessageBannerView to be displayed. Each MBLMessageBannerView is sho
 * **messagePosition**: The message position on the viewController. (see position section to see possible positions)
 * **dismissingEnabled**: Enable or disable the user dismissing methods on the message banner view.
 * **aDelegate**: Set the delegate of the message banner (See delegate documentation to see available delegate methods)
+* **messageBannerView**: An existing instance of a MessageBannerView to show next or instantly in not any are showed.
 
 ```objective-c
 + (BOOL) hideMessageBanner;
@@ -356,7 +360,7 @@ Each type of banner can have the following properties :
 
 Roadmap
 ----------------
-####Current Version : ***1.0***  
+####Current Version : ***1.0.2***  
 
 - ***V1.0:***  
 	+ Eventual bug fixes
