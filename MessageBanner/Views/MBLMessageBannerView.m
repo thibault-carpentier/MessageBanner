@@ -11,10 +11,11 @@
 #import "MBLMessageBanner.h"
 #import "HexColor.h"
 #import "FXBlurView.h"
+
 /**
  The default design file
  */
-#define DEFAULT_DESIGN_FILE                 @"MessageBannerDesign.json"
+static NSString *defaultDesignFile = @"MessageBannerDesign.json";
 
 /**
  The label of the error type message banner configuration
@@ -248,11 +249,16 @@ static NSMutableDictionary* _messageBannerDesign;
     return success;
 }
 
++ (void)setDefaultDesignFile:(NSString *)fileName
+{
+    defaultDesignFile = fileName;
+}
+
 + (NSMutableDictionary *)messageBannerDesign {
     if (!_messageBannerDesign) {
         NSError* error;
         NSString *filePath = [[[NSBundle mainBundle] resourcePath]
-                              stringByAppendingPathComponent:DEFAULT_DESIGN_FILE];
+                              stringByAppendingPathComponent:defaultDesignFile];
         _messageBannerDesign = [[NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath]
                                                                 options:kNilOptions
                                                                   error:&error] mutableCopy];
@@ -260,7 +266,7 @@ static NSMutableDictionary* _messageBannerDesign;
         if (error) {
             @throw ([NSException exceptionWithName:@"Error loading default design"
                                             reason:
-                     [NSString stringWithFormat:@"Can not load %@.\nError:%@", DEFAULT_DESIGN_FILE, error]
+                     [NSString stringWithFormat:@"Can not load %@.\nError:%@", defaultDesignFile, error]
                                           userInfo:nil]);
         }
     }

@@ -42,6 +42,8 @@
     self.userDismissEnabled = YES;
     self.buttonTitle = nil;
 
+    //If you want to have a custom design file
+    //[MBLMessageBannerView setDefaultDesignFile:@"CustomBannerDesign.json"];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(messageBannerViewWillAppearNotification:)

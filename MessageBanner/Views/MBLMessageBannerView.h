@@ -112,4 +112,10 @@ canBeDismissedByUser:(BOOL)dismissingEnabled;
  */
 + (NSMutableDictionary *)messageBannerDesign;
 
+/**
+ Set the default design file.
+ @returns void
+ */
++ (void)setDefaultDesignFile:(NSString *)fileName;
+
 @end

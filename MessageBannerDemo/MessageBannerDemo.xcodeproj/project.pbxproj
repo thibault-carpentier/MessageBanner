@@ -16,23 +16,9 @@
 		21171B30197E09810038E717 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21171B2E197E09810038E717 /* Main.storyboard */; };
 		21171B33197E09810038E717 /* MBDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21171B32197E09810038E717 /* MBDViewController.m */; };
 		21171B35197E09810038E717 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21171B34197E09810038E717 /* Images.xcassets */; };
-		21171B3C197E09810038E717 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21171B3B197E09810038E717 /* XCTest.framework */; };
-		21171B3D197E09810038E717 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21171B1C197E09810038E717 /* Foundation.framework */; };
-		21171B3E197E09810038E717 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21171B20197E09810038E717 /* UIKit.framework */; };
-		21171B46197E09810038E717 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 21171B44197E09810038E717 /* InfoPlist.strings */; };
-		21171B48197E09810038E717 /* MessageBannerDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 21171B47197E09810038E717 /* MessageBannerDemoTests.m */; };
 		7325D36F9669488A956EE77F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA3EA25C42494D54BBA8E40C /* libPods.a */; };
+		A1690F611A08EE9200B2BEEC /* CustomBannerDesign.json in Resources */ = {isa = PBXBuildFile; fileRef = A1690F601A08EE9200B2BEEC /* CustomBannerDesign.json */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		21171B3F197E09810038E717 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 21171B11197E09810038E717 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 21171B18197E09810038E717;
-			remoteInfo = MessageBannerDemo;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		21171B19197E09810038E717 /* MessageBannerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MessageBannerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -49,11 +35,8 @@
 		21171B31197E09810038E717 /* MBDViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MBDViewController.h; sourceTree = "<group>"; };
 		21171B32197E09810038E717 /* MBDViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MBDViewController.m; sourceTree = "<group>"; };
 		21171B34197E09810038E717 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		21171B3A197E09810038E717 /* MessageBannerDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MessageBannerDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		21171B3B197E09810038E717 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		21171B43197E09810038E717 /* MessageBannerDemoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MessageBannerDemoTests-Info.plist"; sourceTree = "<group>"; };
-		21171B45197E09810038E717 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		21171B47197E09810038E717 /* MessageBannerDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageBannerDemoTests.m; sourceTree = "<group>"; };
+		A1690F601A08EE9200B2BEEC /* CustomBannerDesign.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CustomBannerDesign.json; sourceTree = "<group>"; };
 		B1B70A4B38735E5AF698F0AD /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		DA3EA25C42494D54BBA8E40C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F35A3FC638CCC82A45AC9473 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -68,16 +51,6 @@
 				21171B21197E09810038E717 /* UIKit.framework in Frameworks */,
 				21171B1D197E09810038E717 /* Foundation.framework in Frameworks */,
 				7325D36F9669488A956EE77F /* libPods.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		21171B37197E09810038E717 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				21171B3C197E09810038E717 /* XCTest.framework in Frameworks */,
-				21171B3E197E09810038E717 /* UIKit.framework in Frameworks */,
-				21171B3D197E09810038E717 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,7 +72,6 @@
 			isa = PBXGroup;
 			children = (
 				21171B19197E09810038E717 /* MessageBannerDemo.app */,
-				21171B3A197E09810038E717 /* MessageBannerDemoTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -119,6 +91,7 @@
 		21171B22197E09810038E717 /* MessageBannerDemo */ = {
 			isa = PBXGroup;
 			children = (
+				A1690F601A08EE9200B2BEEC /* CustomBannerDesign.json */,
 				21171B2B197E09810038E717 /* MBDAppDelegate.h */,
 				21171B2C197E09810038E717 /* MBDAppDelegate.m */,
 				21171B2E197E09810038E717 /* Main.storyboard */,
@@ -144,7 +117,6 @@
 		21171B41197E09810038E717 /* MessageBannerDemoTests */ = {
 			isa = PBXGroup;
 			children = (
-				21171B47197E09810038E717 /* MessageBannerDemoTests.m */,
 				21171B42197E09810038E717 /* Supporting Files */,
 			);
 			path = MessageBannerDemoTests;
@@ -153,8 +125,6 @@
 		21171B42197E09810038E717 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				21171B43197E09810038E717 /* MessageBannerDemoTests-Info.plist */,
-				21171B44197E09810038E717 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -190,24 +160,6 @@
 			productReference = 21171B19197E09810038E717 /* MessageBannerDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		21171B39197E09810038E717 /* MessageBannerDemoTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 21171B4E197E09810038E717 /* Build configuration list for PBXNativeTarget "MessageBannerDemoTests" */;
-			buildPhases = (
-				21171B36197E09810038E717 /* Sources */,
-				21171B37197E09810038E717 /* Frameworks */,
-				21171B38197E09810038E717 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				21171B40197E09810038E717 /* PBXTargetDependency */,
-			);
-			name = MessageBannerDemoTests;
-			productName = MessageBannerDemoTests;
-			productReference = 21171B3A197E09810038E717 /* MessageBannerDemoTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -217,11 +169,6 @@
 				CLASSPREFIX = MBD;
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Thibault Carpentier";
-				TargetAttributes = {
-					21171B39197E09810038E717 = {
-						TestTargetID = 21171B18197E09810038E717;
-					};
-				};
 			};
 			buildConfigurationList = 21171B14197E09810038E717 /* Build configuration list for PBXProject "MessageBannerDemo" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -237,7 +184,6 @@
 			projectRoot = "";
 			targets = (
 				21171B18197E09810038E717 /* MessageBannerDemo */,
-				21171B39197E09810038E717 /* MessageBannerDemoTests */,
 			);
 		};
 /* End PBXProject section */
@@ -249,15 +195,8 @@
 			files = (
 				21171B35197E09810038E717 /* Images.xcassets in Resources */,
 				21171B27197E09810038E717 /* InfoPlist.strings in Resources */,
+				A1690F611A08EE9200B2BEEC /* CustomBannerDesign.json in Resources */,
 				21171B30197E09810038E717 /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		21171B38197E09810038E717 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				21171B46197E09810038E717 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,23 +246,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		21171B36197E09810038E717 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				21171B48197E09810038E717 /* MessageBannerDemoTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		21171B40197E09810038E717 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 21171B18197E09810038E717 /* MessageBannerDemo */;
-			targetProxy = 21171B3F197E09810038E717 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		21171B25197E09810038E717 /* InfoPlist.strings */ = {
@@ -340,14 +263,6 @@
 				21171B2F197E09810038E717 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		21171B44197E09810038E717 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				21171B45197E09810038E717 /* en */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -451,46 +366,6 @@
 			};
 			name = Release;
 		};
-		21171B4F197E09810038E717 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MessageBannerDemo.app/MessageBannerDemo";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MessageBannerDemo/MessageBannerDemo-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "MessageBannerDemoTests/MessageBannerDemoTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		21171B50197E09810038E717 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MessageBannerDemo.app/MessageBannerDemo";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MessageBannerDemo/MessageBannerDemo-Prefix.pch";
-				INFOPLIST_FILE = "MessageBannerDemoTests/MessageBannerDemoTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -508,15 +383,6 @@
 			buildConfigurations = (
 				21171B4C197E09810038E717 /* Debug */,
 				21171B4D197E09810038E717 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		21171B4E197E09810038E717 /* Build configuration list for PBXNativeTarget "MessageBannerDemoTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				21171B4F197E09810038E717 /* Debug */,
-				21171B50197E09810038E717 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
