@@ -22,7 +22,7 @@ Installation
 ----------------
 ### From CocoaPods
 
-The recommended approach for installating ```MessageBanner``` is via the [CocoaPods](http://cocoapods.org/) package manager, as it provides flexible dependency management and dead simple installation: 
+The recommended approach for installating ```MessageBanner``` is via the [CocoaPods](http://cocoapods.org/) package manager, as it provides flexible dependency management and dead simple installation:
 
 ```bash
 $ [sudo] gem install cocoapods
@@ -66,7 +66,7 @@ You need to also install them manually. Please consult their installation requir
 
 #### MBLMessageBanner manual installation
 Download Message banner project. You can download it directly from his [github page](https://github.com/Loadex/Message-Banner)  
-or via the command line : 
+or via the command line :
 ``` bash
 $ git clone https://github.com/Loadex/Message-Banner.git
 ```
@@ -76,7 +76,7 @@ Quick Start Guide
 ----------------
 
 
-Add the import to the top of classes that will use it. : 
+Add the import to the top of classes that will use it. :
 ```objective-c
 #import <MBLMessageBanner.h>
 ```
@@ -87,7 +87,7 @@ To show a basic notification use one of the following call :
 		                                   title:@"aTitle"
        		                            subtitle:@"aSubtitle"];
 
-// ------------------------- OR ------------------------- 
+// ------------------------- OR -------------------------
 
     [MBLMessageBanner showMessageBannerInViewController:self
                                                title:@"aTitle"
@@ -178,18 +178,18 @@ Allow to set the delegate of MBLMessageBanner class
                               atPosition:(MBLMessageBannerPosition)messagePosition
                     canBeDismissedByUser:(BOOL)dismissingEnabled
                                  delegate:(id <MBLMessageBannerDelegate>)aDelegate;
-                                 
+
 
 + (void)showMessageBanner:(MBLMessageBannerView *)messageBannerView;
 ```
 Add a new MBLMessageBannerView to be displayed. Each MBLMessageBannerView is shown on the screen alone. If multiple calls, the MBLMessageBanner will show it when the previous message banner views disappeared.  
 **Parameters description**  
-* **viewController**: The view controller to show the message banner in. Can also be a UINavigationController. If nil, will use the default view controller instead. 
+* **viewController**: The view controller to show the message banner in. Can also be a UINavigationController. If nil, will use the default view controller instead.
 * **title**: The title in the message banner view.
 * **subtitle**: The subtitle in the message banner view.
 * **image**: The left image showed in the message banner view.
 * **type**: The message banner view type (See type section for available values). The message type allow to load the correct design in the design configuration file. (See configuration file section)
-* **duration**: The message banner displaying duration in seconds. (See duration section for custom values) 
+* **duration**: The message banner displaying duration in seconds. (See duration section for custom values)
 * **userDissmissedCallback**: The block that should be executed when a user dismiss a message banner. (see dismiss gestures section to see possible dismiss gestures)
 * **buttonTittle**: The title of the button. If set will allow a button to be created otherwise the message banner won't have a button.
 * **userPressedButtonCallback**: The block that should be executed when a user hit the button if not nil.
@@ -236,7 +236,7 @@ The MBLMessageBanner class also send signals when the message banner is about or
 The signals sent are:
 
 
-|Description                               |Notification name                         |Notification define                            | 
+|Description                               |Notification name                         |Notification define                            |
 |:----------------------------------------:|:----------------------------------------:|:---------------------------------------------:|
 |Sent when the view is about to appear.    |messageBannerViewWillAppearNotification   |MESSAGE_BANNER_VIEW_WILL_APPEAR_NOTIFICATION   |
 |Sent when the view is about to appear.    |messageBannerViewDidAppearNotification    |MESSAGE_BANNER_VIEW_DID_APPEAR_NOTIFICATION    |
@@ -292,7 +292,7 @@ The JSON file is formatted this way :
         "PropertyName"    : "Property value"
         ,"AnotherProperty" : 1.0
     },
-    
+
     "AnOtherMessageBannerTypeName": {
         "PropertyName"    : "Property value"
         ,"AnotherProperty" : 1.0
@@ -309,7 +309,7 @@ This library come with 4 differents type of banner, with the following correspon
 |Message   |MBLMessageBannerTypeMessage|
 |Success   |MBLMessageBannerTypeSuccess|
 
-Each type of banner can have the following properties : 
+Each type of banner can have the following properties :
 
 ### General properties
 |     Property name     |                    Effect                   |    Possible values   |   Default value    |                Remarks                    |
@@ -382,7 +382,7 @@ Roadmap
 		- Create config to allow or not user interaction on the presented view (then to move in behavior cfg to separate for each type)
 		- Create Auto depop when screen change var
 - ***V1.3:***
-	- Add auto-Banner for Network problem + config 
+	- Add auto-Banner for Network problem + config
 
 - ***V2.0 ***
 	- Create Swift Version
