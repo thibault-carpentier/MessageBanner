@@ -384,7 +384,7 @@ Roadmap
 - ***V1.3:***
 	- Add auto-Banner for Network problem + config
 
-- ***V2.0 ***
+- ***V2.0:***
 	- Create Swift Version
 
 FAQ
