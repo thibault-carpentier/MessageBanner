@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "MessageBanner"
-  s.version          = "1.0.3"
+  s.version          = "1.0.4"
   s.summary          = "iOS Notification / Message easy to use and fully customisable"
   s.description      = <<-DESC
 
@@ -38,6 +38,6 @@ Pod::Spec.new do |s|
 
   s.public_header_files = 'MessageBanner/Classes/**/*.{h}', 'MessageBanner/Views/**/*.{h}'
   # s.frameworks = 'UIKit', 'MapKit'
-  s.dependency 'HexColors', '~> 2'
+  s.dependency 'HexColors', '~> 2.3.0'
   s.dependency 'FXBlurView', '~> 1.6.1'
 end
