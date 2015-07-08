@@ -9,7 +9,7 @@
 
 #import "MBLMessageBannerView.h"
 #import "MBLMessageBanner.h"
-#import "HexColor.h"
+#import "HexColors.h"
 #import "FXBlurView.h"
 
 /**
