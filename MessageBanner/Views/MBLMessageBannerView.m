@@ -484,14 +484,11 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
 #pragma mark View frame methods
 - (CGRect) createViewFrame {
     CGRect viewFrame;
-    
-    // Adding Bottom padding
-    self.messageViewHeight += ELEMENTS_PADDING;
-    
+
     switch (self.position) {
         case MBLMessageBannerPositionTop: {
             
-            
+            self.messageViewHeight += [self topOffset];
             self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
             viewFrame = CGRectMake(  0
                                    , 0 - self.messageViewHeight
@@ -500,7 +497,8 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
             break;
         }
         case MBLMessageBannerPositionBottom:
-            
+            self.messageViewHeight += ELEMENTS_PADDING;
+
             self.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
             viewFrame = CGRectMake(  0
                                    , self.viewController.view.bounds.size.height + self.messageViewHeight
@@ -509,7 +507,8 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
             break;
             
         case MBLMessageBannerPositionCenter:
-            
+            self.messageViewHeight += ELEMENTS_PADDING;
+
             self.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
             viewFrame = CGRectMake(  -(self.viewController.view.bounds.size.width)
                                    , ((self.viewController.view.bounds.size.height / 2.0f) - (self.messageViewHeight / 2.0f))
@@ -571,6 +570,22 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     self.messageViewHeight += (titleView.frame.origin.y + titleView.frame.size.height);
 }
 
+- (CGFloat) getStatusBarSize {
+    BOOL isPortrait = UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
+    CGSize statusBarSize = [UIApplication sharedApplication].statusBarFrame.size;
+    CGFloat offset = isPortrait ? statusBarSize.height : statusBarSize.width;
+
+    return (offset);
+}
+
+- (CGFloat)topOffset {
+    CGFloat res = ELEMENTS_PADDING;
+    if ((self.position == MBLMessageBannerPositionTop) && ((_viewController.navigationController && _viewController.navigationController.navigationBarHidden == YES) || ([_viewController isKindOfClass:[UINavigationController class]] && ((UINavigationController *)_viewController).navigationBarHidden == YES))) {
+        res += [self getStatusBarSize];
+    }
+    return res;
+}
+
 -(void)setupTitleAutoLayout {
     NSDictionary *titleAndViewDictionary = [[NSMutableDictionary alloc]
                                             initWithDictionary:NSDictionaryOfVariableBindings (_titleLabel, self)];
@@ -586,10 +601,10 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     NSMutableDictionary *topBotCorrectDictionnary;
     
     if (!titleAndSubtitleDictionary) {
-        topBotConstraintVisualFormat = [NSString stringWithFormat:@"V:|-==%f-[_titleLabel]-==%f-|", ELEMENTS_PADDING, ELEMENTS_PADDING];
+        topBotConstraintVisualFormat = [NSString stringWithFormat:@"V:|-==%f-[_titleLabel]-==%f-|", [self topOffset], ELEMENTS_PADDING];
         topBotCorrectDictionnary = [[NSMutableDictionary alloc] initWithDictionary:titleAndViewDictionary];
     } else {
-        topBotConstraintVisualFormat = [NSString stringWithFormat:@"V:|-==%f-[_titleLabel]-==%f-[_subtitleLabel]", ELEMENTS_PADDING, ELEMENTS_PADDING];
+        topBotConstraintVisualFormat = [NSString stringWithFormat:@"V:|-==%f-[_titleLabel]-==%f-[_subtitleLabel]", [self topOffset], ELEMENTS_PADDING];
         topBotCorrectDictionnary = titleAndSubtitleDictionary;
     }
     [self addConstraints:
@@ -747,6 +762,13 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
                                                                      initWithDictionary:NSDictionaryOfVariableBindings (_subtitleLabel, _imageView)] : nil);
     NSMutableDictionary *imageAndTitleDictionary = (self.titleBanner ? [[NSMutableDictionary alloc] initWithDictionary:NSDictionaryOfVariableBindings (_imageView, _titleLabel)] : nil);
 
+    CGFloat constantConstraint = 0.0f;
+
+    if ((self.position == MBLMessageBannerPositionTop) && ((_viewController.navigationController && _viewController.navigationController.navigationBarHidden == YES) || ([_viewController isKindOfClass:[UINavigationController class]] && ((UINavigationController *)_viewController).navigationBarHidden == YES))) {
+        constantConstraint = -([self getStatusBarSize]/ 2.0);
+    }
+
+
     [self addConstraint:
      [NSLayoutConstraint constraintWithItem:self
                                   attribute:NSLayoutAttributeCenterY
@@ -754,7 +776,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
                                      toItem:_imageView
                                   attribute:NSLayoutAttributeCenterY
                                  multiplier:1.0f
-                                   constant:0.0f]];
+                                   constant:constantConstraint]];
     
     
     NSString* leftRightConstraintsVisualFormat = [NSString stringWithFormat:@"H:|-==%f-[_imageView]-==%f-[_titleLabel]"
@@ -825,7 +847,13 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
     NSMutableDictionary *buttonAndsubTitleDictionary = (self.subTitle ? [[NSMutableDictionary alloc]
                                                                         initWithDictionary:NSDictionaryOfVariableBindings (_subtitleLabel, _button)] : nil);
     NSMutableDictionary *buttonAndTitleDictionary = (self.titleBanner ? [[NSMutableDictionary alloc] initWithDictionary:NSDictionaryOfVariableBindings (_button, _titleLabel)] : nil);
-    
+
+    CGFloat constantConstraint = 0.0f;
+
+    if ((self.position == MBLMessageBannerPositionTop) && ((_viewController.navigationController && _viewController.navigationController.navigationBarHidden == YES) || ([_viewController isKindOfClass:[UINavigationController class]] && ((UINavigationController *)_viewController).navigationBarHidden == YES))) {
+        constantConstraint = -([self getStatusBarSize]/ 2.0);
+    }
+
     [self addConstraint:
      [NSLayoutConstraint constraintWithItem:self
                                   attribute:NSLayoutAttributeCenterY
@@ -833,7 +861,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled {
                                      toItem:_button
                                   attribute:NSLayoutAttributeCenterY
                                  multiplier:1.0f
-                                   constant:0.0f]];
+                                   constant:constantConstraint]];
     
     
     NSString* leftRightConstraintsVisualFormat = [NSString stringWithFormat:@"H:[_titleLabel]-==%f-[_button]-==%f-|"

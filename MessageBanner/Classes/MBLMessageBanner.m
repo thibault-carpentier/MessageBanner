@@ -391,14 +391,28 @@ static struct delegateMethodsCaching {
             } else {
                 realViewController = viewController;
             }
-            
-            [viewController.view addConstraint:[NSLayoutConstraint constraintWithItem:realViewController.topLayoutGuide
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:message
-                                                                            attribute:NSLayoutAttributeTop
-                                                                           multiplier:1.0f
-                                                                             constant:0.0f]];
+
+            if (realViewController.navigationController && realViewController.navigationController.navigationBarHidden == YES) {
+
+                [viewController.view addConstraint:[NSLayoutConstraint constraintWithItem:realViewController.view
+                                                                                attribute:NSLayoutAttributeTop
+                                                                                relatedBy:NSLayoutRelationEqual
+                                                                                   toItem:message
+                                                                                attribute:NSLayoutAttributeTop
+                                                                               multiplier:1.0f
+                                                                                 constant:0.0f]];
+            } else {
+                [viewController.view addConstraint:[NSLayoutConstraint constraintWithItem:realViewController.topLayoutGuide
+                                                                                attribute:NSLayoutAttributeBottom
+                                                                                relatedBy:NSLayoutRelationEqual
+                                                                                   toItem:message
+                                                                                attribute:NSLayoutAttributeTop
+                                                                               multiplier:1.0f
+                                                                                 constant:0.0f]];
+
+            }
+
+
             break;
         }
         case MBLMessageBannerPositionCenter: {

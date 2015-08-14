@@ -274,7 +274,7 @@
             break;
         }
         case 1: {
-            self.image = [UIImage imageNamed:@"iconTest"];
+            self.image = [UIImage imageNamed:@"SuccessDefaultLeftImage"];
             break;
         }
         default:
