@@ -480,14 +480,17 @@ static struct delegateMethodsCaching {
     
     [currentMessageBanner setBlur];
     
+    // Has side effects? setting center = target is really not needed as this is
+    // using constraints which overrides setting the center. I would drop this
+    // altogether except that there are side effects in calculateTargetCenter:
+    // that are needed.
     CGPoint target = [self calculateTargetCenter:currentMessageBanner];
-    [self attachBannerConstraints:currentMessageBanner onViewController:[self getParentViewController:currentMessageBanner]];
     
     [UIView animateKeyframesWithDuration:ANIMATION_DURATION delay:0.0f options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction animations:^{
-        
-        
-        currentMessageBanner.center = target;
-        
+        UIViewController* parentViewController = [self getParentViewController:currentMessageBanner];
+        [self attachBannerConstraints:currentMessageBanner onViewController:parentViewController];
+        currentMessageBanner.center = target; // This fights constraints and is not needed.
+        [parentViewController.view layoutIfNeeded];        
     } completion:^(BOOL finished) {
         
         currentMessageBanner.isBannerDisplayed = YES;
