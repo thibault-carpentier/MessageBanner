@@ -392,13 +392,37 @@ static struct delegateMethodsCaching {
                 realViewController = viewController;
             }
             
-            [viewController.view addConstraint:[NSLayoutConstraint constraintWithItem:realViewController.topLayoutGuide
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:message
-                                                                            attribute:NSLayoutAttributeTop
-                                                                           multiplier:1.0f
-                                                                             constant:0.0f]];
+            if (realViewController.navigationController && realViewController.navigationController.navigationBarHidden == YES) {
+                
+                [viewController.view addConstraint:[NSLayoutConstraint constraintWithItem:realViewController.view
+                                                                                attribute:NSLayoutAttributeTop
+                                                                                relatedBy:NSLayoutRelationEqual
+                                                                                   toItem:message
+                                                                                attribute:NSLayoutAttributeTop
+                                                                               multiplier:1.0f
+                                                                                 constant:0.0f]];
+            } else {
+                if (realViewController.navigationController.navigationBar != nil) {
+                    // This is a hack!!! iOS 9 the topLayoutGuide goes away and shows as nil in Reveal
+                    [viewController.view addConstraint:[NSLayoutConstraint constraintWithItem:realViewController.navigationController.navigationBar
+                                                                                    attribute:NSLayoutAttributeBottom
+                                                                                    relatedBy:NSLayoutRelationEqual
+                                                                                       toItem:message
+                                                                                    attribute:NSLayoutAttributeTop
+                                                                                   multiplier:1.0f
+                                                                                     constant:0.0f]];
+                } else {
+                    [viewController.view addConstraint:[NSLayoutConstraint constraintWithItem:realViewController.topLayoutGuide
+                                                                                    attribute:NSLayoutAttributeBottom
+                                                                                    relatedBy:NSLayoutRelationEqual
+                                                                                       toItem:message
+                                                                                    attribute:NSLayoutAttributeTop
+                                                                                   multiplier:1.0f
+                                                                                     constant:0.0f]];
+                }
+                
+                
+            }
             break;
         }
         case MBLMessageBannerPositionCenter: {
